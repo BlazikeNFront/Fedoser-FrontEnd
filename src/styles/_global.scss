@@ -1,0 +1,82 @@
+//COLORS
+$primary-color: #f6f6fc;
+$primary-color-dark:#e1e1f4;
+$secondary-color: #282263;
+$tertiary-color: #ffa000;
+$forth-color:#f25767;
+$app-background:#024564;
+
+$main-background-color: #f6f6fc;
+
+//FONTS
+$primary-font: 'Montserrat', sans-serif;
+$secondary-font:'Anton', sans-serif;
+$main-font-color:#1b1c1c;
+
+
+//Layouts
+$nav-width:clamp(13rem,30%,40rem);
+
+//UTILITY CLASSES
+.font-primary {
+	font-family:$primary-font ;
+}
+
+.font-secondary {
+	font-family:$secondary-font ;
+}
+
+.f-125 {
+	font-size:1.25rem;
+}
+
+.f-15 {
+	font-size:1.5rem;
+}
+.f-2 {
+	font-size:2rem;
+}
+.f-25 {
+	font-size:2.5rem;
+}
+.f-3 {
+	font-size:3rem;
+}
+.f-35 {
+	font-size:3.5rem;
+}
+.f-4 {
+	font-size:4rem;
+}
+.f-45 {
+	font-size:4.5rem;
+}
+.f-5 {
+	font-size:5rem;
+}
+.h-100 {
+	height:100%;
+}
+.w-100 {
+	width:100%;
+}
+//GLOBALS
+body {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	background-color: $app-background;
+	font-family: $primary-font;
+	color: $main-font-color;
+}
+
+
+html {
+		font-size:50% !important;
+	}
+@media (min-width:768px) {
+	html {
+		font-size:62.5% !important;
+	}
+}
+

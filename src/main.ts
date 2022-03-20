@@ -1,6 +1,10 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import './registerServiceWorker'
-import router from './router'
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
+import { pinia } from "@/stores/store";
+import vuetify from "./plugins/vuetify";
+import { loadFonts } from "./plugins/webfontloader";
 
-createApp(App).use(router).mount('#app')
+loadFonts();
+
+createApp(App).use(pinia).use(router).use(vuetify).mount("#app");

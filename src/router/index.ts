@@ -1,25 +1,26 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-
-const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
-
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { PortalRoles } from "@/constants/enums/PortalRoles";
+import routes from "./paths/index";
+import { RouteLocationNormalized } from "vue-router";
+import { useUserStore } from "@/stores/UserStore";
+import { RoutesNames } from "@/constants/routesNames/RoutesNames";
+import { pinia } from "@/stores/store";
+const userStore = useUserStore(pinia);
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
-})
-
-export default router
+  history: createWebHistory(),
+  routes: routes as Array<RouteRecordRaw>,
+});
+interface RouteMetaProperty {
+  roles?: PortalRoles[];
+}
+interface SingleRoute extends Omit<RouteLocationNormalized, "meta"> {
+  meta: RouteMetaProperty;
+}
+router.beforeEach((to: SingleRoute, _: SingleRoute, next) => {
+  if (!userStore.isTokenProvided && to.meta.roles?.includes(PortalRoles.USER)) {
+    router.push({ name: RoutesNames.HOME });
+    return;
+  }
+  next();
+});
+export default router;

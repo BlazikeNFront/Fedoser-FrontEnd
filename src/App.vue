@@ -1,30 +1,29 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <v-app style="overflow: hidden">
+    <v-main>
+      <component :is="currentLayout" />
+    </v-main>
+  </v-app>
 </template>
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<script setup lang="ts">
+import { onBeforeMount, computed } from "vue";
+import { useRoute } from "vue-router";
+import AppDefaultLayout from "./layouts/AppDefaultLayout.vue";
+import HomePageLayout from "./layouts/HomePageLayout.vue";
+import { HomeLayoutPages } from "@/constants/routesNames/RoutesNames";
+import { useUserStore } from "@/stores/UserStore";
+const route = useRoute();
+const currentLayout = computed(() => {
+  if (route.name) {
+    return HomeLayoutPages.includes(route.name)
+      ? HomePageLayout
+      : AppDefaultLayout;
   }
-}
-</style>
+  return HomePageLayout;
+});
+
+const { checkForCredentialsInLocalStorage } = useUserStore();
+onBeforeMount(() => {
+  checkForCredentialsInLocalStorage();
+});
+</script>
