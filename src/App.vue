@@ -1,8 +1,6 @@
 <template>
   <v-app style="overflow: hidden">
-    <v-main>
-      <component :is="currentLayout" />
-    </v-main>
+    <component :is="currentLayout" />
   </v-app>
 </template>
 <script setup lang="ts">

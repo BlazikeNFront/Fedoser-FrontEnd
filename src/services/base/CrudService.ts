@@ -22,7 +22,7 @@ class ModelApiService<T> extends ReadonlyApiService<T> {
       //catch accept only unknown or any type/ its possible to work with unknown with type casting but in my opinion here doing it here its overkill
 
       this.handleError(error);
-      if (error.data) return error.data as ApiError;
+      if (error?.data) return error.data as ApiError;
       else return { success: false, statusCode: null };
     }
   }

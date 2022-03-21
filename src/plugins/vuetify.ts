@@ -13,14 +13,16 @@ export default createVuetify({
     themes: {
       light: {
         colors: {
-              mainText: colors.grey.darken4,
-              blue: colors.blue.darken3,
+          mainText: colors.grey.darken4,
+          blue: colors.blue.darken3,
+          error: colors.red.darken1
         },
       },
       dark: {
         colors: {
-              mainText: colors.grey.lighten5,
-              blue: colors.blue.lighten3,
+          mainText: colors.grey.lighten5,
+          blue: colors.blue.lighten3,
+          error: colors.red.darken1
         },
       },
     },

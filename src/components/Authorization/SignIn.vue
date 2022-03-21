@@ -1,69 +1,91 @@
 <template>
-  <div class="d-flex flex-column sign-in">
-    <div class="d-flex flex-column">
-      <div class="form-control" style="margin: 10px">
-        <label>Email</label>
-        <input v-model="loginForm.username" type="text" />
-      </div>
-      <div class="form-control">
-        <label>password</label>
-        <input v-model="loginForm.password" type="text" />
-      </div>
-      <button class="button" @click="loginRequest">Login</button>
-      <div class="d-flex flex-column">
-        <p class="text-center">
-          You don't have account ?
-          <button
-            @click="$router.push({ name: RoutesNames.SIGN_UP })"
-            class="button"
-            style="margin: 0 auto"
-          >
-            Click here
-          </button>
-          to sign Up
-        </p>
-      </div>
-    </div>
-  </div>
+  <v-card
+    class="mx-auto pb-6 sign-in-card text-white text-center"
+    style="width: clamp(30rem, 100%, 60rem)"
+  >
+    <v-progress-linear
+      :active="loginForm.loader"
+      :indeterminate="loginForm.loader"
+      color="blue"
+      height="5"
+    />
+    <h4 class="f-2 my-3">Sign in</h4>
+    <v-form ref="signInForm" class="mx-3 my-4">
+      <v-text-field
+        class="sign-in__textfield font-weight-bold"
+        v-model.trim="loginForm.username"
+        type="username"
+        label="Username"
+        :rules="[FormRules.required, FormRules.maxLength(30)]"
+      />
+      <v-text-field
+        class="sign-in__textfield"
+        v-model.trim="loginForm.password"
+        :type="passwordVisibility.type"
+        label="Password"
+        :append-inner-icon="passwordVisibility.icon"
+        @click:append-inner="changePasswordVisibility"
+        :rules="[FormRules.required, FormRules.maxLength(30)]"
+      />
+      <v-btn @click="loginRequest" class="f-15" width="200" color="blue"
+        >Login</v-btn
+      >
+    </v-form>
+    <p class="mt-7 d-block f-15">
+      You don't have an account?<v-btn color="blue" class="mx-2 f-125"
+        >Click here</v-btn
+      >
+      to sign up
+    </p>
+  </v-card>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, ComponentPublicInstance } from "vue";
 import { useRouter } from "vue-router";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { useUserStore } from "@/stores/UserStore";
+import { Icons } from "@/constants/icons/MdiIcons";
+import { FormRules } from "@/constants/FormRules/FormRules";
 const { loginAction } = useUserStore();
 const router = useRouter();
 const loginForm = reactive({
   username: "testmail",
   password: "testPassword",
+  loader: false,
 });
-const error = ref("");
-
-function validateForm() {
-  const { username, password } = loginForm;
-  if (username.length < 4) {
-    error.value = "Incorrect Email";
-    return false;
+const passwordVisibility = reactive({
+  icon: Icons.EYE_ICON,
+  type: "password",
+});
+const signInForm = ref<ComponentPublicInstance<HTMLFormElement>>();
+function changePasswordVisibility() {
+  if (passwordVisibility.type === "password") {
+    passwordVisibility.icon = Icons.EYE_OFF_ICON;
+    passwordVisibility.type = "text";
+  } else {
+    passwordVisibility.icon = Icons.EYE_ICON;
+    passwordVisibility.type = "password";
   }
-  if (password.length < 3) {
-    error.value = "Incorrect password";
-    return false;
-  }
-  return true;
 }
 async function loginRequest() {
-  if (!validateForm) return;
+  loginForm.loader = true;
+  const validationData = await signInForm.value?.validate();
+
+  if (!validationData.valid) return;
   const actionResult = await loginAction({ ...loginForm });
   if (actionResult) {
     router.push({ name: RoutesNames.APP_HOME });
   }
+  loginForm.loader = false;
 }
 </script>
-
-<style scoped lang="scss">
-.sign-in {
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 25px;
+<style lang="scss" scoped>
+.sign-in-card {
+  background-color: rgba(#024564, 0.5);
+}
+.sign-in__textfield::v-deep .v-messages {
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 </style>

@@ -25,7 +25,7 @@
         >
           Fedoser
         </p>
-        <section class="d-flex flex-column align-center h-100">
+        <v-main class="d-flex flex-column align-center h-100">
           <h1
             class="mt-10 f-5 font-secondary text-white text-center text-uppercase"
             style="letter-spacing: 7px; margin-top: 4%"
@@ -55,35 +55,51 @@
                 max-width="300"
                 class="py-6 f-15 font-weight-bold"
                 color="blue"
-                @click="showAboutSection = true"
+                @click="scrollIntoAboutSection"
                 data-test="home-about-button"
               >
                 About
               </v-btn>
             </div>
           </div>
-          <main>
-            <router-view v-slot="{ Component }">
-              <transition>
-                <component :is="Component" />
-              </transition>
-            </router-view>
-          </main>
-        </section>
+          <router-view v-slot="{ Component }">
+            <transition>
+              <component :is="Component" />
+            </transition>
+          </router-view>
+        </v-main>
       </div>
     </div>
-    <about-section v-if="showAboutSection" />
+    <suspense>
+      <about-section
+        v-if="showAboutSection"
+        @vnode-mounted="scrollIntoAboutSection"
+      />
+    </suspense>
   </div>
 </template>
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
-import AboutSection from "@/components/views/home/AboutSection.vue";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
+import { defineAsyncComponent } from "vue";
 
 const route = useRoute();
 const showAboutSection = ref(false);
+const AboutSection = defineAsyncComponent(
+  async () =>
+    await import(
+      /* webpackChunkName: "about-section" */ "@/components/views/home/AboutSection.vue"
+    )
+);
 const isInitialView = computed(() => route.path === "/");
+function scrollIntoAboutSection() {
+  if (showAboutSection.value)
+    document
+      .getElementById("aboutSection")
+      ?.scrollIntoView({ behavior: "smooth" });
+  else showAboutSection.value = true;
+}
 </script>
 <style lang="scss">
 .initial-view {
@@ -91,7 +107,7 @@ const isInitialView = computed(() => route.path === "/");
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 102vh;
 }
 
 .video-overlay {
