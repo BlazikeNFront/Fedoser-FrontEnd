@@ -1,71 +1,74 @@
 <template>
-  <form class="d-flex flex-column">
-    <div class="form-control">
-      <label>Email</label>
-      <input v-model="form.email" type="text" />
-    </div>
-    <div class="form-control">
-      <label>Password</label>
-      <input v-model="form.password" type="text" />
-    </div>
-    <div class="form-control">
-      <label> Repeat password</label>
-      <input v-model="form.repeatedPassword" type="text" />
-    </div>
-    <p v-if="error">{{ error }}</p>
-    <button @click="signUpRequest" class="button">Sign Up</button>
-  </form>
+  <home-form-card
+    :loader="signUpFormData.loader"
+    :header-text="'Sign up'"
+    :id="IdAttributes.SIGN_UP_FORM"
+  >
+    <v-form ref="signUpForm" class="mx-3 my-4">
+      <v-text-field
+        class="font-weight-bold home-form-card__textfield f-15"
+        v-model.trim="signUpFormData.email"
+        type="email"
+        label="Email"
+        autocomplete="on"
+        :rules="[
+          FormRules.required,
+          FormRules.maxLength(30),
+          FormRules.isEmail,
+        ]"
+      />
+      <v-text-field
+        class="font-weight-bold home-form-card__textfield"
+        v-model.trim="signUpFormData.password"
+        type="password"
+        label="Password"
+        autocomplete="on"
+        :rules="[FormRules.required, FormRules.maxLength(30)]"
+      />
+      <v-text-field
+        class="font-weight-bold home-form-card__textfield"
+        v-model.trim="signUpFormData.confirmedPassword"
+        type="password"
+        label="Password"
+        :rules="[FormRules.required, FormRules.maxLength(30)]"
+      />
+      <v-btn @click="signUpRequest" class="f-15" width="200" color="blue"
+        >Login</v-btn
+      >
+    </v-form>
+  </home-form-card>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
-import { validateEmail } from "@/helpers/rules/email";
+import { ref, reactive, ComponentPublicInstance } from "vue";
 import { SignUpService } from "@/services/endpoints/Authorization";
 import { SignUpDTO } from "@/utils/DTOs/SignUp.dto";
+import { FormRules } from "@/constants/FormRules/FormRules";
+import HomeFormCard from "@/components/Home/HomeFormCard.vue";
+import { IdAttributes } from "@/constants/IdAttributes";
 import { useRouter } from "vue-router";
 const router = useRouter();
-const form = reactive({
-  email: "",
-  password: "",
-  repeatedPassword: "",
+const signUpFormData = reactive({
+  email: "test@mail.com",
+  password: "testPassword1",
+  confirmedPassword: "testPassword1",
+  loader: false,
 });
-const error = ref("");
-function validateForm() {
-  const { email, password, repeatedPassword } = form;
-  if (email.length < 4 || validateEmail(email)) {
-    error.value = "Incorrect Email";
-    return false;
-  }
-  if (password.length < 6) {
-    error.value = "Password should contain at least 6 characters";
-    return false;
-  }
-  if (password !== repeatedPassword) {
-    error.value = "Password do not match";
-    return false;
-  }
-  return true;
-}
+const signUpForm = ref<ComponentPublicInstance<HTMLFormElement>>();
+
 async function signUpRequest() {
-  if (!validateForm) return;
+  const validationData = await signUpForm.value?.validate();
+  if (!validationData.valid) return;
   const result = await SignUpService.create(
-    new SignUpDTO(form.email, form.password, form.repeatedPassword)
+    new SignUpDTO(
+      signUpFormData.email,
+      signUpFormData.password,
+      signUpFormData.confirmedPassword
+    )
   );
   if (result.success) router.push({ name: "Home" });
-  else error.value = "An error occured, try again later";
 }
 </script>
-
-<style lang="scss" scoped>
-form {
-  background-color: rgba(0, 0, 0, 0.75);
-  padding: 1rem 2rem;
-  border-radius: 25px;
-}
-.form-control {
-  label {
-    color: white;
-    font-size: 2rem;
-  }
-}
+<style lang="scss">
+@import "@/styles/global";
 </style>

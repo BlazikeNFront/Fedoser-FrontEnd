@@ -1,5 +1,5 @@
 export interface UserStore {
-  username: string | null;
+  email: string | null;
   isTokenProvided: boolean;
   loginTimestamp: number | null;
 }

@@ -63,7 +63,7 @@
             </div>
           </div>
           <router-view v-slot="{ Component }">
-            <transition>
+            <transition name="fade" mode="out-in">
               <component :is="Component" />
             </transition>
           </router-view>
@@ -107,7 +107,7 @@ function scrollIntoAboutSection() {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 102vh;
+  height: 100vh;
 }
 
 .video-overlay {

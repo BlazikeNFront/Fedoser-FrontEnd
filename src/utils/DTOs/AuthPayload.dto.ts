@@ -1,12 +1,12 @@
 import { AuthPayload } from "@/types/AuthPayload";
 
 export class AuthPayloadDTO implements AuthPayload {
-  username: string;
+  email: string;
   password: string;
 
   constructor(authPayload: AuthPayload) {
-    const { username, password } = authPayload;
-    this.username = username;
+    const { email, password } = authPayload;
+    this.email = email;
     this.password = password;
   }
 }

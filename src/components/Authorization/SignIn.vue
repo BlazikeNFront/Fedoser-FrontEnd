@@ -1,25 +1,15 @@
 <template>
-  <v-card
-    class="mx-auto pb-6 sign-in-card text-white text-center"
-    style="width: clamp(30rem, 100%, 60rem)"
-  >
-    <v-progress-linear
-      :active="loginForm.loader"
-      :indeterminate="loginForm.loader"
-      color="blue"
-      height="5"
-    />
-    <h4 class="f-2 my-3">Sign in</h4>
+  <home-form-card :loader="loginForm.loader" header-text="Sign In">
     <v-form ref="signInForm" class="mx-3 my-4">
       <v-text-field
-        class="sign-in__textfield font-weight-bold"
-        v-model.trim="loginForm.username"
+        class="font-weight-bold home-form-card__textfield"
+        v-model.trim="loginForm.email"
         type="username"
-        label="Username"
+        label="Email"
         :rules="[FormRules.required, FormRules.maxLength(30)]"
       />
       <v-text-field
-        class="sign-in__textfield"
+        class="font-weight-bold home-form-card__textfield"
         v-model.trim="loginForm.password"
         :type="passwordVisibility.type"
         label="Password"
@@ -31,13 +21,7 @@
         >Login</v-btn
       >
     </v-form>
-    <p class="mt-7 d-block f-15">
-      You don't have an account?<v-btn color="blue" class="mx-2 f-125"
-        >Click here</v-btn
-      >
-      to sign up
-    </p>
-  </v-card>
+  </home-form-card>
 </template>
 
 <script setup lang="ts">
@@ -47,10 +31,12 @@ import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { useUserStore } from "@/stores/UserStore";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { FormRules } from "@/constants/FormRules/FormRules";
+import HomeFormCard from "@/components/Home/HomeFormCard.vue";
+
 const { loginAction } = useUserStore();
 const router = useRouter();
 const loginForm = reactive({
-  username: "testmail",
+  email: "testmail",
   password: "testPassword",
   loader: false,
 });
@@ -80,12 +66,6 @@ async function loginRequest() {
   loginForm.loader = false;
 }
 </script>
-<style lang="scss" scoped>
-.sign-in-card {
-  background-color: rgba(#024564, 0.5);
-}
-.sign-in__textfield::v-deep .v-messages {
-  font-size: 1.5rem;
-  font-weight: 500;
-}
+<style lang="scss">
+@import "@/styles/global";
 </style>

@@ -6,7 +6,7 @@
     <div class="d-flex flex-column overlay">
       <div class="user-greetings d-flex">
         <div class="user-greetings__text d-flex flex-column">
-          <h2>Hello, {{ username }}!</h2>
+          <h2>Hello, {{ email }}!</h2>
           <p>Welcome back to Fedoser</p>
         </div>
         <div class="user-greetings__image"></div>
@@ -44,7 +44,7 @@
 import { storeToRefs } from "pinia";
 import { useUserStore } from "@/stores/UserStore";
 import SingleNews from "@/components/views/home/SingleNews.vue";
-const { username } = storeToRefs(useUserStore());
+const { email } = storeToRefs(useUserStore());
 const articlePLaceholder = [
   {
     header: "Article header",

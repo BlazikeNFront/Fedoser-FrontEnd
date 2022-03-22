@@ -8,7 +8,7 @@ import { TOKEN_EXPIRATION_TIME_IN_MS } from "@/constants/global";
 export const useUserStore = defineStore("UserStore", {
   state: () =>
     ({
-      username: null,
+      email: null,
       isTokenProvided: false,
       loginTimestamp: null,
     } as UserStore),
@@ -16,7 +16,7 @@ export const useUserStore = defineStore("UserStore", {
     async loginAction(authPayload: AuthPayload) {
       const result = await LoginService.create(new AuthPayloadDTO(authPayload));
       if (result.success) {
-        this.username = authPayload.username;
+        this.email = authPayload.email;
         this.isTokenProvided = true;
         this.loginTimestamp = Date.now();
         localStorage.setItem("userStore", JSON.stringify(this.$state));
@@ -43,7 +43,7 @@ export const useUserStore = defineStore("UserStore", {
       return false;
     },
     clearUser() {
-      this.username = null;
+      this.email = null;
       this.isTokenProvided = false;
       this.loginTimestamp = null;
     },
