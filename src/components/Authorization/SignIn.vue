@@ -17,7 +17,12 @@
         @click:append-inner="changePasswordVisibility"
         :rules="[FormRules.required, FormRules.maxLength(30)]"
       />
-      <v-btn @click="loginRequest" class="f-15" width="200" color="blue"
+      <v-btn
+        @click="loginRequest"
+        class="f-15"
+        width="200"
+        color="blue"
+        :disabled="loginForm.loader"
         >Login</v-btn
       >
     </v-form>

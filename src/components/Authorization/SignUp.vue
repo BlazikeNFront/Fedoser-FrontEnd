@@ -4,6 +4,7 @@
     :header-text="'Sign up'"
     :id="IdAttributes.SIGN_UP_FORM"
   >
+    <h2>{{ $t("test") }}</h2>
     <v-form ref="signUpForm" class="mx-3 my-4">
       <v-text-field
         class="font-weight-bold home-form-card__textfield f-15"
@@ -32,8 +33,13 @@
         label="Password"
         :rules="[FormRules.required, FormRules.maxLength(30)]"
       />
-      <v-btn @click="signUpRequest" class="f-15" width="200" color="blue"
-        >Login</v-btn
+      <v-btn
+        @click="signUpRequest"
+        class="f-15"
+        width="200"
+        color="blue"
+        :disabled="signUpFormData.loader"
+        >Sign Up</v-btn
       >
     </v-form>
   </home-form-card>
@@ -45,6 +51,7 @@ import { SignUpService } from "@/services/endpoints/Authorization";
 import { SignUpDTO } from "@/utils/DTOs/SignUp.dto";
 import { FormRules } from "@/constants/FormRules/FormRules";
 import HomeFormCard from "@/components/Home/HomeFormCard.vue";
+import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { IdAttributes } from "@/constants/IdAttributes";
 import { useRouter } from "vue-router";
 const router = useRouter();
@@ -59,6 +66,7 @@ const signUpForm = ref<ComponentPublicInstance<HTMLFormElement>>();
 async function signUpRequest() {
   const validationData = await signUpForm.value?.validate();
   if (!validationData.valid) return;
+  signUpFormData.loader = true;
   const result = await SignUpService.create(
     new SignUpDTO(
       signUpFormData.email,
@@ -66,7 +74,8 @@ async function signUpRequest() {
       signUpFormData.confirmedPassword
     )
   );
-  if (result.success) router.push({ name: "Home" });
+  signUpFormData.loader = false;
+  if (result.success) router.push({ name: RoutesNames.SIGN_IN });
 }
 </script>
 <style lang="scss">
