@@ -1,18 +1,18 @@
 <template>
-  <home-form-card :loader="loginForm.loader" header-text="Sign In">
+  <home-form-card :loader="loginForm.loader" :header-text="$t('auth.signIn')">
     <v-form ref="signInForm" class="mx-3 my-4">
       <v-text-field
         class="font-weight-bold home-form-card__textfield"
         v-model.trim="loginForm.email"
         type="username"
-        label="Email"
+        :label="$t('global.email')"
         :rules="[FormRules.required, FormRules.maxLength(30)]"
       />
       <v-text-field
         class="font-weight-bold home-form-card__textfield"
         v-model.trim="loginForm.password"
         :type="passwordVisibility.type"
-        label="Password"
+        :label="$t('auth.password')"
         :append-inner-icon="passwordVisibility.icon"
         @click:append-inner="changePasswordVisibility"
         :rules="[FormRules.required, FormRules.maxLength(30)]"
@@ -23,8 +23,8 @@
         width="200"
         color="blue"
         :disabled="loginForm.loader"
-        >Login</v-btn
-      >
+        v-t="'auth.signIn'"
+      />
     </v-form>
   </home-form-card>
 </template>

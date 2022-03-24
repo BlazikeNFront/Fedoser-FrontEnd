@@ -9,25 +9,27 @@
       color="blue"
       height="5"
     />
-    <h4 class="f-2 my-3">{{ headerText }}</h4>
+    <h4 class="f-2 my-3" v-text="headerText" />
     <slot />
     <p v-if="isLoginPage" class="mt-7 f-15">
-      You already have an account?<v-btn
+      {{ $t("auth.alreadyHaveAccountPart1")
+      }}<v-btn
         @click="$router.push({ name: RoutesNames.SIGN_IN })"
         color="blue"
         class="mx-2 f-125"
-        >Click here</v-btn
-      >
-      to login
+        v-t="'global.clickHere'"
+      />
+      {{ $t("auth.alreadyHaveAccountPart2") }}
     </p>
     <p v-else class="mt-7 d-block f-15">
-      You don't have an account?<v-btn
+      {{ $t("auth.notHaveAccountPart1")
+      }}<v-btn
         @click="$router.push({ name: RoutesNames.SIGN_UP })"
         color="blue"
         class="mx-2 f-125"
-        >Click here</v-btn
-      >
-      to sign up
+        v-t="'global.clickHere'"
+      />
+      {{ $t("auth.notHaveAccountPart2") }}
     </p>
   </v-card>
 </template>

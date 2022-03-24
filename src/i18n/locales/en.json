@@ -1,3 +1,24 @@
 {
-  "test": "WORKS I18N"
+  "global":{
+    "learnMore":"Learn more",
+     "about":"About",
+     "clickHere":"Click here",
+     "email":"Email",
+     "confirm":"Confirm"
+  },
+   "rules":{
+    "fieldRequired":"Field required",
+    "tooMachCharacters":"Maximum length is {maxLength}",
+    "invalidEmail":"Invalid email adress"
+  },
+  "auth": {
+    "password":"Password",
+    "confirmPassword":"@:global.confirm @.lower:auth.password",
+   "signIn":"Sign in",
+    "signUp":"Sign up",
+    "notHaveAccountPart1":"You don't have an account?",
+    "notHaveAccountPart2":"to sign up",
+    "alreadyHaveAccountPart1":"You already have an account?",
+    "alreadyHaveAccountPart2":"to login"
+  }
 }

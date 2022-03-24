@@ -22,16 +22,14 @@
           class="f-2 text-uppercase text-white font-weight-bold"
           style="letter-spacing: 2px"
           @click="$router.push({ name: RoutesNames.HOME })"
-        >
-          Fedoser
-        </p>
+          v-text="APP_NAME"
+        />
         <v-main class="d-flex flex-column align-center h-100">
           <h1
             class="mt-10 f-5 font-secondary text-white text-center text-uppercase"
             style="letter-spacing: 7px; margin-top: 4%"
-          >
-            Let's innovate aquaculture
-          </h1>
+            v-text="APP_SLOGAN"
+          />
           <div
             v-if="isInitialView"
             class="d-flex flex-column align-center justify-space-evenly h-100"
@@ -47,9 +45,8 @@
                 class="py-6 f-15 font-weight-bold"
                 color="blue"
                 @click="$router.push({ name: RoutesNames.SIGN_IN })"
-              >
-                Login
-              </v-btn>
+                v-t="'auth.signIn'"
+              />
               <v-btn
                 width="40%"
                 max-width="300"
@@ -57,9 +54,8 @@
                 color="blue"
                 @click="scrollIntoAboutSection"
                 data-test="home-about-button"
-              >
-                About
-              </v-btn>
+                v-t="'global.about'"
+              />
             </div>
           </div>
           <router-view v-slot="{ Component }">
@@ -79,6 +75,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import { APP_NAME, APP_SLOGAN } from "@/constants/global";
 import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";

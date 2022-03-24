@@ -9,12 +9,14 @@ function getUserLanguage() {
     LocalStorageKeys.USER_LANGUAGE
   );
   if (userSavedLanguage) return userSavedLanguage;
-  return navigator.language ? navigator.language : FALLBACK_LOCALE;
+  return navigator.language
+    ? navigator.language.split("-")[0]
+    : FALLBACK_LOCALE;
 }
 export async function loadLocaleMessages(i18n, locale) {
   // load locale messages with dynamic import
   const messages = await import(
-    /* webpackChunkName: "locale-[request]" */ `@/i18n/locales/${locale}.json`
+    /* webpackChunkName: "locale-[request]" */ `./locales/${locale}.json`
   );
 
   // set locale and locale message
@@ -32,18 +34,16 @@ export function setI18nLanguage(i18n, locale) {
 
   document.querySelector("html")?.setAttribute("lang", locale);
 }
-export function setupI18n() {
-  const initialLanguage = getUserLanguage();
+
+function setupI18n() {
   const i18n = createI18n({
     legacy: false,
     mode: "composition",
-    locale: initialLanguage,
     globalInjection: true,
     fallbackLocale: FALLBACK_LOCALE,
-    messages: import(`@/i18n/locales/${initialLanguage}`),
   });
-
+  setI18nLanguage(i18n, getUserLanguage());
   return i18n;
 }
 
-export const i18n = setupI18n();
+export const i18nInstance = setupI18n();

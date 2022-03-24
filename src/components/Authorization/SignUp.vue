@@ -1,16 +1,15 @@
 <template>
   <home-form-card
     :loader="signUpFormData.loader"
-    :header-text="'Sign up'"
+    :header-text="$t('auth.signUp')"
     :id="IdAttributes.SIGN_UP_FORM"
   >
-    <h2>{{ $t("test") }}</h2>
     <v-form ref="signUpForm" class="mx-3 my-4">
       <v-text-field
         class="font-weight-bold home-form-card__textfield f-15"
         v-model.trim="signUpFormData.email"
         type="email"
-        label="Email"
+        :label="$t('global.email')"
         autocomplete="on"
         :rules="[
           FormRules.required,
@@ -22,7 +21,7 @@
         class="font-weight-bold home-form-card__textfield"
         v-model.trim="signUpFormData.password"
         type="password"
-        label="Password"
+        :label="$t('auth.password')"
         autocomplete="on"
         :rules="[FormRules.required, FormRules.maxLength(30)]"
       />
@@ -30,7 +29,7 @@
         class="font-weight-bold home-form-card__textfield"
         v-model.trim="signUpFormData.confirmedPassword"
         type="password"
-        label="Password"
+        :label="$t('auth.confirmPassword')"
         :rules="[FormRules.required, FormRules.maxLength(30)]"
       />
       <v-btn
@@ -39,8 +38,8 @@
         width="200"
         color="blue"
         :disabled="signUpFormData.loader"
-        >Sign Up</v-btn
-      >
+        v-t="'auth.signUp'"
+      />
     </v-form>
   </home-form-card>
 </template>
