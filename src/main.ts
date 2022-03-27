@@ -11,7 +11,10 @@ loadFonts();
 (async function appInit() {
   const app = createApp(App);
 
-  await loadLocaleMessages(i18nInstance, i18nInstance.global.locale.value);
+  await loadLocaleMessages(
+    i18nInstance.global,
+    i18nInstance.global.locale.value
+  );
 
   app.use(pinia).use(router).use(vuetify).use(i18nInstance).mount("#app");
 })();

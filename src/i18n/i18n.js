@@ -1,7 +1,10 @@
 import { createI18n } from "vue-i18n";
 import { nextTick } from "vue";
 import { LocalStorageKeys } from "@/constants/LocalStorageKeys";
-export const SUPPORT_LOCALES = ["en", "pl"];
+export const SUPPORTED_LOCALES = Object.freeze({
+  en: "English",
+  pl: "Polski",
+});
 const FALLBACK_LOCALE = "en";
 
 function getUserLanguage() {
@@ -14,13 +17,17 @@ function getUserLanguage() {
     : FALLBACK_LOCALE;
 }
 export async function loadLocaleMessages(i18n, locale) {
-  // load locale messages with dynamic import
+  if (!Object.keys(SUPPORTED_LOCALES).includes(locale)) {
+    console.warn("Provided localce is not supported");
+    setI18nLanguage(i18n, FALLBACK_LOCALE);
+    return;
+  }
+
   const messages = await import(
     /* webpackChunkName: "locale-[request]" */ `./locales/${locale}.json`
   );
-
-  // set locale and locale message
-  i18n.global.setLocaleMessage(locale, messages.default);
+  console.log(locale);
+  i18n.setLocaleMessage(locale, messages.default);
 
   return nextTick();
 }

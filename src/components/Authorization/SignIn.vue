@@ -36,7 +36,8 @@ import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { useUserStore } from "@/stores/UserStore";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { FormRules } from "@/constants/FormRules/FormRules";
-import HomeFormCard from "@/components/Home/HomeFormCard.vue";
+import { InputTypes } from "@/constants/global";
+import HomeFormCard from "@/components/views/home/HomeFormCard.vue";
 
 const { loginAction } = useUserStore();
 const router = useRouter();
@@ -47,23 +48,23 @@ const loginForm = reactive({
 });
 const passwordVisibility = reactive({
   icon: Icons.EYE_ICON,
-  type: "password",
+  type: InputTypes.PASSWORD,
 });
 const signInForm = ref<ComponentPublicInstance<HTMLFormElement>>();
 function changePasswordVisibility() {
-  if (passwordVisibility.type === "password") {
+  if (passwordVisibility.type === InputTypes.PASSWORD) {
     passwordVisibility.icon = Icons.EYE_OFF_ICON;
-    passwordVisibility.type = "text";
+    passwordVisibility.type = InputTypes.TEXT;
   } else {
     passwordVisibility.icon = Icons.EYE_ICON;
-    passwordVisibility.type = "password";
+    passwordVisibility.type = InputTypes.PASSWORD;
   }
 }
 async function loginRequest() {
-  loginForm.loader = true;
   const validationData = await signInForm.value?.validate();
 
   if (!validationData.valid) return;
+  loginForm.loader = true;
   const actionResult = await loginAction({ ...loginForm });
   if (actionResult) {
     router.push({ name: RoutesNames.APP_HOME });

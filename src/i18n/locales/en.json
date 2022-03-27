@@ -19,6 +19,7 @@
     "notHaveAccountPart1":"You don't have an account?",
     "notHaveAccountPart2":"to sign up",
     "alreadyHaveAccountPart1":"You already have an account?",
-    "alreadyHaveAccountPart2":"to login"
+    "alreadyHaveAccountPart2":"to login",
+    "clickHereToSignUp":"{button} to sign up"
   }
 }

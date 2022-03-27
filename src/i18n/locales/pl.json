@@ -19,6 +19,7 @@
     "notHaveAccountPart1":"Nie masz konta?",
     "notHaveAccountPart2":"zeby sie zalozyc konto",
     "alreadyHaveAccountPart1":"Masz juz konto?",
-    "alreadyHaveAccountPart2":"zeby sie zalogowac"
+    "alreadyHaveAccountPart2":"zeby sie zalogowac",
+    "clickHereToSignUp":"{button} zeby sie zalozyc konto"
   }
 }
