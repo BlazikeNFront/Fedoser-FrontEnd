@@ -24,47 +24,20 @@
             style="letter-spacing: 2px"
             @click="$router.push({ name: RoutesNames.HOME })"
             v-text="APP_NAME"
-          />
+          ></p>
           <language-switcher />
         </div>
-        <v-main class="d-flex flex-column align-center h-100">
+        <v-main
+          class="d-flex flex-column align-center justify-space-around h-100"
+        >
           <h1
             class="mt-10 f-5 font-secondary text-white text-center text-uppercase"
             style="letter-spacing: 7px; margin-top: 4%"
             v-text="APP_SLOGAN"
-          />
-          <div
-            v-if="isInitialView"
-            class="d-flex flex-column align-center justify-space-evenly h-100"
-          >
-            <p class="f-2 text-white font-weight bold text-center">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-            <div class="w-100 d-flex align-center justify-space-around">
-              <v-btn
-                width="40%"
-                max-width="300"
-                class="py-6 f-15 font-weight-bold"
-                color="blue"
-                @click="$router.push({ name: RoutesNames.SIGN_IN })"
-              >
-                {{ $t("auth.signIn") }}</v-btn
-              >
-              <v-btn
-                width="40%"
-                max-width="300"
-                class="py-6 f-15 font-weight-bold"
-                color="blue"
-                @click="scrollIntoAboutSection"
-                data-test="home-about-button"
-                >{{ $t("global.about") }}</v-btn
-              >
-            </div>
-          </div>
+          ></h1>
           <router-view v-slot="{ Component }">
             <transition name="fade" mode="out-in">
-              <component :is="Component" />
+              <component :is="Component" class="mt-15" />
             </transition>
           </router-view>
         </v-main>
@@ -79,29 +52,21 @@
   </div>
 </template>
 <script setup lang="ts">
-import { APP_NAME, APP_SLOGAN } from "@/constants/global";
-import { ref, computed } from "vue";
-import { useRoute } from "vue-router";
-import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { defineAsyncComponent } from "vue";
-import { IdAttributes } from "@/constants/IdAttributes";
+import { storeToRefs } from "pinia";
+import { APP_NAME, APP_SLOGAN } from "@/constants/global";
+import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import LanguageSwitcher from "@/components/common/LanguageSwitcher.vue";
-const route = useRoute();
-const showAboutSection = ref(false);
+import { useHomePageStore } from "@/stores/HomePageStore";
+
+const { showAboutSection } = storeToRefs(useHomePageStore());
+const { scrollIntoAboutSection } = useHomePageStore();
 const AboutSection = defineAsyncComponent(
   async () =>
     await import(
       /* webpackChunkName: "about-section" */ "@/components/views/home/AboutSection.vue"
     )
 );
-const isInitialView = computed(() => route.path === "/");
-function scrollIntoAboutSection() {
-  if (showAboutSection.value)
-    document
-      .getElementById(IdAttributes.ABOUT_SECTION)
-      ?.scrollIntoView({ behavior: "smooth" });
-  else showAboutSection.value = true;
-}
 </script>
 <style lang="scss">
 .initial-view {

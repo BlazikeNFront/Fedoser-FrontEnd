@@ -5,18 +5,19 @@ import UserTanks from "@/views/UserTanks/userTanks.vue";
 import SingleTank from "@/views/UserTanks/singleTank.vue";
 import LivestockMove from "@/views/LivestockMove/LivestockMove.vue";
 import UserSettings from "@/views/UserSettings/UserSettings.vue";
-import SignIn from "@/components/Authorization/SignIn.vue";
-import SignUp from "@/components/Authorization/SignUp.vue";
+import SignIn from "@/views/Home/SignIn.vue";
+import SignUp from "@/views/Home/SignUp.vue";
+import Index from "@/views/Home/index.vue";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { RouteRecordRaw } from "vue-router";
 import { PortalRoles } from "@/constants/enums/PortalRoles";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    name: RoutesNames.HOME,
     path: "/",
     component: Home,
     children: [
+      { name: RoutesNames.HOME, path: "/", component: Index },
       { name: RoutesNames.SIGN_IN, path: "/signIn", component: SignIn },
       { name: RoutesNames.SIGN_UP, path: "/signUp", component: SignUp },
     ],

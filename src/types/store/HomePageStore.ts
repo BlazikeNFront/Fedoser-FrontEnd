@@ -1,3 +1,3 @@
 export interface HomePageStore {
-  showVideoPage: boolean;
+  showAboutSection: boolean;
 }

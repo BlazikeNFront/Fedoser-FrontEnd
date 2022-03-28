@@ -76,7 +76,12 @@
           cols="12"
           class="d-flex flex-column flex-sm-row align-center justify-center"
         >
-          <i18n-t keypath="auth.clickHereToSignUp" tag="p" class="f-2">
+          <i18n-t
+            keypath="auth.clickHereToSignUp"
+            tag="p"
+            class="f-2"
+            scope="global"
+          >
             <template #button>
               <v-btn
                 color="blue"
@@ -105,7 +110,6 @@ function drawSvgPath() {
   const path = document.getElementById(
     IdAttributes.SALMON_PATH
   ) as unknown as SVGPathElement;
-  console.log(path);
   path.style.strokeDasharray = "1 1";
   path.setAttribute("d", salmonPath);
   path.classList.add("salmonAnimation");
