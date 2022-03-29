@@ -20,9 +20,9 @@ export const useUserStore = defineStore("UserStore", {
         this.isTokenProvided = true;
         this.loginTimestamp = Date.now();
         localStorage.setItem("userStore", JSON.stringify(this.$state));
-        return true;
+        return result;
       }
-      return false;
+      return result;
     },
     async logoutAction() {
       const result = await LoginService.delete("");

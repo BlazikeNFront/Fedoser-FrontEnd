@@ -7,6 +7,7 @@
         type="username"
         :label="$t('global.email')"
         :rules="[FormRules.required, FormRules.maxLength(30)]"
+        @input="loginForm.showUnauthorizedError = false"
       />
       <v-text-field
         class="font-weight-bold home-form-card__textfield"
@@ -16,6 +17,7 @@
         :append-inner-icon="passwordVisibility.icon"
         @click:append-inner="changePasswordVisibility"
         :rules="[FormRules.required, FormRules.maxLength(30)]"
+        @input="loginForm.showUnauthorizedError = false"
       />
       <v-btn
         @click="loginRequest"
@@ -26,6 +28,28 @@
         v-t="'auth.signIn'"
       />
     </v-form>
+    <transition-expand>
+      <p
+        v-if="loginForm.showUnauthorizedError"
+        v-t="'auth.unauthorized'"
+        class="text-error f-15"
+      ></p>
+    </transition-expand>
+    <i18n-t
+      class="mt-7 f-15"
+      keypath="auth.notHaveAccount"
+      tag="p"
+      scope="global"
+    >
+      <template #button>
+        <v-btn
+          @click="$router.push({ name: RoutesNames.SIGN_UP })"
+          color="blue"
+          class="mx-2 f-125"
+          v-t="'global.clickHere'"
+        />
+      </template>
+    </i18n-t>
   </home-form-card>
 </template>
 
@@ -38,6 +62,7 @@ import { Icons } from "@/constants/icons/MdiIcons";
 import { FormRules } from "@/constants/FormRules/FormRules";
 import { InputTypes } from "@/constants/global";
 import HomeFormCard from "@/components/views/home/HomeFormCard.vue";
+import TransitionExpand from "@/components/common/TransitionExpand.vue";
 
 const { loginAction } = useUserStore();
 const router = useRouter();
@@ -45,6 +70,7 @@ const loginForm = reactive({
   email: "testmail",
   password: "testPassword",
   loader: false,
+  showUnauthorizedError: false,
 });
 const passwordVisibility = reactive({
   icon: Icons.EYE_ICON,
@@ -66,10 +92,13 @@ async function loginRequest() {
   if (!validationData.valid) return;
   loginForm.loader = true;
   const actionResult = await loginAction({ ...loginForm });
-  if (actionResult) {
-    router.push({ name: RoutesNames.APP_HOME });
-  }
   loginForm.loader = false;
+  if (!actionResult.success && actionResult?.statusCode) {
+    loginForm.showUnauthorizedError = true;
+    return;
+  }
+
+  router.push({ name: RoutesNames.APP_HOME });
 }
 </script>
 <style lang="scss">

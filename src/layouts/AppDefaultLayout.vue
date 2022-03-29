@@ -1,10 +1,18 @@
 <template>
-  <the-nav-bar />
-  <div class="content">
-    <the-header />
-    <router-view class="router-view" />
-    <the-footer />
+  <div class="d-flex align-center" style="min-height: 100vh">
+    <the-nav-bar />
+    <div style="width: 100%">
+      <the-header />
+      <v-main>
+        <router-view v-slot="{ Component }">
+          <transition name="fade" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </v-main>
+    </div>
   </div>
+  <the-footer />
 </template>
 <script setup lang="ts">
 import TheHeader from "@/components/Layout/TheHeader.vue";
@@ -12,15 +20,7 @@ import TheFooter from "@/components/Layout/TheFooter.vue";
 import TheNavBar from "@/components/Layout/TheNavBar.vue";
 </script>
 <style lang="scss" scoped>
-.content {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  justify-content: space-between;
-  padding: 2rem;
-}
-.router-view {
+.main {
   margin: 0 auto;
   min-height: 80vh;
 }

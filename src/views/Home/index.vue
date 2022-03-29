@@ -11,9 +11,8 @@
         class="py-6 f-15 font-weight-bold"
         color="blue"
         @click="$router.push({ name: RoutesNames.SIGN_IN })"
-      >
-        {{ $t("auth.signIn") }}</v-btn
-      >
+        v-text="$t('auth.signIn')"
+      />
       <v-btn
         width="40%"
         max-width="300"
@@ -21,8 +20,8 @@
         color="blue"
         data-test="home-about-button"
         @click="scrollIntoAboutSection"
-        >{{ $t("global.about") }}</v-btn
-      >
+        v-text="$t('global.about')"
+      />
     </div>
   </div>
 </template>

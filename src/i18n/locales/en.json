@@ -16,9 +16,8 @@
     "confirmPassword":"@:global.confirm @.lower:auth.password",
    "signIn":"Sign in",
     "signUp":"Sign up",
-    "notHaveAccountPart1":"You don't have an account?",
-    "notHaveAccountPart2":"to sign up",
+    "notHaveAccount":"You don't have an account? {button} to sign up",
     "alreadyHaveAccount":"You already have an account? {button} to login",
-    "clickHereToSignUp":"{button} to sign up"
+    "unauthorized":"Incorrect email or password"
   }
 }

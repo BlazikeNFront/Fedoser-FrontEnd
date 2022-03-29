@@ -1,9 +1,6 @@
 <template>
-  <div
-    class="d-flex flex-column"
-    style="justify-content: flex-start; width: 100%; margin-top: 4rem"
-  >
-    <div class="d-flex flex-column overlay">
+  <div class="d-flex flex-column">
+    <div class="d-flex flex-column">
       <div class="user-greetings d-flex">
         <div class="user-greetings__text d-flex flex-column">
           <h2>Hello, {{ email }}!</h2>

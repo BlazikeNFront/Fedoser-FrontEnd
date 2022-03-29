@@ -1,4 +1,4 @@
 export interface ApiError {
-  success: boolean;
+  success: false;
   statusCode: number | null;
 }

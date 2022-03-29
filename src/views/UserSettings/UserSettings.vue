@@ -1,9 +1,11 @@
 <template>
-  <router-link :to="{ name: RoutesNames.HOME }"
-    ><button>Back</button></router-link
-  >
-  <h2>User settings</h2>
-  <p>Coming soon...</p>
+  <div>
+    <router-link :to="{ name: RoutesNames.HOME }"
+      ><button>Back</button></router-link
+    >
+    <h2>User settings</h2>
+    <p>Coming soon...</p>
+  </div>
 </template>
 
 <script setup lang="ts">

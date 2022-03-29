@@ -18,8 +18,11 @@ export default class ReadonlyApiService<T> extends BaseService {
       return { data: response.data, success: true };
     } catch (error: any) {
       //catch accept only unknown or any type/ its possible to work with unknown with type casting but in my opinion here doing it here its overkill
-      if (error.data) return this.handleError(error);
-      else return { success: false, statusCode: null };
+      if (error.data as ApiError) {
+        this.handleError(error.data as ApiError);
+        return error.data as ApiError;
+      }
+      return { success: false, statusCode: null };
     }
   }
   async fetch(
@@ -35,9 +38,11 @@ export default class ReadonlyApiService<T> extends BaseService {
     } catch (error: any) {
       //catch accept only unknown or any type/ its possible to work with unknown with type casting but in my opinion here doing it here its overkill
 
-      this.handleError(error);
-      if (error.data) return error.data as ApiError;
-      else return { success: false, statusCode: null };
+      if (error.data as ApiError) {
+        this.handleError(error.data as ApiError);
+        return error.data as ApiError;
+      }
+      return { success: false, statusCode: null };
     }
   }
 }

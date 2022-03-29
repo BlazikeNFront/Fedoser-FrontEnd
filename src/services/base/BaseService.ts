@@ -16,6 +16,7 @@ export default class BaseApiService {
   // Error interface needs to be created...
   handleError(error: ApiError): ApiError {
     console.log("errorHandler", error);
-    return error || false;
+    if (error.statusCode) return error;
+    return { success: false, statusCode: null };
   }
 }

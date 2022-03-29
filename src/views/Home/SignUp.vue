@@ -22,7 +22,7 @@
         v-model.trim="signUpFormData.password"
         type="password"
         :label="$t('auth.password')"
-        autocomplete="on"
+        autocomplete="new-password"
         :rules="[FormRules.required, FormRules.maxLength(30)]"
       />
       <v-text-field
@@ -41,6 +41,22 @@
         v-t="'auth.signUp'"
       />
     </v-form>
+
+    <i18n-t
+      class="mt-7 f-15"
+      keypath="auth.alreadyHaveAccount"
+      tag="p"
+      scope="global"
+    >
+      <template #button>
+        <v-btn
+          @click="$router.push({ name: RoutesNames.SIGN_IN })"
+          color="blue"
+          class="mx-2 f-125"
+          v-t="'global.clickHere'"
+        />
+      </template>
+    </i18n-t>
   </home-form-card>
 </template>
 

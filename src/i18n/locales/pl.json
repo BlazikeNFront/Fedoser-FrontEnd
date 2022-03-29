@@ -16,8 +16,9 @@
     "confirmPassword":"@:global.confirm @.lower:auth.password",
     "signIn":"Zaloguj",
     "signUp":"Zaloz konto",
-    "notHaveAccountPart":"Nie masz konta? {button} zeby sie zalozyc konto",
+    "notHaveAccount":"Nie masz konta? {button} zeby sie zalozyc konto",
     "alreadyHaveAccount":"Masz juz konto? {button} zeby sie zalogowac",
-    "clickHereToSignUp":"{button} zeby sie zalozyc konto"
+    "clickHereToSignUp":"{button} zeby sie zalozyc konto",
+    "unauthorized":"Nieprawidlowy email lub haslo"
   }
 }

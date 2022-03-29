@@ -80,11 +80,11 @@ function leave(slot: any) {
   height: 0;
 }
 .doseTerminatedList-enter-active {
-  transition: height 0.5s ease-out;
+  transition: height 0.3s ease-out;
   overflow: hidden;
 }
 .doseTerminatedList-leave-active {
-  transition: height 0.5s ease-in;
+  transition: height 0.3s ease-in;
   overflow: hidden;
 }
 
