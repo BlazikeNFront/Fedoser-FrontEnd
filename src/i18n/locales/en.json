@@ -4,7 +4,12 @@
      "about":"About",
      "clickHere":"Click here",
      "email":"Email",
-     "confirm":"Confirm"
+     "confirm":"Confirm",
+     "show":"Show",
+     "hide":"Hide",
+     "appName":"Fedoser",
+     "loading":"Loading",
+     ":":":"
   },
    "rules":{
     "fieldRequired":"Field required",
@@ -19,5 +24,13 @@
     "notHaveAccount":"You don't have an account? {button} to sign up",
     "alreadyHaveAccount":"You already have an account? {button} to login",
     "unauthorized":"Incorrect email or password"
+  },
+  "appHome":{
+    "news":"News",
+    "aNews":"A news",
+    "showANews":"@:global.show @.lower:home.aNews",
+    "welcomeBack":"Welcome back to @:global.appName",
+    "todayActions":"Today actions  @:global.:",
+    "todayActionsDone":"There is no actions left for today"
   }
 }

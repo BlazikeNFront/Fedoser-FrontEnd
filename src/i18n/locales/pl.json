@@ -4,7 +4,12 @@
     "about":"O nas",
     "clickHere":"Kliknij tutaj",
     "email":"Email",
-    "confirm":"Potwierdz"
+    "confirm":"Potwierdz",
+    "show":"Pokaz",
+    "hide":"Ukryj",
+    "appName":"Fedoser",
+    "loading":"Wczytywanie",
+    ":":":"
   },
   "rules":{
     "fieldRequired":"Pole wymagane",
@@ -20,5 +25,15 @@
     "alreadyHaveAccount":"Masz juz konto? {button} zeby sie zalogowac",
     "clickHereToSignUp":"{button} zeby sie zalozyc konto",
     "unauthorized":"Nieprawidlowy email lub haslo"
+  },
+    "appHome":{
+    "news":"Aktualnosci",
+    "aNews":"Artykul",
+    "showANews":"@:global.show @.lower:home.aNews",
+    "welcomeBack":"Witaj ponownie w  @:global.appName",
+    "todayActions":"Do zrobienia @:global.:",
+    "todayActionsDone":"Brak oczekujacych na wykonanie aktywnosci"
+
   }
+
 }

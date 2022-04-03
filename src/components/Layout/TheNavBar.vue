@@ -1,6 +1,6 @@
 <template>
   <div class="nav_wrapper">
-    <nav>
+    <nav class="mt-10 mx-auto">
       <h4>FEDOSER</h4>
       <ul class="menu">
         <li
@@ -79,8 +79,6 @@ function logoutUser() {
   width: $nav-width;
 }
 nav {
-  margin: 0 auto;
-  margin-top: 5rem;
   border-radius: 25px;
   width: 25rem;
   min-height: 70rem;

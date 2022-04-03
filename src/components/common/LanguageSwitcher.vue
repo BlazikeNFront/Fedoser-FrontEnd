@@ -1,45 +1,62 @@
 <template>
-  <v-menu top offset-y transition="slide-y-transition" v-model="showMenu">
-    <template #activator="{ props }">
-      <v-card
-        v-bind="props"
-        flat
-        width="200"
-        class="language-select d-flex align-center justify-center"
+  <div>
+    <v-menu top offset-y transition="slide-y-transition" v-model="showMenu">
+      <template #activator="{ props }">
+        <v-card
+          v-bind="props"
+          flat
+          :width="selectWidth"
+          class="d-flex align-center justify-center"
+          :class="
+            appTheme
+              ? 'language-select--app-theme'
+              : 'language-select--home-theme'
+          "
+        >
+          <p class="py-2 text-white">
+            <v-icon class="mr-4" :icon="Icons.GLOBE" :size="selectIconWidth" />
+            {{SUPPORTED_LOCALES[currentLanguage as keyof typeof SUPPORTED_LOCALES]}}
+          </p></v-card
+        >
+      </template>
+      <v-list
+        class="rounded-t-0"
+        :class="
+          appTheme
+            ? 'language-select-menu--app-theme'
+            : 'language-select-menu--home-theme'
+        "
       >
-        <p class="py-2 px-5 text-white text-h4">
-          <v-icon class="mr-4" :icon="Icons.GLOBE" size="30" />
-          {{SUPPORTED_LOCALES[currentLanguage as keyof typeof SUPPORTED_LOCALES]}}
-        </p></v-card
-      >
-    </template>
-    <v-list class="language-select-menu rounded-t-0">
-      <v-list-item
-        v-for="(item, key) in SUPPORTED_LOCALES"
-        :key="key"
-        class="d-flex align-center justify-center text-center language-select-menu__list-item"
-        @click="changeAppLanguage(key)"
-      >
-        <span class="d-flex align-center justify-center" style="width: 40%"
-          ><img
-            style="width: 25px"
-            :src="require(`@/assets/countryFlags/${key}.png`)"
-            :alt="`${item} flag`"
-        /></span>
-        <p
-          class="text-h4 text-white"
-          style="letter-spacing: 0.3rem !important; width: 60%"
-          v-text="item"
-        ></p>
-      </v-list-item>
-    </v-list>
-  </v-menu>
+        <v-list-item
+          v-for="(item, key) in SUPPORTED_LOCALES"
+          :key="key"
+          class="d-flex align-center justify-center text-center language-select-menu__list-item"
+          @click="changeAppLanguage(key)"
+        >
+          <span class="d-flex align-center justify-center" style="width: 40%"
+            ><img
+              :style="`width:${selectIconWidth}px`"
+              :src="require(`@/assets/countryFlags/${key}.png`)"
+              :alt="`${item} flag`"
+          /></span>
+          <p class="text-white" v-text="item"></p>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  </div>
 </template>
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { computed, ref } from "vue";
 import { SUPPORTED_LOCALES, loadLocaleMessages } from "@/i18n/i18n";
 import { Icons } from "@/constants/icons/MdiIcons";
+
+defineProps<{
+  appTheme?: boolean;
+  selectWidth: number;
+  selectIconWidth: number;
+}>();
+
 const i18n = useI18n();
 const currentLanguage = computed(() => i18n.locale.value);
 const showMenu = ref(false);
@@ -58,22 +75,54 @@ async function changeAppLanguage(newLanguage: string) {
 }
 </script>
 <style lang="scss" scoped>
-.language-select {
+.language-select--home-theme {
   background: transparent;
   border: 2px solid white;
   border-radius: 0;
+  font-size: 1.5rem;
 }
-.language-select-menu {
+.language-select-menu--home-theme {
   border: 2px solid white;
   border-top: none;
   padding: 0;
   background-color: rgba(0, 0, 0, 0.9);
+
   cursor: pointer;
   &__list-item:not(:first-child) {
     border-top: 2px solid white;
   }
   &__list-item:hover {
     background-color: rgba(255, 255, 255, 0.1);
+  }
+  p {
+    font-size: 1.5rem;
+    letter-spacing: 5px;
+    width: 60%;
+  }
+}
+.language-select--app-theme {
+  background: $secondary-color;
+  border: 2px solid $secondary-color;
+  border-radius: 0;
+  font-size: 1.2rem;
+}
+.language-select-menu--app-theme {
+  border: 2px solid $secondary-color;
+  border-top: none;
+  padding: 0;
+  background-color: $secondary-color;
+  font-size: 1.2rem;
+  cursor: pointer;
+
+  .language-select-menu__list-item {
+    border-top: 2px solid $primary-color-dark;
+  }
+  .language-select-menu__list-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  p {
+    font-size: 1.2rem;
+    width: 40%;
   }
 }
 </style>

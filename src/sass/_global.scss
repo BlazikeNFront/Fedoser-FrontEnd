@@ -14,6 +14,7 @@ $secondary-font:'Anton', sans-serif;
 $main-font-color:#1b1c1c;
 
 
+
 //Layouts
 $nav-width:clamp(13rem,30%,40rem);
 
@@ -25,7 +26,21 @@ $nav-width:clamp(13rem,30%,40rem);
 .font-secondary {
 	font-family:$secondary-font ;
 }
-
+.h-1 {
+	font-size:4rem;
+}
+.h-2 {
+	font-size:3.5rem;
+}
+.h-3 {
+	font-size:3rem;
+}
+.h-4 {
+	font-size:2.5rem;
+}
+.h-5 {
+	font-size:2rem;
+}
 .f-125 {
 	font-size:1.25rem;
 }
@@ -82,7 +97,6 @@ body {
 }
 
 
-
 html {
 		font-size:50% !important;
 	}
@@ -92,3 +106,12 @@ html {
 	}
 }
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s linear;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}

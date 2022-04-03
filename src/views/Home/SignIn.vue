@@ -59,7 +59,7 @@ import { useRouter } from "vue-router";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { useUserStore } from "@/stores/UserStore";
 import { Icons } from "@/constants/icons/MdiIcons";
-import { FormRules } from "@/constants/FormRules/FormRules";
+import { FormRules } from "@/helpers/FormRules";
 import { InputTypes } from "@/constants/global";
 import HomeFormCard from "@/components/views/home/HomeFormCard.vue";
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
@@ -102,5 +102,5 @@ async function loginRequest() {
 }
 </script>
 <style lang="scss">
-@import "@/styles/global";
+@import "@/sass/global";
 </style>

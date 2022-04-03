@@ -25,7 +25,7 @@
             @click="$router.push({ name: RoutesNames.HOME })"
             v-text="APP_NAME"
           ></p>
-          <language-switcher />
+          <language-switcher :select-icon-width="30" :select-width="200" />
         </div>
         <v-main
           class="d-flex flex-column align-center justify-space-around h-100"

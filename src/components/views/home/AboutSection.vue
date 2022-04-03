@@ -97,7 +97,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { nextTick, onMounted } from "vue";
+import { onMounted } from "vue";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { IdAttributes } from "@/constants/IdAttributes";
 import { useRouter } from "vue-router";
@@ -123,14 +123,19 @@ const observer = new IntersectionObserver(
   },
   { threshold: 1, rootMargin: "0px 0px -150px 0px" }
 );
+
 async function redirectAndScrollToSignUpForm() {
   await router.push({ name: RoutesNames.SIGN_UP });
-  nextTick(() => {
-    document
-      .getElementById(IdAttributes.SIGN_UP_FORM)
-      ?.scrollIntoView({ behavior: "smooth" });
-  });
+  //due to router transition signUpForm is not  rendered after immediate call and route change, so interval assure correct scrolling to signUp Form
+  const scrollInterval = setInterval(() => {
+    const signUpForm = document.getElementById(IdAttributes.SIGN_UP_FORM);
+    if (signUpForm) {
+      signUpForm.scrollIntoView({ behavior: "smooth" });
+      clearInterval(scrollInterval);
+    }
+  }, 550);
 }
+
 onMounted(() => {
   const salmonSvg = document.getElementById(
     IdAttributes.SALMON_SVG

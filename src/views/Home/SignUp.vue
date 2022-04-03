@@ -41,7 +41,6 @@
         v-t="'auth.signUp'"
       />
     </v-form>
-
     <i18n-t
       class="mt-7 f-15"
       keypath="auth.alreadyHaveAccount"
@@ -64,7 +63,7 @@
 import { ref, reactive, ComponentPublicInstance } from "vue";
 import { SignUpService } from "@/services/endpoints/Authorization";
 import { SignUpDTO } from "@/utils/DTOs/SignUp.dto";
-import { FormRules } from "@/constants/FormRules/FormRules";
+import { FormRules } from "@/helpers/FormRules";
 import HomeFormCard from "@/components/views/home/HomeFormCard.vue";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { IdAttributes } from "@/constants/IdAttributes";
@@ -94,5 +93,5 @@ async function signUpRequest() {
 }
 </script>
 <style lang="scss">
-@import "@/styles/global";
+@import "@/sass/global";
 </style>
