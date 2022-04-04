@@ -1,5 +1,5 @@
 <template>
-  <v-app style="overflow: hidden" class="app__overlay">
+  <v-app style="overflow: hidden">
     <component :is="currentLayout" />
   </v-app>
 </template>
@@ -27,8 +27,3 @@ onBeforeMount(() => {
   checkForCredentialsInLocalStorage();
 });
 </script>
-<style lang="scss">
-.app__overlay {
-  background-color: $main-background-color;
-}
-</style>

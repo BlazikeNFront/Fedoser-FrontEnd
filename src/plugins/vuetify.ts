@@ -15,7 +15,9 @@ export default createVuetify({
     themes: {
       light: {
         colors: {
-          mainText: colors.grey.darken4,
+          'app-background': '#f6f6fc',
+          'main-text': colors.grey.darken4,
+          'white-text':colors.grey.lighten5,
           blue: colors.blue.darken3,
           error: colors.red.darken1,
           yellow: colors.yellow.darken3,
@@ -23,19 +25,23 @@ export default createVuetify({
            violet:colors.purple.darken4,
           'light-violet': colors.purple.lighten5,
           'semi-violet': colors.purple.lighten4,
+          red:'#f25767',
     
         },
       },
       dark: {
         colors: {
-          mainText: colors.grey.lighten5,
+          'app-background': '#f6f6fc',
+          'main-text': colors.grey.lighten5,
+           'white-text':colors.grey.lighten5,
           blue: colors.blue.lighten3,
           error: colors.red.darken1,
           yellow: colors.yellow.darken3,
           'light-yellow': colors.yellow.lighten3,
           violet:colors.purple.darken4,
           'light-violet': colors.purple.lighten5,
-          'semi-violet': colors.purple.lighten4
+          'semi-violet': colors.purple.lighten4,
+           red:'#f25767'
         },
       },
     },

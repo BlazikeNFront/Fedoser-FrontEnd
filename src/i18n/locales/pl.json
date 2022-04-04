@@ -24,7 +24,8 @@
     "notHaveAccount":"Nie masz konta? {button} zeby sie zalozyc konto",
     "alreadyHaveAccount":"Masz juz konto? {button} zeby sie zalogowac",
     "clickHereToSignUp":"{button} zeby sie zalozyc konto",
-    "unauthorized":"Nieprawidlowy email lub haslo"
+    "unauthorized":"Nieprawidlowy email lub haslo",
+    "logout":"Wyloguj"
   },
     "appHome":{
     "news":"Aktualnosci",

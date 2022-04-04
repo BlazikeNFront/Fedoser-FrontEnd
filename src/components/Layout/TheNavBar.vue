@@ -1,8 +1,16 @@
 <template>
-  <div class="nav_wrapper">
-    <nav class="mt-10 mx-auto">
-      <h4>FEDOSER</h4>
-      <ul class="menu">
+  <v-navigation-drawer
+    permanent
+    color="app-background"
+    width="300"
+    border="none"
+  >
+    <nav class="mx-auto h-100 d-flex flex-column justify-space-around">
+      <h4
+        class="ml-4 pt-6 h-4 text-white-text text-center"
+        v-text="$t('global.appName')"
+      ></h4>
+      <ul class="menu py-4 pb-12">
         <li
           v-for="option in NAV_OPTIONS"
           :key="option.name"
@@ -15,13 +23,13 @@
               <span class="menu__active-text-background"></span>
               {{ option.text }}
             </p>
-            <transition>
+            <transition name="menuItemBackground">
               <div
                 v-if="isRouteActive(option)"
                 class="menu__item--background"
               ></div>
             </transition>
-            <transition name="roundedSide">
+            <transition name="menuItemroundedSide">
               <div
                 v-if="isRouteActive(option)"
                 class="menu__rounded-side"
@@ -29,14 +37,16 @@
             </transition>
           </div>
         </li>
-        <li class="menu__logout" v-if="userStore.isTokenProvided">
-          <div class="menu__item menu__item--logout" @click="logoutUser">
-            <p class="logout__text">Logout</p>
-          </div>
-        </li>
+        <v-btn
+          @click="logoutUser"
+          class="mt-8 f-15 align-self-center"
+          color="red"
+          v-text="$t('auth.logout')"
+        >
+        </v-btn>
       </ul>
     </nav>
-  </div>
+  </v-navigation-drawer>
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
@@ -75,37 +85,21 @@ function logoutUser() {
 }
 </script>
 <style lang="scss" scoped>
-.nav_wrapper {
-  width: $nav-width;
+.v-navigation-drawer {
+  width: clamp(13rem, 100%, 40rem);
+  background: red;
 }
 nav {
   border-radius: 25px;
   width: 25rem;
-  min-height: 70rem;
-  height: 90vh;
   background-color: $secondary-color;
-  h4 {
-    padding-top: 2rem;
-    text-align: center;
-    color: $main-background-color;
-  }
 }
 ul {
-  margin: 0 auto;
-  border-radius: 25px;
-  width: 25rem;
-  min-height: 70rem;
-  background-color: $secondary-color;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
   overflow: hidden;
-  h4 {
-    width: 100%;
-    color: $main-background-color;
-    text-align: center;
-  }
 }
 
 li {
@@ -215,43 +209,36 @@ p {
   background-position: 0%;
 }
 
-.roundedSide-enter-from {
+.menuItemroundedSide-enter-from,
+.menuItemroundedSide-leave-to {
   height: 0;
 }
-.roundedSide-enter-active {
-  transition-property: all;
+.menuItemroundedSide-enter-active {
+  transition-property: height;
   transition-delay: 0.02s;
 }
-.roundedSide-enter-to {
+.menuItemroundedSide-enter-to,
+.menuItemroundedSide-leave-from {
   height: 10rem;
 }
-.roundedSide-leave-from {
-  height: 10rem;
-}
-.roundedSide-leave-active {
+
+.menuItemroundedSide-leave-active {
   transition-property: all;
   transition-delay: 0.35s;
 }
-.roundedSide-leave-to {
-  height: 0;
-}
 
-.v-enter-from {
+.menuItemBackground-enter-from,
+.menuItemBackground-leave-to {
   transform: translate(100%);
 }
-.v-enter-active {
+.menuItemBackground-enter-active {
   transition: transform 0.4s ease-out;
 }
-.v-enter-to {
-  transform: translate(0%);
-}
-.v-leave-from {
-  transform: translate(0%);
-}
-.v-leave-active {
+.menuItemBackground-leave-active {
   transition: transform 0.4s ease-in;
 }
-.v-leave-to {
-  transform: translate(100%);
+.menuItemBackground-enter-to,
+.menuItemBackground-leave-from {
+  transform: translate(0%);
 }
 </style>
