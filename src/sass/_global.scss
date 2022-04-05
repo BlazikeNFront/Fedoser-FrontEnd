@@ -71,11 +71,26 @@ $main-font-color:#1b1c1c;
 .h-100 {
 	height:100%;
 }
+.h-90 {
+	height: 90%;
+}
 .w-100 {
 	width:100%;
 }
+.w-90 {
+	width: 90%;
+}
 .w-50 {
 	width:50%;
+}
+.pos-relative {
+	position: relative;
+}
+.over-hidden {
+	overflow:hidden
+}
+.pointer {
+	cursor: pointer;
 }
 //GLOBALS
 body {
@@ -104,6 +119,11 @@ html {
 		font-size:62.5% !important;
 	}
 }
+
+//Z-INDEXESE 
+$nav-menu-item : 300;
+$nav-menu-background : 200;
+
 
 .fade-enter-active,
 .fade-leave-active {

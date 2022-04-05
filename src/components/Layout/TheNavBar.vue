@@ -5,24 +5,45 @@
     width="300"
     border="none"
   >
-    <nav class="mx-auto h-100 d-flex flex-column justify-space-around">
+    <nav
+      class="mx-auto h-90 d-flex flex-column justify-space-around"
+      style="margin-top: 18%"
+    >
       <h4
         class="ml-4 pt-6 h-4 text-white-text text-center"
         v-text="$t('global.appName')"
       ></h4>
-      <ul class="menu py-4 pb-12">
+      <ul
+        class="py-4 pb-12 d-flex flex-column align-end justify-center over-hidden"
+      >
         <li
           v-for="option in NAV_OPTIONS"
           :key="option.name"
           @click="$router.push({ name: option.name })"
+          class="py-6 w-100 d-flex align-end justify-end text-center text-uppercase over-hidden"
         >
-          <div class="menu__item">
-            <p
-              :class="['menu__text', isRouteActive(option) ? 'p--active' : '']"
-            >
-              <span class="menu__active-text-background"></span>
-              {{ option.text }}
-            </p>
+          <div
+            class="menu__item pos-relative d-flex align-center justify-center pointer"
+          >
+            <div class="d-flex align-center">
+              <v-icon
+                :class="[
+                  'mr-2',
+                  isRouteActive(option) ? 'menu__icon--active' : '',
+                ]"
+                :icon="option.icon"
+                color="success"
+                size="25"
+              />
+              <p
+                :class="[
+                  'menu__text',
+                  isRouteActive(option) ? 'menu__text--active' : '',
+                ]"
+              >
+                {{ option.text }}
+              </p>
+            </div>
             <transition name="menuItemBackground">
               <div
                 v-if="isRouteActive(option)"
@@ -54,23 +75,35 @@ import { NavOptions } from "@/types/NavOptions";
 import { useRoute, useRouter } from "vue-router";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { useUserStore } from "@/stores/UserStore";
-
+import { Icons } from "@/constants/icons/MdiIcons";
 import { NavOption } from "@/types/NavOptions";
 const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
 
 const NAV_OPTIONS: NavOptions = [
-  { icon: "icon", name: RoutesNames.APP_HOME, text: "APP HOME" },
+  { icon: Icons.HOME, name: RoutesNames.APP_HOME, text: "APP HOME" },
   {
-    icon: "icon",
+    icon: Icons.FISH,
     name: RoutesNames.USER_TANKS,
     text: "TANKS",
     childrens: [RoutesNames.TANK_DETAILS],
   },
-  { icon: "icon", name: RoutesNames.ADD_TANK, text: "ADD TANK" },
-  { icon: "icon", name: RoutesNames.LIVESTOCK_MOVE, text: "FEED TABLES" },
-  { icon: "icon", name: RoutesNames.USER_SETTINGS, text: "USER SETTINGS" },
+  {
+    icon: Icons.POLYGON_PLUS,
+    name: RoutesNames.ADD_TANK,
+    text: "ADD TANK",
+  },
+  {
+    icon: Icons.CLIPBOARD,
+    name: RoutesNames.LIVESTOCK_MOVE,
+    text: "FEED TABLES",
+  },
+  {
+    icon: Icons.ACCOUNT_SETTINGS,
+    name: RoutesNames.USER_SETTINGS,
+    text: "USER SETTINGS",
+  },
 ];
 const isRouteActive = computed(() => (option: NavOption) => {
   let routeChildrens = [option.name];
@@ -94,48 +127,10 @@ nav {
   width: 25rem;
   background-color: $secondary-color;
 }
-ul {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: center;
-  overflow: hidden;
-}
-
-li {
-  padding: 2rem 0;
-  width: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  text-align: center;
-  list-style: none;
-  color: white;
-  overflow: hidden;
-  text-transform: uppercase;
-}
 .menu__item {
-  position: relative;
   width: 90%;
   height: 5.5rem;
-  z-index: 300;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-}
-
-.menu__logout {
-  justify-content: center;
-}
-.menu__item--logout {
-  width: 50%;
-
-  border-radius: 25px;
-
-  background-color: $forth-color;
-  color: $main-background-color;
+  z-index: $nav-menu-item;
 }
 
 .menu__item--background {
@@ -147,7 +142,7 @@ li {
   padding: 1rem;
   border-radius: 25px 0 0 25px;
   background-color: $main-background-color;
-  z-index: 200;
+  z-index: $nav-menu-background;
 }
 .menu__rounded-side {
   position: absolute;
@@ -160,30 +155,30 @@ li {
 }
 
 .menu__rounded-side::before {
+  content: "";
   position: absolute;
   top: -1.8rem;
   right: 0rem;
-  content: "";
   display: block;
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
   background-color: $secondary-color;
-  z-index: 300;
+  z-index: $nav-menu-item;
 }
 .menu__rounded-side::after {
+  content: "";
   position: absolute;
   bottom: -1.7rem;
   right: 0rem;
-  content: "";
   display: block;
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
   background-color: $secondary-color;
-  z-index: 300;
+  z-index: $nav-menu-item;
 }
-p {
+.menu__text {
   width: 100%;
   position: relative;
   color: transparent;
@@ -204,8 +199,12 @@ p {
   background-position: -100%;
   transition: background-position 0.35s linear;
 }
-
-.p--active {
+.menu__icon--active {
+  position: relative;
+  z-index: 400;
+  background-clip: text;
+}
+.menu__text--active {
   background-position: 0%;
 }
 
