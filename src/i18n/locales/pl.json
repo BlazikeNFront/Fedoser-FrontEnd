@@ -9,6 +9,8 @@
     "hide":"Ukryj",
     "appName":"Fedoser",
     "loading":"Wczytywanie",
+    "settings":"Ustawienia",
+    "add":"Dodaj",
     ":":":"
   },
   "rules":{
@@ -34,7 +36,13 @@
     "welcomeBack":"Witaj ponownie w  @:global.appName",
     "todayActions":"Do zrobienia @:global.:",
     "todayActionsDone":"Brak oczekujacych na wykonanie aktywnosci"
-
+  },
+  "navBar":{
+    "home":"Strona glowna",
+    "tanks":"Zbiorniki",
+    "addTank":"@:global.add zbiornik",
+    "feedTables":"Tabele paszowe",
+    "settings":"@:global.settings"
   }
 
 }

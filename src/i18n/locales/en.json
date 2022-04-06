@@ -9,6 +9,8 @@
      "hide":"Hide",
      "appName":"Fedoser",
      "loading":"Loading",
+     "settings":"Ustawienia",
+     "add":"Add",
      ":":":"
   },
    "rules":{
@@ -33,5 +35,12 @@
     "welcomeBack":"Welcome back to @:global.appName",
     "todayActions":"Today actions  @:global.:",
     "todayActionsDone":"There is no actions left for today"
+  },
+    "navBar":{
+    "home":"Home",
+    "tanks":"Tanks",
+    "addTank":"@:global.add tank",
+    "feedTables":"Feed tables",
+    "settings":"@:global.settings"
   }
 }

@@ -23,16 +23,13 @@
           class="py-6 w-100 d-flex align-end justify-end text-center text-uppercase over-hidden"
         >
           <div
-            class="menu__item pos-relative d-flex align-center justify-center pointer"
+            class="menu__item pos-relative d-flex align-center justify-center pointer w-100"
           >
-            <div class="d-flex align-center">
+            <div class="d-flex align-center w-70">
               <v-icon
-                :class="[
-                  'mr-2',
-                  isRouteActive(option) ? 'menu__icon--active' : '',
-                ]"
+                style="z-index: 500"
                 :icon="option.icon"
-                color="success"
+                color="yellow"
                 size="25"
               />
               <p
@@ -40,9 +37,8 @@
                   'menu__text',
                   isRouteActive(option) ? 'menu__text--active' : '',
                 ]"
-              >
-                {{ option.text }}
-              </p>
+                v-text="$t(option.text)"
+              ></p>
             </div>
             <transition name="menuItemBackground">
               <div
@@ -82,31 +78,32 @@ const router = useRouter();
 const userStore = useUserStore();
 
 const NAV_OPTIONS: NavOptions = [
-  { icon: Icons.HOME, name: RoutesNames.APP_HOME, text: "APP HOME" },
+  { icon: Icons.HOME, name: RoutesNames.APP_HOME, text: "navBar.home" },
   {
     icon: Icons.FISH,
     name: RoutesNames.USER_TANKS,
-    text: "TANKS",
+    text: "navBar.tanks",
     childrens: [RoutesNames.TANK_DETAILS],
   },
   {
     icon: Icons.POLYGON_PLUS,
     name: RoutesNames.ADD_TANK,
-    text: "ADD TANK",
+    text: "navBar.addTank",
   },
   {
     icon: Icons.CLIPBOARD,
     name: RoutesNames.LIVESTOCK_MOVE,
-    text: "FEED TABLES",
+    text: "navBar.feedTables",
   },
   {
     icon: Icons.ACCOUNT_SETTINGS,
     name: RoutesNames.USER_SETTINGS,
-    text: "USER SETTINGS",
+    text: "navBar.settings",
   },
 ];
 const isRouteActive = computed(() => (option: NavOption) => {
   let routeChildrens = [option.name];
+  //create array with main and nested routes
   if (option.childrens) {
     routeChildrens = routeChildrens.concat(option.childrens);
   }
@@ -117,7 +114,18 @@ function logoutUser() {
   router.push({ name: RoutesNames.HOME });
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+@mixin menu__rounded-side-pseudo-elements-shared {
+  content: "";
+  position: absolute;
+  right: 0rem;
+  display: block;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: $secondary-color;
+  z-index: $nav-menu-item;
+}
 .v-navigation-drawer {
   width: clamp(13rem, 100%, 40rem);
   background: red;
@@ -128,7 +136,6 @@ nav {
   background-color: $secondary-color;
 }
 .menu__item {
-  width: 90%;
   height: 5.5rem;
   z-index: $nav-menu-item;
 }
@@ -155,28 +162,13 @@ nav {
 }
 
 .menu__rounded-side::before {
-  content: "";
-  position: absolute;
+  @include menu__rounded-side-pseudo-elements-shared;
   top: -1.8rem;
-  right: 0rem;
-  display: block;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  background-color: $secondary-color;
-  z-index: $nav-menu-item;
 }
+
 .menu__rounded-side::after {
-  content: "";
-  position: absolute;
+  @include menu__rounded-side-pseudo-elements-shared;
   bottom: -1.7rem;
-  right: 0rem;
-  display: block;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  background-color: $secondary-color;
-  z-index: $nav-menu-item;
 }
 .menu__text {
   width: 100%;
@@ -199,11 +191,7 @@ nav {
   background-position: -100%;
   transition: background-position 0.35s linear;
 }
-.menu__icon--active {
-  position: relative;
-  z-index: 400;
-  background-clip: text;
-}
+
 .menu__text--active {
   background-position: 0%;
 }
