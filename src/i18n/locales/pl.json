@@ -11,7 +11,13 @@
     "loading":"Wczytywanie",
     "settings":"Ustawienia",
     "add":"Dodaj",
-    ":":":"
+    ":":":",
+    "tankName":"Nazwa",
+    "livestock":"Obsada",
+    "feed":"Pasza",
+    "feedProgram":"Program zywieniowy",
+    "annotations":"Notatki",
+    "specie":"Gatunek"
   },
   "rules":{
     "fieldRequired":"Pole wymagane",
@@ -43,6 +49,14 @@
     "addTank":"@:global.add zbiornik",
     "feedTables":"Tabele paszowe",
     "settings":"@:global.settings"
+  },
+    "tankCard":{
+    "tankName":"@:global.tankName{tankName}",
+    "feedProgram":"@:global.feedProgram{feedProgram}",
+    "livestock":"@:global.livestock{livestock}kg",
+    "annotations":"@:global.annotations{annotations}",
+    "mainSpecie":"@:global.specie{annotations}"
+   
   }
 
 }

@@ -123,17 +123,16 @@ function logoutUser() {
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
-  background-color: $secondary-color;
+  background-color: rgb(var(--v-theme-violet));
   z-index: $nav-menu-item;
 }
 .v-navigation-drawer {
   width: clamp(13rem, 100%, 40rem);
-  background: red;
 }
 nav {
   border-radius: 25px;
   width: 25rem;
-  background-color: $secondary-color;
+  background-color: rgb(var(--v-theme-violet));
 }
 .menu__item {
   height: 5.5rem;
@@ -148,7 +147,7 @@ nav {
   height: 100%;
   padding: 1rem;
   border-radius: 25px 0 0 25px;
-  background-color: $main-background-color;
+  background-color: rgb(var(--v-theme-app-background));
   z-index: $nav-menu-background;
 }
 .menu__rounded-side {
@@ -158,7 +157,7 @@ nav {
   right: 0;
   width: 2rem;
   height: 10rem;
-  background-color: $main-background-color;
+  background-color: rgb(var(--v-theme-app-background));
 }
 
 .menu__rounded-side::before {
@@ -181,9 +180,9 @@ nav {
   background-clip: text;
   background: linear-gradient(
     to left,
-    $main-background-color,
-    $main-background-color 50%,
-    $secondary-color 50%
+    rgb(var(--v-theme-app-background)),
+    rgb(var(--v-theme-app-background)) 50%,
+    rgb(var(--v-theme-violet)) 50%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

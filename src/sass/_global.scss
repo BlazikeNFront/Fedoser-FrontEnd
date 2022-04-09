@@ -71,10 +71,13 @@ $main-font-color:#1b1c1c;
 
 @for $i from 1 through 10 {
 	.w-#{$i}0 {
-		width:10%*$i;
+		width:10%*$i ;
 	}
 	.h-#{$i}0 {
-		height:10%*$i;
+		height:10%*$i ;
+	}
+	.radius-#{$i} {
+		border-radius: $i*2px ;
 	}
 }
 .pos-relative {

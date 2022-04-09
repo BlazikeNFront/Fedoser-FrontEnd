@@ -9,4 +9,5 @@ export enum Icons {
   CLIPBOARD = "mdi-clipboard-text",
   MOVE_RESIZE = "mdi-move-resize-variant",
   ACCOUNT_SETTINGS = "mdi-account-edit",
+  EXIT = "mdi-close",
 }

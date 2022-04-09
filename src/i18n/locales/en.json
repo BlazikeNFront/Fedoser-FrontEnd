@@ -11,7 +11,13 @@
      "loading":"Loading",
      "settings":"Ustawienia",
      "add":"Add",
-     ":":":"
+     ":":":",
+    "tankName":"Tank name",
+    "livestock":"Livestock",
+    "annotations":"Annotations",
+    "feed":"Feed",
+    "feedProgram":"Feed program",
+    "specie":"Specie"
   },
    "rules":{
     "fieldRequired":"Field required",
@@ -42,5 +48,12 @@
     "addTank":"@:global.add tank",
     "feedTables":"Feed tables",
     "settings":"@:global.settings"
+  },
+  "tankCard":{
+    "tankName":"@:global.tankName {tankName}",
+    "feedProgram":"@:global.feedProgram{feedProgram}",
+    "livestock":"@:global.livestock{livestockValue}kg",
+    "annotations":"@:global.annotations{annotations}",
+    "mainSpecie":"@:global.specie{annotations}"
   }
 }

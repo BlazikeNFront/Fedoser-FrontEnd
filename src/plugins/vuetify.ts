@@ -22,7 +22,7 @@ export default createVuetify({
           error: colors.red.darken1,
           yellow: colors.yellow.darken3,
           'light-yellow': colors.yellow.lighten3,
-           violet:colors.purple.darken4,
+           violet:'#282263',
           'light-violet': colors.purple.lighten5,
           'semi-violet': colors.purple.lighten4,
           red:'#f25767',
@@ -38,7 +38,7 @@ export default createVuetify({
           error: colors.red.darken1,
           yellow: colors.yellow.darken3,
           'light-yellow': colors.yellow.lighten3,
-          violet:colors.purple.darken4,
+          violet:'#282263',
           'light-violet': colors.purple.lighten5,
           'semi-violet': colors.purple.lighten4,
            red:'#f25767'

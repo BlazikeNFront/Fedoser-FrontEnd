@@ -1,15 +1,19 @@
 <template>
   <div>
     <h2 class="text-center">User Tanks</h2>
-    <ul class="tankList" v-if="userTanks.length">
-      <tank-card v-for="tank in userTanks" :key="tank._id" :tank="tank">
+    <v-expansion-panels v-if="userTanks.length">
+      <tank-card-expansion
+        v-for="tank in userTanks"
+        :key="tank._id"
+        :tank="tank"
+      >
         <router-link
           class="tank-link"
           :to="{ name: RoutesNames.TANK_DETAILS, params: { id: tank._id } }"
           >Details</router-link
         >
-      </tank-card>
-    </ul>
+      </tank-card-expansion>
+    </v-expansion-panels>
     <p v-else>U dont have declared tanks</p>
   </div>
 </template>
@@ -20,6 +24,7 @@ import { Tank } from "@/types/Tank";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import TankService from "@/services/endpoints/Tank";
 import TankCard from "@/components/common/Tank/TankCard.vue";
+import TankCardExpansion from "@/components/common/Tank/TankCardExpansion.vue";
 import { API_DATA_KEY } from "@/constants/global";
 const userTanks = ref<Tank[]>([]);
 onBeforeMount(async () => {

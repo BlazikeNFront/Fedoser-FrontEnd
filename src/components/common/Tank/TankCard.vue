@@ -1,11 +1,20 @@
 <template>
-  <div class="d-flex flex-column tank-card">
-    <h4>{{ tank.mainTankInformation.name }}</h4>
-    <div class="tank-card__sections-wrapper">
+  <v-card :tag="tag" class="px-3 py-2 d-flex flex-column" color="violet">
+    <v-container>
+      <v-row>
+        <v-col cols="12">
+          <component
+            :is="tankCardTitleTag"
+            v-text="tank.mainTankInformation.name"
+        /></v-col>
+      </v-row>
+    </v-container>
+
+    <div>
       <div class="d-flex flex-column tank-card__section">
         <p>Livestock</p>
         <h5>
-          {{ tank.livestockInformation?.totalLivestockWeight || "mdi-close" }}
+          {{ tank.livestockInformation?.initialLivestockWeight || "mdi-close" }}
         </h5>
       </div>
       <div class="d-flex flex-column tank-card__section">
@@ -20,28 +29,24 @@
       </div>
       <slot />
     </div>
-  </div>
+  </v-card>
 </template>
 <script setup lang="ts">
 import { Tank } from "@/types/Tank";
-
-defineProps<{
-  tank: Tank;
-}>();
-</script>
-<style lang="scss">
-.tank-card {
-  border-radius: 1.5rem;
-  background-color: #47009e;
-  & h4 {
-    margin: 1rem 2rem;
+import { onMounted, getCurrentInstance } from "vue";
+withDefaults(
+  defineProps<{
+    tank: Tank;
+    tag?: string;
+    tankCardTitleTag?: string;
+  }>(),
+  {
+    tag: "div",
+    tankCardTitleTag: "p",
   }
-}
-.tank-card__sections-wrapper {
-  width: 100%;
-}
-.tank-card__section {
-  border-top: 2px solid $tertiary-color;
-  padding: 1rem 1.5rem;
-}
-</style>
+);
+onMounted(() => {
+  const instance = getCurrentInstance();
+  console.log(instance);
+});
+</script>

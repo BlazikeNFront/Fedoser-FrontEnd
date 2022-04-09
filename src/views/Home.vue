@@ -58,7 +58,6 @@ import { APP_NAME, APP_SLOGAN } from "@/constants/global";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import LanguageSwitcher from "@/components/common/LanguageSwitcher.vue";
 import { useHomePageStore } from "@/stores/HomePageStore";
-
 const { showAboutSection } = storeToRefs(useHomePageStore());
 const { scrollIntoAboutSection } = useHomePageStore();
 const AboutSection = defineAsyncComponent(
