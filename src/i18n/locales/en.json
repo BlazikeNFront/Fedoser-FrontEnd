@@ -9,7 +9,7 @@
      "hide":"Hide",
      "appName":"Fedoser",
      "loading":"Loading",
-     "settings":"Ustawienia",
+     "settings":"Settings",
      "add":"Add",
      ":":":",
     "tankName":"Tank name",
@@ -17,7 +17,12 @@
     "annotations":"Annotations",
     "feed":"Feed",
     "feedProgram":"Feed program",
-    "specie":"Specie"
+    "specie":"Specie",
+    "volume":"Volume",
+    "details":"Details",
+    "tanks":"Tanks",
+    "manage":"Manage"
+   
   },
    "rules":{
     "fieldRequired":"Field required",
@@ -51,9 +56,11 @@
   },
   "tankCard":{
     "tankName":"@:global.tankName {tankName}",
-    "feedProgram":"@:global.feedProgram{feedProgram}",
-    "livestock":"@:global.livestock{livestockValue}kg",
-    "annotations":"@:global.annotations{annotations}",
-    "mainSpecie":"@:global.specie{annotations}"
+    "feedProgram":"@:global.feedProgram@:global.:{feedProgram}",
+    "livestock":"@:global.livestock@:global.:{livestock}kg",
+    "annotations":"@:global.annotations@:global.:{annotations}",
+    "mainSpecie":"@:global.specie@:global.:{mainSpecie}",
+    "feedName":"@:global.feed@:global.:{feedName}",
+     "volume":"@:global.volume@:global.:{volume}"
   }
 }

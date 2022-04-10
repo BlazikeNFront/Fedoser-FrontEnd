@@ -1,9 +1,8 @@
 <template>
   <i18n-t keypath="tankCard.livestock" tag="p" scope="global">
     <template #livestock>
-      <span class="mr-2">: </span>
-      <p v-if="livestockWeight" v-text="livestockWeight"></p>
-      <v-icon v-else :icon="Icons.EXIT" />
+      <p v-if="livestockWeight" class="ml-2" v-text="livestockWeight"></p>
+      <v-icon v-else class="ml-2" :icon="Icons.EXIT" />
       <slot />
     </template>
   </i18n-t>

@@ -1,8 +1,8 @@
 <template>
   <i18n-t keypath="tankCard.feedProgram" tag="p" scope="global">
     <template #feedProgram>
-      <span class="mr-2">: </span>
       <v-icon
+        class="ml-2"
         :icon="isFeedProgramSet ? Icons.CHECKMARK_CIRCLE : Icons.EXIT"
         :color="isFeedProgramSet ? 'success' : 'error'"
       />

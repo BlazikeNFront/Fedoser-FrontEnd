@@ -1,8 +1,7 @@
 <template>
   <i18n-t keypath="tankCard.mainSpecie" tag="p" scope="global">
     <template #mainSpecie>
-      <span class="mr-2">: </span>
-      <span v-text="mainSpecie"> </span>
+      <span class="ml-2" v-text="mainSpecie"> </span>
     </template>
   </i18n-t>
 </template>

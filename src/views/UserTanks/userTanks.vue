@@ -1,21 +1,32 @@
 <template>
-  <div>
-    <h2 class="text-center">User Tanks</h2>
+  <section>
+    <h2 class="text-center h-2" v-text="$t('global.tanks')"></h2>
     <v-expansion-panels v-if="userTanks.length">
-      <tank-card-expansion
-        v-for="tank in userTanks"
-        :key="tank._id"
-        :tank="tank"
-      >
-        <router-link
-          class="tank-link"
-          :to="{ name: RoutesNames.TANK_DETAILS, params: { id: tank._id } }"
-          >Details</router-link
-        >
-      </tank-card-expansion>
+      <v-container
+        ><v-row
+          ><v-col cols="12" lg="6" :offset-lg="userTanks.length > 1 ? 0 : 3">
+            <tank-card-expansion
+              v-for="tank in userTanks"
+              :key="tank._id"
+              :tank="tank"
+              tank-card-title-classes="h-4"
+            >
+              <v-btn
+                class="mt-4 f-15"
+                block
+                color="red"
+                :to="{
+                  name: RoutesNames.TANK_DETAILS,
+                  params: { id: tank._id },
+                }"
+                v-text="$t('global.manage')"
+              />
+            </tank-card-expansion> </v-col></v-row
+      ></v-container>
     </v-expansion-panels>
+
     <p v-else>U dont have declared tanks</p>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">

@@ -17,7 +17,11 @@
     "feed":"Pasza",
     "feedProgram":"Program zywieniowy",
     "annotations":"Notatki",
-    "specie":"Gatunek"
+    "specie":"Gatunek",
+    "volume":"Rozmiar",
+    "details":"Szczegoly",
+    "tanks":"Zbiorniki",
+    "manage":"Zarzadzaj"
   },
   "rules":{
     "fieldRequired":"Pole wymagane",
@@ -52,11 +56,12 @@
   },
     "tankCard":{
     "tankName":"@:global.tankName{tankName}",
-    "feedProgram":"@:global.feedProgram{feedProgram}",
-    "livestock":"@:global.livestock{livestock}kg",
-    "annotations":"@:global.annotations{annotations}",
-    "mainSpecie":"@:global.specie{annotations}"
-   
+    "feedProgram":"@:global.feedProgram@:global.: {feedProgram}",
+    "livestock":"@:global.livestock@:global.:{livestock}kg",
+    "annotations":"@:global.annotations@:global.:{annotations}",
+    "mainSpecie":"@:global.specie@:global.:{mainSpecie}",
+    "feedName":"@:global.feed@:global.:{feedName}",
+    "volume":"@:global.volume@:global.:{volume}"
   }
-
+ 
 }
