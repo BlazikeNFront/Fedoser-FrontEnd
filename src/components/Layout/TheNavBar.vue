@@ -59,8 +59,7 @@
           class="mt-8 f-15 align-self-center"
           color="red"
           v-text="$t('auth.logout')"
-        >
-        </v-btn>
+        />
       </ul>
     </nav>
   </v-navigation-drawer>

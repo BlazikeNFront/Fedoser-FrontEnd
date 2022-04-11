@@ -25,7 +25,7 @@
       ></v-container>
     </v-expansion-panels>
 
-    <p v-else>U dont have declared tanks</p>
+    <p v-else v-text="$t('userTanks.noTanks')"></p>
   </section>
 </template>
 
@@ -34,7 +34,6 @@ import { ref, onBeforeMount } from "vue";
 import { Tank } from "@/types/Tank";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import TankService from "@/services/endpoints/Tank";
-import TankCard from "@/components/common/Tank/TankCard.vue";
 import TankCardExpansion from "@/components/common/Tank/TankCardExpansion.vue";
 import { API_DATA_KEY } from "@/constants/global";
 const userTanks = ref<Tank[]>([]);

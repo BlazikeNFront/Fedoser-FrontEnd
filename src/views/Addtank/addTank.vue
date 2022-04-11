@@ -1,16 +1,25 @@
 <template>
-  <div>
-    <router-link to="/" class="d-flex link">
-      <p class="text-center">BACK</p>
-    </router-link>
+  <section>
+    <h2 class="text-center" v-text="$t('addTank.addTank')"></h2>
+    <v-container
+      ><v-row
+        ><v-col cols="12">
+          <main-tank-information-editor
+            v-model:mainTankInformation="mainTankInformation"
+          >
+            <template #default>
+              <v-col cols="12" class="d-flex align-center justify-end">
+                <v-btn
+                  color="success"
+                  @click="step++"
+                  v-text="$t('global.next')"
+                />
+              </v-col>
+            </template>
+          </main-tank-information-editor>
+        </v-col> </v-row
+    ></v-container>
 
-    <h2 class="text-center" style="margin-top: 5rem">Add tank</h2>
-    <div class="d-flex flex-column" v-if="step === 1">
-      <main-tank-information
-        v-model:mainTankInformation="mainTankInformation"
-        @next-step-request="step++"
-      />
-    </div>
     <div class="d-flex flex-column" v-if="step === 2">
       <livestock-editor
         v-model:livestockInformation="livestockInformation"
@@ -32,7 +41,7 @@
       />
       <button class="button" @click="handleAddTankRequest">Add Tank</button>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -40,8 +49,7 @@ import LivestockEditor from "@/components/views/addTank/LivestockEditor.vue";
 import SummaryInformation from "@/components/views/addTank/SummaryInformation.vue";
 import { LivestockInformation } from "@/types/Livestock";
 import { LivestockInformationDTO } from "@/utils/DTOs/LivestockInformation.dto";
-import MainTankInformation from "@/components/views/addTank/MainTankInformation.vue";
-import FeedInformation from "@/components/views/addTank/FeedInformation.vue";
+import MainTankInformationEditor from "@/components/common/Editors/MainTankInformationEditor.vue";
 import { TankDTO } from "@/utils/DTOs/Tank.dto";
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";

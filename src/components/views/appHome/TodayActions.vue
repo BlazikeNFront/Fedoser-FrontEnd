@@ -21,7 +21,7 @@
 import { ref, onMounted } from "vue";
 import { TankAction } from "@/types/TankAction";
 import { Icons } from "@/constants/icons/MdiIcons";
-import Loader from "@/components/common/Loader.vue";
+
 const todayActions = ref<TankAction[]>([]);
 const loader = ref(false);
 
