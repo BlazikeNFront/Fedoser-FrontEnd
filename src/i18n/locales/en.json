@@ -21,12 +21,16 @@
     "volume":"Volume",
     "details":"Details",
     "tanks":"Tanks",
-    "manage":"Manage"
+    "manage":"Manage",
+    "description":"Description",
+    "next":"Next"
    
   },
    "rules":{
     "fieldRequired":"Field required",
     "tooMachCharacters":"Maximum length is {maxLength}",
+    "numberLowerThan":"Number must be lower than {number}",
+    "numberHigherThan":"Number must be higher than {number}",
     "invalidEmail":"Invalid email adress"
   },
   "auth": {
@@ -62,5 +66,9 @@
     "mainSpecie":"@:global.specie@:global.:{mainSpecie}",
     "feedName":"@:global.feed@:global.:{feedName}",
      "volume":"@:global.volume@:global.:{volume}"
+  },
+  "addTank":{
+  "mainTankInformation":"Main tank information"
   }
+  
 }

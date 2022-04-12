@@ -21,11 +21,15 @@
     "volume":"Rozmiar",
     "details":"Szczegoly",
     "tanks":"Zbiorniki",
-    "manage":"Zarzadzaj"
+    "manage":"Zarzadzaj",
+    "description":"Opis",
+    "next":"Dalej"
   },
   "rules":{
     "fieldRequired":"Pole wymagane",
     "tooMachCharacters":"Maksymalna liczba znakow to {maxLength}",
+    "numberLowerThan":"Liczba musi byc mniejsza niz {number}",
+    "numberHigherThan":"Liczba musi byc wieksza od {number}",
     "invalidEmail":"Niepoprawny adres email"
   },
   "auth": {
@@ -62,6 +66,9 @@
     "mainSpecie":"@:global.specie@:global.:{mainSpecie}",
     "feedName":"@:global.feed@:global.:{feedName}",
     "volume":"@:global.volume@:global.:{volume}"
-  }
+  },
+    "addTank":{
+      "mainTankInformation":"Podstawowe informacje o zbiorniku"
+    }
  
 }

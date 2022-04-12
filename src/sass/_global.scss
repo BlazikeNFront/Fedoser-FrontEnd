@@ -25,51 +25,15 @@ $main-font-color:#1b1c1c;
 .font-secondary {
 	font-family:$secondary-font ;
 }
-.h-1 {
-	font-size:4rem;
-}
-.h-2 {
-	font-size:3.5rem;
-}
-.h-3 {
-	font-size:3rem;
-}
-.h-4 {
-	font-size:2.5rem;
-}
-.h-5 {
-	font-size:2rem;
-}
-.f-125 {
-	font-size:1.25rem;
-}
 
-.f-15 {
-	font-size:1.5rem;
-}
-.f-2 {
-	font-size:2rem;
-}
-.f-25 {
-	font-size:2.5rem;
-}
-.f-3 {
-	font-size:3rem;
-}
-.f-35 {
-	font-size:3.5rem;
-}
-.f-4 {
-	font-size:4rem;
-}
-.f-45 {
-	font-size:4.5rem;
-}
-.f-5 {
-	font-size:5rem;
-}
 
 @for $i from 1 through 10 {
+	.h-#{$i} {
+		font-size:4-($i*0.5) *1rem;
+	}
+	.f-#{$i} {
+		font-size:$i*0.5rem;
+	}
 	.w-#{$i}0 {
 		width:10%*$i ;
 	}
@@ -107,7 +71,9 @@ body {
   font-size: 1.5rem;
 }
 
-
+.v-field-label {
+	font-size: 1.3rem !important;
+}
 html {
 		font-size:50% !important;
 	}

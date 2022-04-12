@@ -1,31 +1,43 @@
 <template>
   <section>
-    <h2 class="text-center" v-text="$t('addTank.addTank')"></h2>
+    <h2 class="text-center h-2" v-text="$t('navBar.addTank')"></h2>
     <v-container
       ><v-row
-        ><v-col cols="12">
+        ><v-col cols="12" v-if="step === 1">
           <main-tank-information-editor
             v-model:mainTankInformation="mainTankInformation"
+            ref="mainTankInformationEditor"
           >
-            <template #default>
+            <template #default="{ validateMainTankInformation }">
               <v-col cols="12" class="d-flex align-center justify-end">
                 <v-btn
+                  width="150"
+                  class="f-3"
                   color="success"
-                  @click="step++"
+                  @click="handleNextStepRequest(validateMainTankInformation)"
                   v-text="$t('global.next')"
                 />
               </v-col>
             </template>
           </main-tank-information-editor>
+        </v-col>
+        <v-col v-if="step === 2" cols="12">
+          <v-card
+            color="violet"
+            class="d-flex flex-column align-center justify-center"
+          >
+            <v-radio-group v-model="showLiveStockCreator" inline
+              ><v-radio :label="$t('addTank')" :value="true" /><v-radio
+                :value="false"
+            /></v-radio-group>
+            <livestock-editor
+              v-model:livestockInformation="livestockInformation"
+              @next-step-request="handleNextStepRequest"
+            />
+          </v-card>
         </v-col> </v-row
     ></v-container>
 
-    <div class="d-flex flex-column" v-if="step === 2">
-      <livestock-editor
-        v-model:livestockInformation="livestockInformation"
-        @next-step-request="handleNextStepRequest"
-      />
-    </div>
     <div class="d-flex flex-column" v-if="step === 3">
       <feed-information
         v-model="feedInformation"
@@ -45,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import LivestockEditor from "@/components/views/addTank/LivestockEditor.vue";
+import LivestockEditor from "@/components/common/Editors/LivestockEditor.vue";
 import SummaryInformation from "@/components/views/addTank/SummaryInformation.vue";
 import { LivestockInformation } from "@/types/Livestock";
 import { LivestockInformationDTO } from "@/utils/DTOs/LivestockInformation.dto";
@@ -57,7 +69,9 @@ import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import TankService from "@/services/endpoints/Tank";
 const router = useRouter();
-
+const mainTankInformationEditor = ref<InstanceType<
+  typeof MainTankInformationEditor
+> | null>(null);
 const mainTankInformation = reactive({
   name: "Rainbow Fry 3",
   volume: 25,
@@ -65,21 +79,15 @@ const mainTankInformation = reactive({
 });
 
 const step = ref(1);
+const showLiveStockCreator = ref(true);
 const livestockInformation = ref<LivestockInformation>(
   new LivestockInformationDTO({})
 );
-function handleNextStepRequest(stepAmount: number) {
-  step.value += stepAmount;
+async function handleNextStepRequest(validationCallback: () => boolean) {
+  if (!(await validationCallback())) return;
+  step.value++;
 }
 const feedInformation = ref(new FeedInformationDTO({}));
-
-function handleAddTankRequest() {
-  if (!mainTankInformation.name || !mainTankInformation.volume) {
-    return;
-  }
-
-  addTank();
-}
 
 async function addTank() {
   const tankPayload = new TankDTO({

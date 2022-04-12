@@ -2,7 +2,7 @@
   <v-card tag="aside" class="mt-2 d-flex flex-column" color="light-yellow">
     <section>
       <h4 class="my-3 h-4 text-center" v-text="$t('appHome.todayActions')"></h4>
-      <loader v-if="loader" />
+      <loader-common v-if="loader" />
       <p v-else-if="!todayActions.length" class="f-15 text-center">
         {{ $t("appHome.todayActionsDone") }}
         <v-icon class="mr-4" :icon="Icons.CHECKMARK_CIRCLE" color="success" />
@@ -21,7 +21,7 @@
 import { ref, onMounted } from "vue";
 import { TankAction } from "@/types/TankAction";
 import { Icons } from "@/constants/icons/MdiIcons";
-
+import LoaderCommon from "@/components/common/Loader.vue";
 const todayActions = ref<TankAction[]>([]);
 const loader = ref(false);
 

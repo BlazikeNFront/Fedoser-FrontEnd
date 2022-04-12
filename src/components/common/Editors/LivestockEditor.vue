@@ -1,25 +1,10 @@
 <template>
-  <div class="d-flex flex-column">
-    <div>
-      <input
-        type="radio"
-        id="addLivestock"
-        name="add_livestock_form"
-        :value="true"
-        v-model="showLiveStockCreator"
-        data-test="le-showlivestockCreator-true"
-      />
-      <label for="addLivestock">Add Livestock</label>
-      <input
-        type="radio"
-        id="omit"
-        name="add_livestock_form"
-        :value="false"
-        v-model="showLiveStockCreator"
-        data-test="le-showlivestockCreator-false"
-      />
-      <label for="omit">Omit step</label>
-    </div>
+  <v-card class="mx-auto py-3 px-4" color="violet" max-width="1000">
+    <h3 class="h-3 text-center" v-text="$t('addTank.addLivestock')"></h3>
+    <v-container>
+      <v-row><v-col cols="12"> </v-col></v-row>
+    </v-container>
+
     <div
       v-if="showLiveStockCreator"
       class="d-flex"
@@ -28,29 +13,14 @@
       <div class="d-flex flex-column">
         <div class="d-flex flex-column form-control">
           <label for="selectedSpecie">Specie</label>
-          <select
-            name="species"
-            id="species"
-            v-model="specieSelect"
-            data-test="le-specieSelect"
-          >
-            <option
-              v-for="specie in species"
-              :key="specie"
-              :value="specie"
-              :data-test="`le-specieSelect-${specie}`"
-            >
+          <select name="species" id="species" v-model="specieSelect">
+            <option v-for="specie in species" :key="specie" :value="specie">
               {{ specie }}
             </option>
           </select>
           <div v-if="specieSelect === 'Other'">
             <label for="speciesTextfield">Specie</label>
-            <input
-              v-model="specieInput"
-              type="text"
-              id="speciesTextfield"
-              data-test="le-customSpecie"
-            />
+            <input v-model="specieInput" type="text" id="speciesTextfield" />
           </div>
         </div>
         <div class="form-control">
@@ -59,7 +29,6 @@
             type="number"
             v-model="specieWeight"
             id="specieWeight"
-            data-test="le-specieWeight"
             @input="onSpecieWeightInput"
           />
         </div>
@@ -69,7 +38,6 @@
             type="number"
             v-model="specieMeanWeight"
             id="meanWeight"
-            data-test="le-specieMeanWeight"
             @input="onMeanWeightInput"
           />
         </div>
@@ -79,13 +47,10 @@
             type="number"
             v-model="fishQuantity"
             id="fishAmount"
-            data-test="le-fishAmount"
             @input="onFishAmountInput"
           />
         </div>
-        <button @click="addStockToList" data-test="le-addSpecieButton">
-          ADD SPECIE TO TANK LIST
-        </button>
+        <button @click="addStockToList">ADD SPECIE TO TANK LIST</button>
       </div>
       <div class="d-flex flex-column">
         <h3 class="text-center">Added livestock</h3>
@@ -98,22 +63,12 @@
     </div>
     <p v-if="errorMsg">{{ errorMsg }}</p>
     <div class="d-flex">
-      <button
-        class="button"
-        @click="emit('previous-step-request')"
-        data-test="le-previousStepRequest-button"
-      >
+      <button class="button" @click="emit('previous-step-request')">
         Previous
       </button>
-      <button
-        class="button"
-        @click="handleNextStepRequest"
-        data-test="le-nextStepRequest-button"
-      >
-        Next
-      </button>
+      <button class="button" @click="handleNextStepRequest">Next</button>
     </div>
-  </div>
+  </v-card>
 </template>
 <script setup lang="ts">
 import { ref, computed } from "vue";
