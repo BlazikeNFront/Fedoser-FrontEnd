@@ -17,31 +17,29 @@
         />
       </video>
       <div class="w-100 h-100 video-overlay"></div>
-      <div class="pa-8 initial-view__content-wrapper">
-        <div class="d-flex align-center justify-space-between">
-          <p
-            class="f-2 text-uppercase text-white font-weight-bold"
-            style="letter-spacing: 2px"
-            @click="$router.push({ name: RoutesNames.HOME })"
-            v-text="APP_NAME"
-          ></p>
-          <language-switcher :select-icon-width="30" :select-width="200" />
-        </div>
-        <v-main
-          class="d-flex flex-column align-center justify-space-around h-100"
-        >
-          <h1
-            class="mt-10 f-5 font-secondary text-white text-center text-uppercase"
-            style="letter-spacing: 7px; margin-top: 4%"
-            v-text="APP_SLOGAN"
-          ></h1>
-          <router-view v-slot="{ Component }">
-            <transition name="fade" mode="out-in">
-              <component :is="Component" class="mt-15" />
-            </transition>
-          </router-view>
-        </v-main>
+    </div>
+    <div class="pa-8 initial-view__content-wrapper">
+      <div class="d-flex align-center justify-space-between">
+        <p
+          class="f-3 text-uppercase text-white font-weight-bold"
+          style="letter-spacing: 2px"
+          @click="$router.push({ name: RoutesNames.HOME })"
+          v-text="APP_NAME"
+        ></p>
+        <language-switcher :select-icon-width="30" :select-width="200" />
       </div>
+      <v-main class="d-flex flex-column align-center justify-space-around">
+        <h1
+          class="mt-10 h-1 font-secondary text-white text-center text-uppercase"
+          style="letter-spacing: 7px; margin-top: 4%"
+          v-text="APP_SLOGAN"
+        ></h1>
+        <router-view v-slot="{ Component }">
+          <transition name="fade" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </v-main>
     </div>
     <suspense>
       <about-section

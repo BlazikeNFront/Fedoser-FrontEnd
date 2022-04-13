@@ -23,7 +23,8 @@
     "tanks":"Zbiorniki",
     "manage":"Zarzadzaj",
     "description":"Opis",
-    "next":"Dalej"
+    "next":"Dalej",
+    "omit":"Pomin"
   },
   "rules":{
     "fieldRequired":"Pole wymagane",
@@ -68,7 +69,8 @@
     "volume":"@:global.volume@:global.:{volume}"
   },
     "addTank":{
-      "mainTankInformation":"Podstawowe informacje o zbiorniku"
+      "mainTankInformation":"Podstawowe informacje o zbiorniku",
+       "addLivestock":"@:global.add obsade"
     }
  
 }

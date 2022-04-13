@@ -23,8 +23,8 @@
     "tanks":"Tanks",
     "manage":"Manage",
     "description":"Description",
-    "next":"Next"
-   
+    "next":"Next",
+    "omit":"Omit"
   },
    "rules":{
     "fieldRequired":"Field required",
@@ -68,7 +68,8 @@
      "volume":"@:global.volume@:global.:{volume}"
   },
   "addTank":{
-  "mainTankInformation":"Main tank information"
+  "mainTankInformation":"Main tank information",
+  "addLivestock":"@:global.add livestock"
   }
   
 }

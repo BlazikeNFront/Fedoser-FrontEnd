@@ -1,74 +1,78 @@
 <template>
-  <v-card class="mx-auto py-3 px-4" color="violet" max-width="1000">
-    <h3 class="h-3 text-center" v-text="$t('addTank.addLivestock')"></h3>
+  <v-form
+    color="transparent"
+    class="mx-auto py-3 px-4 w-100"
+    max-width="1000"
+    flat
+  >
     <v-container>
-      <v-row><v-col cols="12"> </v-col></v-row>
+      <v-row
+        ><v-col cols="12" lg="6">
+          <v-container>
+            <v-row
+              ><v-col cols="12">
+                <v-select
+                  v-model="specieSelect"
+                  :items="species"
+                  :label="$t('global.specie')" />
+                <v-text-field
+                  v-if="specieSelect === 'Other'"
+                  :label="$t('livestockEditor.typeSpecie')"
+                  v-model="specieInput" /></v-col
+              ><v-col cols="12">
+                <v-text-field
+                  :label="$t('global.weight')"
+                  v-model="specieWeight"
+                  @input="onSpecieWeightInput"
+                  type="number"
+                />
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  :label="$t('livestockEditor.meanWeight')"
+                  type="number"
+                  v-model="specieMeanWeight"
+                  @input="onMeanWeightInput"
+                />
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  :label="$t('livestockEditor.numberOfIndividuals')"
+                  type="number"
+                  v-model="fishQuantity"
+                  @input="onFishAmountInput"
+                />
+              </v-col>
+              <v-col cols="12" class="d-flex align-center justify-center">
+                <v-btn
+                  class="mx-auto f-15"
+                  color="success"
+                  v-text="$t('livestockEditor.addSpecieToLivestock')"
+                  @click="addStockToList"
+                />
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-col>
+        <v-col
+          cols="12"
+          lg="6"
+          class="d-flex flex-column align-center justify-start"
+        >
+          <p
+            class="my-3 f-3 text-center"
+            v-text="$t('livestockEditor.addSpecieToLivestock')"
+          ></p>
+          <livestock-list
+            :livestock-information="props.livestockInformation"
+            :deleteOption="true"
+            @delete-request="deleteSpecie"
+          />
+        </v-col>
+      </v-row>
     </v-container>
-
-    <div
-      v-if="showLiveStockCreator"
-      class="d-flex"
-      data-test="le-livestockCreator"
-    >
-      <div class="d-flex flex-column">
-        <div class="d-flex flex-column form-control">
-          <label for="selectedSpecie">Specie</label>
-          <select name="species" id="species" v-model="specieSelect">
-            <option v-for="specie in species" :key="specie" :value="specie">
-              {{ specie }}
-            </option>
-          </select>
-          <div v-if="specieSelect === 'Other'">
-            <label for="speciesTextfield">Specie</label>
-            <input v-model="specieInput" type="text" id="speciesTextfield" />
-          </div>
-        </div>
-        <div class="form-control">
-          <label for="specieWeight">Weight</label>
-          <input
-            type="number"
-            v-model="specieWeight"
-            id="specieWeight"
-            @input="onSpecieWeightInput"
-          />
-        </div>
-        <div class="form-control">
-          <label for="meanWeight">Mean Weight</label>
-          <input
-            type="number"
-            v-model="specieMeanWeight"
-            id="meanWeight"
-            @input="onMeanWeightInput"
-          />
-        </div>
-        <div class="form-control">
-          <label for="fishAmount">Amount of fish</label>
-          <input
-            type="number"
-            v-model="fishQuantity"
-            id="fishAmount"
-            @input="onFishAmountInput"
-          />
-        </div>
-        <button @click="addStockToList">ADD SPECIE TO TANK LIST</button>
-      </div>
-      <div class="d-flex flex-column">
-        <h3 class="text-center">Added livestock</h3>
-        <livestock-list
-          :livestock-information="props.livestockInformation"
-          :deleteOption="true"
-          @delete-request="deleteSpecie"
-        />
-      </div>
-    </div>
-    <p v-if="errorMsg">{{ errorMsg }}</p>
-    <div class="d-flex">
-      <button class="button" @click="emit('previous-step-request')">
-        Previous
-      </button>
-      <button class="button" @click="handleNextStepRequest">Next</button>
-    </div>
-  </v-card>
+    <slot v-bind="{ validateLivestockInformation }" />
+  </v-form>
 </template>
 <script setup lang="ts">
 import { ref, computed } from "vue";
@@ -84,14 +88,6 @@ const emit = defineEmits([
   "previous-step-request",
   "next-step-request",
 ]);
-const showLiveStockCreator = ref(false);
-const specieWeight = ref("");
-const specieMeanWeight = ref("");
-const specieSelect = ref("");
-const specieInput = ref("");
-const fishQuantity = ref("");
-const errorMsg = ref("");
-
 const species = [
   "Rainbow Trout",
   "Salmon",
@@ -100,6 +96,14 @@ const species = [
   "Brook Trout(Salvelinus)",
   "Other",
 ];
+const showLiveStockCreator = ref(false);
+const specieWeight = ref("");
+const specieMeanWeight = ref("");
+const specieSelect = ref(species[0]);
+const specieInput = ref("");
+const fishQuantity = ref("");
+const errorMsg = ref("");
+
 function onSpecieWeightInput() {
   if (!specieWeight.value || (!specieMeanWeight.value && !fishQuantity.value))
     return;
@@ -223,7 +227,9 @@ function deleteSpecie(specieName: string) {
   );
   emit("update:livestockInformation", copyOfLiveStockProp);
 }
-
+async function validateLivestockInformation() {
+  console.log("validated");
+}
 function handleNextStepRequest() {
   const { livestock, initialLivestockWeight } = props.livestockInformation;
   if (

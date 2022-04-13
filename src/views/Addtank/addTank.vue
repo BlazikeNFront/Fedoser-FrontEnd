@@ -12,7 +12,7 @@
               <v-col cols="12" class="d-flex align-center justify-end">
                 <v-btn
                   width="150"
-                  class="f-3"
+                  class="f-2"
                   color="success"
                   @click="handleNextStepRequest(validateMainTankInformation)"
                   v-text="$t('global.next')"
@@ -24,12 +24,9 @@
         <v-col v-if="step === 2" cols="12">
           <v-card
             color="violet"
-            class="d-flex flex-column align-center justify-center"
+            class="py-4 d-flex flex-column align-center justify-center"
           >
-            <v-radio-group v-model="showLiveStockCreator" inline
-              ><v-radio :label="$t('addTank')" :value="true" /><v-radio
-                :value="false"
-            /></v-radio-group>
+            <h3 class="h-3" v-text="$t('addTank.addLivestock')"></h3>
             <livestock-editor
               v-model:livestockInformation="livestockInformation"
               @next-step-request="handleNextStepRequest"
@@ -79,7 +76,7 @@ const mainTankInformation = reactive({
 });
 
 const step = ref(1);
-const showLiveStockCreator = ref(true);
+
 const livestockInformation = ref<LivestockInformation>(
   new LivestockInformationDTO({})
 );
@@ -104,10 +101,8 @@ async function addTank() {
   }
 }
 </script>
-<style>
-.livestock {
-  margin-left: 5rem;
-  padding-left: 5rem;
-  border-left: 5px solid black;
+<style lang="scss" scoped>
+.add-livestock-step-radio:deep(.v-label) {
+  font-size: 2rem;
 }
 </style>

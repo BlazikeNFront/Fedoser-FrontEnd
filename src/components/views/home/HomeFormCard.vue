@@ -9,7 +9,7 @@
       color="blue"
       height="5"
     />
-    <h4 class="f-2 my-3" v-text="headerText" />
+    <p class="f-3 my-3" v-text="headerText" />
     <slot />
   </v-card>
 </template>

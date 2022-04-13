@@ -45,7 +45,7 @@
         <v-btn
           @click="$router.push({ name: RoutesNames.SIGN_UP })"
           color="blue"
-          class="mx-2 f-125"
+          class="mx-2 f-15"
           v-t="'global.clickHere'"
         />
       </template>

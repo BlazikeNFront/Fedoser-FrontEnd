@@ -16,7 +16,7 @@
       class="mt-4 d-flex flex-column aboutSection__section"
       data-test="home-about-section"
     >
-      <h2 class="f-5 text-center">{{ $t("global.about") }}</h2>
+      <h2 class="h-2 text-center">{{ $t("global.about") }}</h2>
       <v-row class="mx-2 pb-4">
         <v-col cols="12" class="d-flex align-center justify-center">
           <svg
@@ -35,7 +35,7 @@
           </svg>
         </v-col>
         <v-col cols="12" md="5" class="mt-4 d-flex flex-column" tag="article">
-          <h3 class="f-2 text-center">This is an about page</h3>
+          <h3 class="h-3 text-center">This is an about page</h3>
           <v-img :src="require('@/assets/fishTanks.png')" alt="test image" />
           <p class="f-15 text-center">
             Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -45,7 +45,7 @@
         </v-col>
         <v-spacer />
         <v-col cols="12" md="5" class="mt-4 d-flex flex-column" tag="article">
-          <h3 class="f-2 text-center">This is an about page</h3>
+          <h3 class="h-3 text-center">This is an about page</h3>
           <v-img :src="require('@/assets/fishTanks.png')" alt="test image" />
           <p class="f-15 text-center">
             Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -54,7 +54,7 @@
           </p>
         </v-col>
         <v-col cols="12" md="5" class="mt-4 d-flex flex-column" tag="article">
-          <h3 class="f-2 text-center">This is an about page</h3>
+          <h3 class="h-3 text-center">This is an about page</h3>
           <v-img :src="require('@/assets/fishTanks.png')" alt="test image" />
           <p class="f-15 text-center">
             Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -64,7 +64,7 @@
         </v-col>
         <v-spacer />
         <v-col cols="12" md="5" class="mt-4 d-flex flex-column" tag="article">
-          <h3 class="f-2 text-center">This is an about page</h3>
+          <h3 class="h-3 text-center">This is an about page</h3>
           <v-img :src="require('@/assets/fishTanks.png')" alt="test image" />
           <p class="f-15 text-center">
             Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -79,7 +79,7 @@
           <i18n-t
             keypath="auth.clickHereToSignUp"
             tag="p"
-            class="f-2"
+            class="f-15"
             scope="global"
           >
             <template #button>
