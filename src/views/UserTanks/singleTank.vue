@@ -31,7 +31,7 @@
             Add feed program
           </button>
         </div>
-        <add-feed-information
+        <feed-information-editor
           v-else-if="
             !tank.feedInformation?.typeOfProgram &&
             tank.livestockInformation?.initialLivestockWeight
@@ -58,11 +58,11 @@
 import { ref, onBeforeMount, readonly, provide } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import LivestockList from "@/components/common/Livestock/LivestockList.vue";
-import TankMainInformationDisplay from "@/components/views/singleTank/TankMainInformationDisplay.vue";
-import AddFeedInformation from "@/components/views/addTank/FeedInformation.vue";
+import TankMainInformationDisplay from "@/components/modules/singleTank/TankMainInformationDisplay.vue";
+import FeedInformationEditor from "@/components/common/Editors/FeedInformationEditor.vue";
 import { Tank } from "@/types/Tank";
-import TankAnnotations from "@/components/views/singleTank/TankAnnotations/TankAnnotations.vue";
-import TankFeedProgram from "@/components/views/singleTank/TankFeedProgram.vue";
+import TankAnnotations from "@/components/modules/singleTank/TankAnnotations/TankAnnotations.vue";
+import TankFeedProgram from "@/components/modules/singleTank/TankFeedProgram.vue";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import TankService from "@/services/endpoints/Tank";
 import { TANK_ID } from "@/constants/providersNames/providersNames";

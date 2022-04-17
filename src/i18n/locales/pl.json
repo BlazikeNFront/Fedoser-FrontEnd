@@ -24,7 +24,18 @@
     "manage":"Zarzadzaj",
     "description":"Opis",
     "next":"Dalej",
-    "omit":"Pomin"
+    "omit":"Pomin",
+    "weight":"Waga",
+    "other":"Inny",
+    "type":"Wpisz",
+    "back":"Wstecz"
+  },
+  "species":{
+    "rainbowTrout":"Pstrag teczowy",
+    "salmon":"Losos",
+    "tilapia":"Tilapia",
+    "brookTrout":"Pstrag zrodlany",
+    "whitefish":"Sieja"
   },
   "rules":{
     "fieldRequired":"Pole wymagane",
@@ -70,7 +81,26 @@
   },
     "addTank":{
       "mainTankInformation":"Podstawowe informacje o zbiorniku",
-       "addLivestock":"@:global.add obsade"
+       "addLivestock":"@:global.add obsade",
+       "addedLivestock":"Wybrana obsada"
+    },
+    "livestockInformation":{
+      "weight":"@:global.weight (kg)",
+      "meanWeight":"Srednia masa (g)",
+      "numberOfIndividuals":"Liczba sztuk",
+      "addedLivestock":"Wybrana obsada@:global.:",
+      "addSpecieToLivestock":"Dodaj do obsady",
+      "noLivestock":"Brak obsady",
+      "typeSpecie":"@:global.type @:global.specie"
+    },
+    "feedInformation":{
+      "feedInformation":"Feed information",
+      "selectFeed":"selectFeed",
+      "updateFrequency":"UJpdate frequjecny"
+    },
+    "mainTankInformationDisplay":{
+      "name":"@:global.tankName {name}",
+      "volume":"@:global.volume@:global. {volume}",
+      "description":"@:global.description {description}"
     }
- 
 }

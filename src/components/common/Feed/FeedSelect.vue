@@ -1,19 +1,47 @@
 <template>
-  <div style="margin: 15px 0">
-    <label for="feed">{{ label }}</label>
-    <select name="feed" id="feed" v-model="selectedFeed" @change="updateFeed">
-      <option v-for="feed in feeds" :key="feed.name" :value="feed">
-        {{ `${feed.name} ${feed.size}mm` }}
-      </option>
-    </select>
-    <p v-if="doesFeedHaveFcr" class="text-center">
-      FCR:{{ selectedFeed?.fcr }}
+  <div>
+    <p class="f-2 text-center" v-text="$t('global.feed')"></p>
+    <v-menu top offset-y transition="slide-y-transition" v-model="showMenu">
+      <template #activator="{ props }">
+        <v-card
+          v-bind="props"
+          flat
+          class="d-flex align-center justify-center"
+          color="red"
+        >
+          <p class="py-2 f-15">
+            {{ `${modelValueCopy?.name} ${modelValueCopy?.size}mm` }}
+          </p></v-card
+        >
+      </template>
+      <v-list class="rounded-t-0">
+        <v-list-item
+          v-for="(item, key) in FEEDS"
+          :key="key"
+          class="d-flex align-center justify-center text-center"
+          @click="onFeedSelect(item)"
+        >
+          <p class="my-3 f-15">
+            {{ `${item?.name} ${item?.size}mm` }}
+          </p>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+    <p v-if="doesFeedHaveFcr" class="text-center f-15">
+      FCR:{{ modelValue?.fcr }}
     </p>
   </div>
 </template>
 <script setup lang="ts">
+import { FEEDS } from "@/constants/enums/FeedSelect";
 import { Feed } from "@/types/Feed";
-import { ref, computed, withDefaults } from "vue";
+import {
+  ref,
+  computed,
+  withDefaults,
+  WritableComputedRef,
+  onBeforeMount,
+} from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -24,36 +52,24 @@ const props = withDefaults(
     label: "Select Feed",
   }
 );
-
-const feeds = ref<Feed[]>([
-  {
-    name: "Aller Aqua Futura",
-    size: "0.1-0.5",
-    fcr: 0.7,
+const emit = defineEmits<{
+  (e: "update:modelValue", feed: Feed): void;
+}>();
+const showMenu = ref(false);
+const modelValueCopy: WritableComputedRef<Feed> = computed({
+  get(): Feed {
+    return props.modelValue || FEEDS[0];
   },
-  {
-    name: "Aller Aqua Brone",
-    size: "0.5-1",
-    fcr: 0.8,
+  set(newFeed: Feed) {
+    emit("update:modelValue", newFeed);
   },
-  {
-    name: "Aller Aqua Silver",
-    size: "1-2",
-    fcr: 0.9,
-  },
-  {
-    name: "Aller Aqua Gold",
-    size: "2-5",
-    fcr: 1,
-  },
-]);
-const doesFeedHaveFcr = computed(() => !!selectedFeed.value?.fcr);
-
-const emit = defineEmits(["update:modelValue"]);
-
-const selectedFeed = ref<Feed | null>(props.modelValue);
-
-function updateFeed() {
-  emit("update:modelValue", selectedFeed.value);
+});
+const doesFeedHaveFcr = computed(() => !!props.modelValue); // ?.fcr after v-select update
+function onFeedSelect(feed: Feed) {
+  modelValueCopy.value = feed;
+  showMenu.value = false;
 }
+onBeforeMount(() => {
+  if (!props.modelValue) emit("update:modelValue", FEEDS[1]);
+});
 </script>

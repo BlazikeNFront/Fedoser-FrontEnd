@@ -1,6 +1,23 @@
 <template>
-  <h3 class="text-center">Summary</h3>
-  <div class="d-flex">
+  <v-card tag="section" color="transparent" flat>
+    <h3 class="h-3 text-center" v-text="$t('global.summary')"></h3>
+    <v-container>
+      <v-row
+        ><v-col cols="12" lg="6">
+          <h4
+            class="h-4 text-center"
+            v-text="$t('mainTankInformation.mainTankInformation')"
+          ></h4>
+          <main-tank-information-display
+            :main-tank-information="mainTankInformation"
+          />
+        </v-col>
+        <v-col cols="12"></v-col><v-col cols="12"></v-col
+      ></v-row>
+    </v-container>
+  </v-card>
+
+  <!-- <div class="d-flex">
     <div class="d-flex flex-column">
       <h4 style="font-size: 2rem; margin: 1.5rem 2rem">
         Main Tank Information
@@ -41,22 +58,21 @@
         <feed-display :feed="feedInformation.currentFeed" />
         <p>FEED PROGRAM HAS BEEN SET</p>
       </div>
-    </div>
-  </div>
+    </div> -->
+  <!-- </div> -->
 </template>
 <script setup lang="ts">
-import LivestockList from "@/components/common/Livestock/LivestockList.vue";
-import FeedDisplay from "@/components/common/Feed/FeedDisplay.vue";
+import MainTankInformationDisplay from "@/components/common/Displays/MainTankInformationDisplay.vue";
 import { MainTankInformation } from "@/types/MainTankInformation";
 import { LivestockInformation } from "@/types/Livestock";
 import { FeedInformation } from "@/types/FeedInfomation";
-import { onMounted } from "@vue/runtime-core";
 
-const props = defineProps<{
+import { ref } from "vue";
+defineProps<{
   mainTankInformation: MainTankInformation;
   livestockInformation: LivestockInformation;
   feedInformation: FeedInformation;
 }>();
-onMounted(() => console.log(props.feedInformation));
+const tab = ref(1);
 </script>
 <style scoped></style>

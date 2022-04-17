@@ -13,9 +13,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import UserGreetingsCard from "@/components/views/appHome/UserGreetingsCard.vue";
-import NewsSection from "@/components/views/appHome/NewsSection.vue";
-import TodayActions from "@/components/views/appHome/TodayActions.vue";
+import UserGreetingsCard from "@/components/modules/appHome/UserGreetingsCard.vue";
+import NewsSection from "@/components/modules/appHome/NewsSection.vue";
+import TodayActions from "@/components/modules/appHome/TodayActions.vue";
 </script>
 <style>
 .spacer {

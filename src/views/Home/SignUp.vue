@@ -64,7 +64,7 @@ import { ref, reactive, ComponentPublicInstance } from "vue";
 import { SignUpService } from "@/services/endpoints/Authorization";
 import { SignUpDTO } from "@/utils/DTOs/SignUp.dto";
 import { FormRules } from "@/helpers/FormRules";
-import HomeFormCard from "@/components/views/home/HomeFormCard.vue";
+import HomeFormCard from "@/components/modules/home/HomeFormCard.vue";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { IdAttributes } from "@/constants/IdAttributes";
 import { useRouter } from "vue-router";

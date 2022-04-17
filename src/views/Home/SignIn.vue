@@ -61,7 +61,7 @@ import { useUserStore } from "@/stores/UserStore";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { FormRules } from "@/helpers/FormRules";
 import { InputTypes } from "@/constants/global";
-import HomeFormCard from "@/components/views/home/HomeFormCard.vue";
+import HomeFormCard from "@/components/modules/home/HomeFormCard.vue";
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
 
 const { loginAction } = useUserStore();

@@ -24,7 +24,18 @@
     "manage":"Manage",
     "description":"Description",
     "next":"Next",
-    "omit":"Omit"
+    "omit":"Omit",
+    "weight":"Waga",
+    "other":"Other",
+    "type":"Type",
+    "back":"Wstecz"
+  },
+    "species":{
+    "1":"Rainbow trout",
+    "2":"Salmon",
+    "3":"Tilapipa",
+    "4":"Brook trout",
+    "5":"Whitefish"
   },
    "rules":{
     "fieldRequired":"Field required",
@@ -69,7 +80,23 @@
   },
   "addTank":{
   "mainTankInformation":"Main tank information",
-  "addLivestock":"@:global.add livestock"
-  }
+  "addLivestock":"@:global.add livestock",
+    "addedLivestock":"Current livestock"
+  },
+
+   "livestockInformation":{
+    "weight":"@:global.weight (kg)",
+     "meanWeight":"Mean weight (g)",
+     "addedLivestock":"Added livestock @:global.:",
+     "numberOfIndividuals":"Number of individuals",
+     "addSpecieToLivestock":"Add to livestock",
+     "noLivestock":"No livestock is set",
+     "typeSpecie":"@:global.type @:global.specie"
+    },
+     "feedInformation":{
+       "feedInformation":"Feed information",
+      "selectFeed":"selectFeed",
+       "updateFrequency":"UJpdate frequjecny"
+    }
   
 }

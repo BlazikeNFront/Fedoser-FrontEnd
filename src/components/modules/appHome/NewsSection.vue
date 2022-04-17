@@ -14,7 +14,7 @@
   </v-card>
 </template>
 <script setup lang="ts">
-import SingleNews from "@/components/views/appHome/SingleNews.vue";
+import SingleNews from "@/components/modules/appHome/SingleNews.vue";
 const news = [
   {
     header: "Article header",

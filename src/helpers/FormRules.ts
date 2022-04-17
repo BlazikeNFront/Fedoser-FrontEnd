@@ -11,5 +11,5 @@ export class FormRules {
   static numberLowerThan = (number: number) => (value: number) =>
     value < number || t("rules.numberLowerThan", { number });
   static numberHigherThan = (number: number) => (value: number) =>
-    value < number || t("rules.numberHigherThan", { number });
+    value > number || t("rules.numberHigherThan", { number });
 }

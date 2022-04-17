@@ -1,43 +1,43 @@
 <template>
-  <div style="padding: 10px 15px; border: 1px dotted salmon">
-    <p>
-      Initial livestock Mass:
-      {{ livestockInformation.initialLivestockWeight }}kg
-    </p>
-    <ul>
-      <li
-        v-for="specie in livestockInformation.livestock"
-        :key="specie.name"
-        class="d-flex align-center justify-space-around specie_control"
-      >
-        <div class="d-flex align-start">
-          <p style="font-size: 1.5rem">
-            <span class="f-bold">Specie:</span>{{ specie.name }}
-          </p>
-          <div style="margin-left: 1rem">
-            <p><span class="f-bold">Weight:</span>{{ specie.weight }}</p>
-            <p>
-              <span class="f-bold">MeanWeight:</span>{{ specie.meanWeight }}
-            </p>
-            <p><span class="f-bold">Quantity:</span>{{ specie.quantity }}</p>
-          </div>
-        </div>
-        <div v-if="deleteOption">
-          <button
-            class="button rounded"
-            @click="$emit('deleteRequest', specie.name)"
-          >
-            X
-          </button>
-        </div>
-      </li>
-    </ul>
-  </div>
+  <v-card flat color="transparent" width="100%">
+    <p
+      v-if="!livestockInformation.livestock.length"
+      v-text="$t('livestockInformation.noLivestock')"
+      class="f-2 text-center"
+    ></p>
+    <v-table v-else>
+      <thead class="livestocklist__thead f-15">
+        <th v-text="$t('global.specie')"></th>
+        <th v-text="$t('livestockInformation.weight')"></th>
+        <th v-text="$t('livestockInformation.meanWeight')"></th>
+        <th v-if="deleteOption"></th>
+      </thead>
+      <tbody class="livestocklist__tbody text-center">
+        <tr
+          v-for="(specie, index) in livestockInformation.livestock"
+          :key="index"
+        >
+          <td v-text="specie.name"></td>
+          <td v-text="specie.weight"></td>
+          <td v-text="specie.meanWeight"></td>
+          <td v-if="deleteOption">
+            <v-btn
+              @click="$emit('delete-request', specie.name)"
+              :icon="Icons.EXIT"
+              size="x-small"
+              color="error"
+            ></v-btn>
+          </td>
+        </tr>
+      </tbody>
+    </v-table>
+  </v-card>
 </template>
 
 <script setup lang="ts">
 import { withDefaults } from "vue";
 import { LivestockInformation } from "@/types/Livestock";
+import { Icons } from "@/constants/icons/MdiIcons";
 
 withDefaults(
   defineProps<{
@@ -48,13 +48,24 @@ withDefaults(
     deleteOption: false,
   }
 );
-
-defineEmits(["deleteRequest"]);
+defineEmits<{
+  (e: "delete-request", specieName: string): void;
+}>();
 </script>
-<style scoped>
+<style lang="scss">
 .specie_control {
   padding: 0.5rem 1rem;
   border: 1px solid slateblue;
   border-radius: 20px;
+}
+.livestocklist__thead {
+  th {
+    padding: 12px 0;
+  }
+}
+.livestocklist__tbody {
+  td {
+    font-size: 1.5rem !important;
+  }
 }
 </style>

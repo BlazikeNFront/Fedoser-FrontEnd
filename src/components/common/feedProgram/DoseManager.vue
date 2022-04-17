@@ -132,7 +132,7 @@ function setDoseAsTerminated() {
     terminated: DoseTermination.DONE,
   });
   emit("dose-terminated", terminatedFeedDose);
-  if (props.typeOfProgram === TypesOfFeedProgram.DAILY_UPDATES) {
+  if (props.typeOfProgram === TypesOfFeedProgram.FEED_PROGRAM) {
     feedProgramModel.value.push(
       new FeedDoseDTO({ number: currentDose.value.number + 1 })
     );
@@ -149,7 +149,7 @@ function setDoseAsOmitted() {
     terminated: DoseTermination.OMITTED,
   });
   emit("dose-omitted", terminatedFeedDose);
-  if (props.typeOfProgram === TypesOfFeedProgram.DAILY_UPDATES) {
+  if (props.typeOfProgram === TypesOfFeedProgram.FEED_PROGRAM) {
     setDefaultValuesInForm();
     feedProgramModel.value.push(
       new FeedDoseDTO({ number: currentDose.value.number + 1 })

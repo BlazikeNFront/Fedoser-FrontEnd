@@ -23,9 +23,9 @@
 </template>
 
 <script setup lang="ts">
-import TanksSelect from "@/components/views/livestockMove/TanksSelect.vue";
-import LivestockSelect from "@/components/views/livestockMove/LivestockSelect.vue";
-import LivestockMoveSummary from "@/components/views/livestockMove/LivestockMoveSummary.vue";
+import TanksSelect from "@/components/modules/livestockMove/TanksSelect.vue";
+import LivestockSelect from "@/components/modules/livestockMove/LivestockSelect.vue";
+import LivestockMoveSummary from "@/components/modules/livestockMove/LivestockMoveSummary.vue";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { ref } from "vue";
 const tab = ref(0);

@@ -1,8 +1,10 @@
 <template>
   <v-form
+    ref="livestockEditorForm"
     color="transparent"
     class="mx-auto py-3 px-4 w-100"
     max-width="1000"
+    @input="livestockEditorForm.resetValidation()"
     flat
   >
     <v-container>
@@ -12,34 +14,37 @@
             <v-row
               ><v-col cols="12">
                 <v-select
-                  v-model="specieSelect"
-                  :items="species"
+                  v-model="formInputs.specieSelect"
+                  :items="[...species, $t('global.other')]"
                   :label="$t('global.specie')" />
                 <v-text-field
-                  v-if="specieSelect === 'Other'"
-                  :label="$t('livestockEditor.typeSpecie')"
-                  v-model="specieInput" /></v-col
+                  v-if="formInputs.specieSelect === $t('global.other')"
+                  :label="$t('livestockInformation.typeSpecie')"
+                  v-model="formInputs.specieInput" /></v-col
               ><v-col cols="12">
                 <v-text-field
-                  :label="$t('global.weight')"
-                  v-model="specieWeight"
-                  @input="onSpecieWeightInput"
+                  :label="$t('livestockInformation.weight')"
+                  v-model="formInputs.specieWeight"
+                  :rules="[FormRules.numberHigherThan(0)]"
                   type="number"
+                  @input="onSpecieWeightInput"
                 />
               </v-col>
               <v-col cols="12">
                 <v-text-field
-                  :label="$t('livestockEditor.meanWeight')"
+                  :label="$t('livestockInformation.meanWeight')"
                   type="number"
-                  v-model="specieMeanWeight"
+                  :rules="[FormRules.numberHigherThan(0)]"
+                  v-model="formInputs.specieMeanWeight"
                   @input="onMeanWeightInput"
                 />
               </v-col>
               <v-col cols="12">
                 <v-text-field
-                  :label="$t('livestockEditor.numberOfIndividuals')"
+                  :label="$t('livestockInformation.numberOfIndividuals')"
                   type="number"
-                  v-model="fishQuantity"
+                  :rules="[FormRules.numberHigherThan(0)]"
+                  v-model="formInputs.fishQuantity"
                   @input="onFishAmountInput"
                 />
               </v-col>
@@ -47,7 +52,7 @@
                 <v-btn
                   class="mx-auto f-15"
                   color="success"
-                  v-text="$t('livestockEditor.addSpecieToLivestock')"
+                  v-text="$t('livestockInformation.addSpecieToLivestock')"
                   @click="addStockToList"
                 />
               </v-col>
@@ -61,7 +66,7 @@
         >
           <p
             class="my-3 f-3 text-center"
-            v-text="$t('livestockEditor.addSpecieToLivestock')"
+            v-text="$t('livestockInformation.addedLivestock')"
           ></p>
           <livestock-list
             :livestock-information="props.livestockInformation"
@@ -71,90 +76,109 @@
         </v-col>
       </v-row>
     </v-container>
-    <slot v-bind="{ validateLivestockInformation }" />
+    <transition-expand>
+      <p
+        v-if="showNoLivestockError"
+        class="my-3 f-2 text-error text-center"
+        v-text="$t('livestockInformation.addLivestockOrOmitStep')"
+      ></p>
+    </transition-expand>
+
+    <slot
+      v-bind="{ validateLivestockInformationForm, isAtLeaseOneSpieceAdded }"
+    />
   </v-form>
 </template>
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, reactive, computed } from "vue";
 import LivestockList from "@/components/common/Livestock/LivestockList.vue";
-import { LivestockInformationDTO } from "@/utils/DTOs/LivestockInformation.dto";
 import { LivestockInformation, SingleLivestockSpecie } from "@/types/Livestock";
+import { FormRules } from "@/helpers/FormRules";
+import { species } from "@/constants/enums/Species";
+import { VForm } from "vuetify/lib/components";
+import TransitionExpand from "@/components/common/TransitionExpand.vue";
 const props = defineProps<{
   livestockInformation: LivestockInformation;
 }>();
+
 const livestockInformationModel = computed(() => props.livestockInformation);
-const emit = defineEmits([
-  "update:livestockInformation",
-  "previous-step-request",
-  "next-step-request",
-]);
-const species = [
-  "Rainbow Trout",
-  "Salmon",
-  "Tilapia",
-  "Whitefish",
-  "Brook Trout(Salvelinus)",
-  "Other",
-];
-const showLiveStockCreator = ref(false);
-const specieWeight = ref("");
-const specieMeanWeight = ref("");
-const specieSelect = ref(species[0]);
-const specieInput = ref("");
-const fishQuantity = ref("");
-const errorMsg = ref("");
+const emit = defineEmits<{
+  (
+    e: "update:livestockInformation",
+    livestockInformation: LivestockInformation
+  ): void;
+}>();
+const livestockEditorForm = ref<InstanceType<typeof VForm> | null>(null);
+const formInputs = reactive({
+  specieSelect: species[0],
+  specieWeight: "",
+  specieMeanWeight: "",
+  fishQuantity: "",
+  specieInput: "",
+});
+
+const showNoLivestockError = ref(false);
 
 function onSpecieWeightInput() {
-  if (!specieWeight.value || (!specieMeanWeight.value && !fishQuantity.value))
+  if (
+    !formInputs.specieWeight ||
+    (!formInputs.specieMeanWeight && !formInputs.fishQuantity)
+  )
     return;
-  if (specieMeanWeight.value) {
-    fishQuantity.value = (
-      (+specieWeight.value / +specieMeanWeight.value) *
+  if (formInputs.specieMeanWeight) {
+    formInputs.fishQuantity = (
+      (+formInputs.specieWeight / +formInputs.specieMeanWeight) *
       1000
     ).toFixed(0);
   } else {
-    specieMeanWeight.value = (
-      (+specieWeight.value / +fishQuantity.value) *
+    formInputs.specieMeanWeight = (
+      (+formInputs.specieWeight / +formInputs.fishQuantity) *
       1000
     ).toFixed(0);
   }
 }
 function onMeanWeightInput() {
-  if (!specieMeanWeight.value || (!specieWeight.value && !fishQuantity.value))
+  if (
+    !formInputs.specieMeanWeight ||
+    (!formInputs.specieWeight && !formInputs.fishQuantity)
+  )
     return;
-  if (specieWeight.value) {
-    fishQuantity.value = (
-      (+specieWeight.value / +specieMeanWeight.value) *
+  if (formInputs.specieWeight) {
+    formInputs.fishQuantity = (
+      (+formInputs.specieWeight / +formInputs.specieMeanWeight) *
       1000
     ).toFixed(0);
   } else {
-    specieWeight.value = (
-      (+fishQuantity.value * +specieMeanWeight.value) /
+    formInputs.specieWeight = (
+      (+formInputs.fishQuantity * +formInputs.specieMeanWeight) /
       1000
     ).toFixed(0);
   }
 }
 function onFishAmountInput() {
-  if (!fishQuantity.value || (!specieMeanWeight.value && !specieWeight.value))
+  if (
+    !formInputs.fishQuantity ||
+    (!formInputs.specieMeanWeight && !formInputs.specieWeight)
+  )
     return;
-  if (specieMeanWeight.value) {
-    specieWeight.value = (
-      (+fishQuantity.value * +specieMeanWeight.value) /
+  if (formInputs.specieMeanWeight) {
+    formInputs.specieWeight = (
+      (+formInputs.fishQuantity * +formInputs.specieMeanWeight) /
       1000
     ).toFixed(0);
   } else {
-    specieMeanWeight.value = (
-      (+specieWeight.value / +fishQuantity.value) *
+    formInputs.specieMeanWeight = (
+      (+formInputs.specieWeight / +formInputs.fishQuantity) *
       100
     ).toFixed(0);
   }
 }
 function clearInputs() {
-  specieWeight.value = "";
-  specieMeanWeight.value = "";
-  specieSelect.value = "";
-  specieInput.value = "";
-  fishQuantity.value = "";
+  formInputs.specieWeight = "";
+  formInputs.specieMeanWeight = "";
+  formInputs.specieSelect = "";
+  formInputs.specieInput = "";
+  formInputs.fishQuantity = "";
 }
 
 function checkIfSpecieAlreadyWasAddedToList(speciesName: string) {
@@ -167,84 +191,80 @@ function addWeightToSpecie(speciesName: string) {
     (species) => species.name === speciesName
   );
   livestockInformationModel.value.livestock[specieIndex].weight += parseInt(
-    specieWeight.value
+    formInputs.specieWeight
   );
   adjustSpecieMeanWeight(specieIndex);
 }
 function adjustSpecieMeanWeight(specieIndex: number) {
   livestockInformationModel.value.livestock[specieIndex].meanWeight = Number(
     Number(
-      (Number(specieMeanWeight.value) +
+      (Number(formInputs.specieMeanWeight) +
         props.livestockInformation.livestock[specieIndex].meanWeight) /
         2
     ).toFixed(2)
   );
   livestockInformationModel.value.livestock[specieIndex].quantity = Number(
     parseInt(
-      fishQuantity.value +
+      formInputs.fishQuantity +
         props.livestockInformation.livestock[specieIndex].quantity
     )
   );
 }
 
-function addStockToList() {
+async function addStockToList() {
+  if (!(await validateLivestockInformationForm())) return;
   //if specie is selected as other get value from input
   const speciesName =
-    specieSelect.value !== species[species.length - 1]
-      ? specieSelect.value
-      : specieInput.value;
+    formInputs.specieSelect !== species[species.length]
+      ? formInputs.specieSelect
+      : formInputs.specieInput;
   // if specie already exist in livestock list just add weight
   if (checkIfSpecieAlreadyWasAddedToList(speciesName)) {
     addWeightToSpecie(speciesName);
     return;
   }
-
+  const { specieWeight, specieMeanWeight, fishQuantity } = formInputs;
   const payload: SingleLivestockSpecie = {
     name: speciesName,
-    weight: parseInt(specieWeight.value),
-    meanWeight: Number(specieMeanWeight.value),
-    quantity: parseInt(fishQuantity.value),
+    weight: parseInt(specieWeight),
+    meanWeight: Number(specieMeanWeight),
+    quantity: parseInt(fishQuantity),
   };
   const copyOfLiveStockProp = { ...props.livestockInformation };
-  copyOfLiveStockProp.livestock = [...props.livestockInformation.livestock];
   copyOfLiveStockProp.livestock.push(payload);
   copyOfLiveStockProp.initialLivestockWeight = calcLivestockMass(
     copyOfLiveStockProp.livestock
   );
   emit("update:livestockInformation", copyOfLiveStockProp);
+  showNoLivestockError.value = false;
   clearInputs();
 }
+
 function calcLivestockMass(livestock: SingleLivestockSpecie[]) {
   return livestock.reduce((acc, element) => acc + element.weight, 0);
 }
+
 function deleteSpecie(specieName: string) {
   const copyOfLiveStockProp = { ...props.livestockInformation };
-  copyOfLiveStockProp.livestock = [
-    ...props.livestockInformation.livestock,
-  ].filter((specie) => specie.name !== specieName);
+  copyOfLiveStockProp.livestock = copyOfLiveStockProp.livestock.filter(
+    (specie) => specie.name !== specieName
+  );
   copyOfLiveStockProp.initialLivestockWeight = calcLivestockMass(
     copyOfLiveStockProp.livestock
   );
   emit("update:livestockInformation", copyOfLiveStockProp);
 }
-async function validateLivestockInformation() {
-  console.log("validated");
+async function validateLivestockInformationForm() {
+  const validationResult = await livestockEditorForm.value.validate();
+  if (!validationResult.valid) return false;
+  return true;
 }
-function handleNextStepRequest() {
-  const { livestock, initialLivestockWeight } = props.livestockInformation;
-  if (
-    showLiveStockCreator.value &&
-    (!livestock.length || !initialLivestockWeight)
-  ) {
-    errorMsg.value = "Please add informations";
-    return;
+async function isAtLeaseOneSpieceAdded() {
+  if (!props.livestockInformation.livestock.length) {
+    livestockEditorForm.value.validate();
+    showNoLivestockError.value = true;
+    return false;
   }
-  if (!showLiveStockCreator.value) {
-    emit("update:livestockInformation", new LivestockInformationDTO({}));
-    emit("next-step-request", 2);
-    return;
-  }
-  emit("next-step-request", 1);
+  return true;
 }
 </script>
-<style scoped></style>

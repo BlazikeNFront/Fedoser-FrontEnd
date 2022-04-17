@@ -61,7 +61,7 @@ const { scrollIntoAboutSection } = useHomePageStore();
 const AboutSection = defineAsyncComponent(
   async () =>
     await import(
-      /* webpackChunkName: "about-section" */ "@/components/views/home/AboutSection.vue"
+      /* webpackChunkName: "about-section" */ "@/components/modules/home/AboutSection.vue"
     )
 );
 </script>

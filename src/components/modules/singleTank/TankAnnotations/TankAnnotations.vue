@@ -53,7 +53,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { TankAnnotation } from "@/types/TankAnnotation";
-import AnnotationCreator from "@/components/views/singleTank/TankAnnotations/AnnotationCreator.vue";
+import AnnotationCreator from "@/components/modules/singleTank/TankAnnotations/AnnotationCreator.vue";
 import SingleAnnotations from "./SingleAnnotations.vue";
 import { tankAnnotationFactory } from "@/utils/factories/TankAnnotation";
 

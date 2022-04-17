@@ -29,36 +29,91 @@
             <h3 class="h-3" v-text="$t('addTank.addLivestock')"></h3>
             <livestock-editor
               v-model:livestockInformation="livestockInformation"
-              @next-step-request="handleNextStepRequest"
-            />
+            >
+              <template #default="{ isAtLeaseOneSpieceAdded }">
+                <div class="d-flex align-center justify-end">
+                  <v-btn
+                    width="150"
+                    class="f-2 mr-2"
+                    color="red"
+                    @click="step--"
+                    v-text="$t('global.back')"
+                  />
+                  <v-btn
+                    width="150"
+                    color="grey"
+                    class="f-2 mr-2"
+                    style="color: white !important"
+                    @click="omitLivestockStep"
+                    v-text="$t('global.omit')"
+                  />
+                  <v-btn
+                    width="150"
+                    class="f-2"
+                    color="success"
+                    @click="handleNextStepRequest(isAtLeaseOneSpieceAdded)"
+                    v-text="$t('global.next')"
+                  />
+                </div>
+              </template>
+            </livestock-editor>
           </v-card>
         </v-col> </v-row
     ></v-container>
 
-    <div class="d-flex flex-column" v-if="step === 3">
-      <feed-information
-        v-model="feedInformation"
-        :livestock-weight="livestockInformation.initialLivestockWeight"
-      />
-      <button class="button" @click="step++">Next</button>
-    </div>
-    <div class="d-flex flex-column" v-if="step === 4">
-      <summary-information
+    <v-card color="violet" class="d-flex flex-column" v-if="step === 3">
+      <v-col cols="12">
+        <feed-information-editor
+          v-model="feedInformation"
+          :livestock-weight="livestockInformation.initialLivestockWeight"
+        >
+          <template #default="{ validateFeedInformation }">
+            <div class="d-flex align-center justify-end">
+              <v-btn
+                width="150"
+                class="f-2 mr-2"
+                color="red"
+                @click="step--"
+                v-text="$t('global.back')"
+              />
+              <v-btn
+                width="150"
+                color="grey"
+                class="f-2 mr-2"
+                style="color: white !important"
+                @click="omitFeedInformationStep"
+                v-text="$t('global.omit')"
+              />
+              <v-btn
+                width="150"
+                class="f-2"
+                color="success"
+                @click="handleNextStepRequest(validateFeedInformation)"
+                v-text="$t('global.next')"
+              />
+            </div>
+          </template>
+        </feed-information-editor>
+      </v-col>
+    </v-card>
+    <v-card class="d-flex flex-column" v-if="step === 4" color="violet">
+      <add-tank-summary-display
         :main-tank-information="mainTankInformation"
         :livestock-information="livestockInformation"
         :feed-information="feedInformation"
       />
-      <button class="button" @click="handleAddTankRequest">Add Tank</button>
-    </div>
+      <v-btn @click="addTank" v-text="$t('addTank.addTank')" color="success" />
+    </v-card>
   </section>
 </template>
 
 <script setup lang="ts">
 import LivestockEditor from "@/components/common/Editors/LivestockEditor.vue";
-import SummaryInformation from "@/components/views/addTank/SummaryInformation.vue";
+import AddTankSummaryDisplay from "@/components/modules/addTank/AddTankSummaryDisplay.vue";
 import { LivestockInformation } from "@/types/Livestock";
 import { LivestockInformationDTO } from "@/utils/DTOs/LivestockInformation.dto";
 import MainTankInformationEditor from "@/components/common/Editors/MainTankInformationEditor.vue";
+import FeedInformationEditor from "@/components/common/Editors/FeedInformationEditor.vue";
 import { TankDTO } from "@/utils/DTOs/Tank.dto";
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
@@ -80,11 +135,21 @@ const step = ref(1);
 const livestockInformation = ref<LivestockInformation>(
   new LivestockInformationDTO({})
 );
+const feedInformation = ref(new FeedInformationDTO({}));
+
+function omitLivestockStep() {
+  livestockInformation.value = new LivestockInformationDTO({});
+  step.value++;
+}
+
+function omitFeedInformationStep() {
+  feedInformation.value = new FeedInformationDTO({});
+  step.value++;
+}
 async function handleNextStepRequest(validationCallback: () => boolean) {
   if (!(await validationCallback())) return;
   step.value++;
 }
-const feedInformation = ref(new FeedInformationDTO({}));
 
 async function addTank() {
   const tankPayload = new TankDTO({
@@ -93,7 +158,7 @@ async function addTank() {
     feedInformation: feedInformation.value,
     annotations: [],
   });
-  console.log(tankPayload);
+
   const result = await TankService.create(tankPayload);
 
   if (result.success) {

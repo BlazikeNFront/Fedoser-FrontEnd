@@ -116,7 +116,7 @@
 <script setup lang="ts">
 import { ref, computed, inject, watch } from "vue";
 import { TankAnnotation } from "@/types/TankAnnotation";
-import EnviromentalDataForm from "@/components/views/singleTank/TankAnnotations/EnviromentalData.vue";
+import EnviromentalDataForm from "@/components/modules/singleTank/TankAnnotations/EnviromentalData.vue";
 import AnnotationService from "@/services/endpoints/TankAnnotation";
 import { TANK_ID } from "@/constants/providersNames/providersNames";
 import { enviromentalDataFactory } from "@/utils/factories/EnviromentalData";
