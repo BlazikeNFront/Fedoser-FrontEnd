@@ -1,5 +1,5 @@
 <template>
-  <v-card flat color="transparent">
+  <v-card flat color="transparent" tag="article">
     <v-container
       ><v-row
         ><v-col cols="12" v-for="(item, key) of mainTankInformation" :key="key">
@@ -36,3 +36,4 @@ defineProps<{
   mainTankInformation: MainTankInformation;
 }>();
 </script>
+<style lang="scss"></style>

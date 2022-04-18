@@ -81,7 +81,8 @@
   "addTank":{
   "mainTankInformation":"Main tank information",
   "addLivestock":"@:global.add livestock",
-    "addedLivestock":"Current livestock"
+    "addedLivestock":"Current livestock",
+    "addTank":"Add tank"
   },
 
    "livestockInformation":{
@@ -96,7 +97,8 @@
      "feedInformation":{
        "feedInformation":"Feed information",
       "selectFeed":"selectFeed",
-       "updateFrequency":"UJpdate frequjecny"
+      "updateFrequency":"Dose update frequency",
+      "doseUpdateFrequencyDisplay":"@:feedInformation.updateFrequency@:global.: {updateFrequency}"
     }
   
 }

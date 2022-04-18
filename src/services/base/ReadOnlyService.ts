@@ -17,7 +17,7 @@ export default class ReadonlyApiService<T> extends BaseService {
       const response = await AxiosInstance.get<T>(url);
       return { data: response.data, success: true };
     } catch (error: any) {
-      //catch accept only unknown or any type/ its possible to work with unknown with type casting but in my opinion here doing it here its overkill
+      //catch accept only unknown or any type/ its possible to work with unknown with type casting but in my opinion doing here  it here its overkill
       if (error.data as ApiError) {
         this.handleError(error.data as ApiError);
         return error.data as ApiError;
@@ -36,7 +36,7 @@ export default class ReadonlyApiService<T> extends BaseService {
       const response = await AxiosInstance.get<T[]>(url, config);
       return { data: response.data, success: true };
     } catch (error: any) {
-      //catch accept only unknown or any type/ its possible to work with unknown with type casting but in my opinion here doing it here its overkill
+      //catch accept only unknown or any type/ its possible to work with unknown with type casting but in my opinion doing  it here its overkill
 
       if (error.data as ApiError) {
         this.handleError(error.data as ApiError);

@@ -8,6 +8,7 @@ $app-background:#024564;
 
 $main-background-color: #f6f6fc;
 $shadow-color:rgba(0,0,0,0.4);
+$shadow-color-hover:rgba(0,0,0,0.3);
 //FONTS
 $primary-font: 'Montserrat', sans-serif;
 $secondary-font:'Anton', sans-serif;
@@ -35,6 +36,7 @@ $main-font-color:#1b1c1c;
 .shadow-bg {
 background-color: $shadow-color !important;
 }
+
 @for $i from 1 through 10 {
 	.h-#{$i} {
 		font-size:4-($i*0.5) *1rem;
@@ -92,7 +94,7 @@ html {
 	}
 }
 
-//Z-INDEXESE 
+//Z-INDEXES
 $nav-menu-item : 300;
 $nav-menu-background : 200;
 

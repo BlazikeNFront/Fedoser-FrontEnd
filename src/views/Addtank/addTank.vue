@@ -60,7 +60,6 @@
           </v-card>
         </v-col> </v-row
     ></v-container>
-
     <v-card color="violet" class="d-flex flex-column" v-if="step === 3">
       <v-col cols="12">
         <feed-information-editor
@@ -102,7 +101,24 @@
         :livestock-information="livestockInformation"
         :feed-information="feedInformation"
       />
-      <v-btn @click="addTank" v-text="$t('addTank.addTank')" color="success" />
+      <div class="mb-4 mr-6 d-flex align-center justify-end">
+        <v-btn
+          width="150"
+          :disabled="isLoading"
+          class="f-2 mr-2"
+          color="red"
+          @click="step--"
+          v-text="$t('global.back')"
+        />
+        <v-btn
+          width="270"
+          :disabled="isLoading"
+          class="f-2"
+          v-text="$t('addTank.addTank')"
+          color="success"
+          @click="addTank"
+        />
+      </div>
     </v-card>
   </section>
 </template>
@@ -121,6 +137,9 @@ import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import TankService from "@/services/endpoints/Tank";
 const router = useRouter();
+
+const step = ref(1);
+const isLoading = ref(false);
 const mainTankInformationEditor = ref<InstanceType<
   typeof MainTankInformationEditor
 > | null>(null);
@@ -129,8 +148,6 @@ const mainTankInformation = reactive({
   volume: 25,
   description: "Tank with fry rainbows trout",
 });
-
-const step = ref(1);
 
 const livestockInformation = ref<LivestockInformation>(
   new LivestockInformationDTO({})
@@ -147,7 +164,10 @@ function omitFeedInformationStep() {
   step.value++;
 }
 async function handleNextStepRequest(validationCallback: () => boolean) {
-  if (!(await validationCallback())) return;
+  if (!(await validationCallback())) return false;
+  if (step.value === 2 && livestockInformation.value.initialLivestockWeight)
+    feedInformation.value.currentLivestockWeight =
+      livestockInformation.value.initialLivestockWeight;
   step.value++;
 }
 
@@ -158,9 +178,9 @@ async function addTank() {
     feedInformation: feedInformation.value,
     annotations: [],
   });
-
+  isLoading.value = true;
   const result = await TankService.create(tankPayload);
-
+  isLoading.value = false;
   if (result.success) {
     router.push({ name: RoutesNames.USER_TANKS });
   }

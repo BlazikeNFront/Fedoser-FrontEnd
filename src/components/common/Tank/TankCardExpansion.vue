@@ -16,9 +16,9 @@
             :key="index"
           >
             <component
-              class="d-flex align-center justify-center f-2"
+              class="radius-4 pa-2 d-flex align-center justify-center shadow-bg"
               :is="componentConfig.component"
-              v-bind="componentConfig.props"
+              v-bind="componentConfig.attrs"
             ></component>
           </v-col>
         </v-row>
@@ -53,11 +53,11 @@ function createTankCardDisplays(tank: Tank): TankCardExpansionConfig[] {
   const basicInformation: TankCardExpansionConfig[] = [
     {
       component: TankVolumeDisplay,
-      props: { volume: tank.mainTankInformation.volume },
+      attrs: { volume: tank.mainTankInformation.volume },
     },
     {
       component: LivestockWeightDisplay,
-      props: {
+      attrs: {
         livestockWeight:
           // current weight || initial weight || no livestock is set
           tank.feedInformation?.currentLivestockWeight ||
@@ -67,13 +67,13 @@ function createTankCardDisplays(tank: Tank): TankCardExpansionConfig[] {
     },
     {
       component: FeedProgramDisplay,
-      props: {
+      attrs: {
         isFeedProgramSet: !!tank.feedInformation?.currentFeed,
       },
     },
     {
       component: AnnotationsDisplay,
-      props: { annotationNumber: tank.annotations.length },
+      attrs: { annotationNumber: tank.annotations.length },
     },
   ];
 
@@ -87,13 +87,13 @@ function addAdditionInformation(
   if (tank.feedInformation?.currentFeed) {
     basicInformationConfig.push({
       component: CurrentFeedDisplay,
-      props: { feed: tank.feedInformation.currentFeed },
+      attrs: { feed: tank.feedInformation.currentFeed },
     });
   }
   if (tank.livestockInformation?.livestock.length) {
     basicInformationConfig.push({
       component: MainSpecieDisplay,
-      props: {
+      attrs: {
         mainSpecie: findMainSpecieInLivestock(
           tank.livestockInformation?.livestock
         ).name,

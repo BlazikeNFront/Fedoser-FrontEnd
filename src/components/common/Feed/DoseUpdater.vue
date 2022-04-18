@@ -1,12 +1,6 @@
 <template>
   <v-container
-    ><v-row
-      ><v-col cols="12">
-        <p
-          class="f-15 text-center"
-          v-text="$t('feedInformation.updateFrequency')"
-        ></p>
-      </v-col>
+    ><v-row>
       <v-col cols="12" class="d-flex algin-center justify-center">
         <v-select
           v-model="updateFrequency"

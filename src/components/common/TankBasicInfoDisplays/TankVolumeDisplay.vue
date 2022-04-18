@@ -1,8 +1,8 @@
 <template>
-  <i18n-t keypath="tankCard.volume" tag="p" scope="global">
+  <i18n-t keypath="tankCard.volume" tag="p" scope="global" class="f-15">
     <template #volume>
       <!--  &#13221; is unicode for cubic meters -->
-      {{ `${volume} &#13221;` }}
+      <span class="ml-2 f-2" v-text="`${volume} &#13221;`"></span>
     </template>
   </i18n-t>
 </template>

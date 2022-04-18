@@ -82,7 +82,8 @@
     "addTank":{
       "mainTankInformation":"Podstawowe informacje o zbiorniku",
        "addLivestock":"@:global.add obsade",
-       "addedLivestock":"Wybrana obsada"
+       "addedLivestock":"Wybrana obsada",
+       "addTank":"Dodaj zbiornik"
     },
     "livestockInformation":{
       "weight":"@:global.weight (kg)",
@@ -96,11 +97,13 @@
     "feedInformation":{
       "feedInformation":"Feed information",
       "selectFeed":"selectFeed",
-      "updateFrequency":"UJpdate frequjecny"
+      "updateFrequency":"Aktualizacja dawki pokarmowej",
+     "doseUpdateFrequencyDisplay":"@:feedInformation.updateFrequency@:global.: {updateFrequency}"
     },
     "mainTankInformationDisplay":{
       "name":"@:global.tankName {name}",
       "volume":"@:global.volume@:global. {volume}",
       "description":"@:global.description {description}"
     }
+
 }

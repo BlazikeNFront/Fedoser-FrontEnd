@@ -91,7 +91,7 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
-import LivestockList from "@/components/common/Livestock/LivestockList.vue";
+import LivestockList from "@/components/common/Displays/LivestockList.vue";
 import { LivestockInformation, SingleLivestockSpecie } from "@/types/Livestock";
 import { FormRules } from "@/helpers/FormRules";
 import { species } from "@/constants/enums/Species";

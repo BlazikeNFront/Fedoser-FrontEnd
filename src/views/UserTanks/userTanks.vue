@@ -4,12 +4,17 @@
     <v-expansion-panels v-if="userTanks.length">
       <v-container
         ><v-row
-          ><v-col cols="12" lg="6" :offset-lg="userTanks.length > 1 ? 0 : 3">
+          ><v-col
+            cols="12"
+            lg="6"
+            v-for="tank in userTanks"
+            :key="tank._id"
+            :offset-lg="userTanks.length > 1 ? 0 : 3"
+          >
             <tank-card-expansion
-              v-for="tank in userTanks"
-              :key="tank._id"
               :tank="tank"
               tank-card-title-classes="h-4"
+              class="my-3"
             >
               <v-btn
                 class="mt-4 f-15"

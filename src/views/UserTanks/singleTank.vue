@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import { ref, onBeforeMount, readonly, provide } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import LivestockList from "@/components/common/Livestock/LivestockList.vue";
+import LivestockList from "@/components/common/Displays/LivestockList.vue";
 import TankMainInformationDisplay from "@/components/modules/singleTank/TankMainInformationDisplay.vue";
 import FeedInformationEditor from "@/components/common/Editors/FeedInformationEditor.vue";
 import { Tank } from "@/types/Tank";
