@@ -31,7 +31,7 @@
 import { EnviromentalData } from "@/types/EnviromentalData";
 import { enviromentalDataFactory } from "@/utils/factories/EnviromentalData";
 import { Weather } from "@/constants/enums/Weather";
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -47,10 +47,4 @@ const weatherSelectValues = computed(() =>
 );
 
 const enviromentalDataProp = computed(() => props.modelValue);
-
-onMounted(() => {
-  console.log(props.modelValue, "haloo");
-});
 </script>
-
-<style></style>

@@ -28,7 +28,9 @@
     "weight":"Waga",
     "other":"Inny",
     "type":"Wpisz",
-    "back":"Wstecz"
+    "back":"Wstecz",
+    "mainData":"Glowne dane",
+    "summary":"Podsumowanie"
   },
   "species":{
     "rainbowTrout":"Pstrag teczowy",
@@ -101,9 +103,9 @@
      "doseUpdateFrequencyDisplay":"@:feedInformation.updateFrequency@:global.: {updateFrequency}"
     },
     "mainTankInformationDisplay":{
-      "name":"@:global.tankName {name}",
-      "volume":"@:global.volume@:global. {volume}",
-      "description":"@:global.description {description}"
+      "name":"@:global.tankName@:global.: {name}",
+      "volume":"@:global.volume@:global.: {volume}",
+      "description":"@:global.description@:global.: {description}"
     }
 
 }

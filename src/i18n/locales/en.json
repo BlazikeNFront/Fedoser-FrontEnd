@@ -28,7 +28,8 @@
     "weight":"Waga",
     "other":"Other",
     "type":"Type",
-    "back":"Wstecz"
+    "back":"Wstecz",
+      "mainData":"Main data"
   },
     "species":{
     "1":"Rainbow trout",

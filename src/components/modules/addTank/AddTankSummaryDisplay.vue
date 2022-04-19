@@ -10,6 +10,9 @@
           ></h4>
           <main-tank-information-display
             :main-tank-information="mainTankInformation"
+            :single-information-attrs="{
+              class: 'py-4 my-2 radius-4 d-flex align-center justify-center',
+            }"
           />
         </v-col>
         <v-col cols="12" lg="6">
