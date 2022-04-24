@@ -6,11 +6,12 @@
       class="f-2 text-center"
     ></p>
     <div v-else>
-      <v-table>
+      <v-table :class="tableClass">
         <thead class="livestocklist__thead f-15">
           <th v-text="$t('global.specie')"></th>
           <th v-text="$t('livestockInformation.weight')"></th>
           <th v-text="$t('livestockInformation.meanWeight')"></th>
+          <th v-text="$t('livestockInformation.numberOfIndividuals')"></th>
           <th v-if="deleteOption"></th>
         </thead>
         <tbody class="livestocklist__tbody text-center">
@@ -21,6 +22,7 @@
             <td v-text="specie.name"></td>
             <td v-text="specie.weight"></td>
             <td v-text="specie.meanWeight"></td>
+            <td v-text="specie.quantity"></td>
             <td v-if="deleteOption">
               <v-btn
                 @click="$emit('delete-request', specie.name)"

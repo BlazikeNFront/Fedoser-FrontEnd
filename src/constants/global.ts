@@ -8,3 +8,7 @@ export enum InputTypes {
   PASSWORD = "password",
   TEXT = "text",
 }
+
+export enum Weight {
+  GRAMS_IN_KILOGRAMS = 1000,
+}

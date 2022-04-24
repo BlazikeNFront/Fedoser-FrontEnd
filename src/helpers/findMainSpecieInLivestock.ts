@@ -1,14 +1,15 @@
 import { SingleLivestockSpecie } from "@/types/Livestock";
 export function findMainSpecieInLivestock(
-  //array must contain at least one element(tbh i dont know if this is a good approach...)
   livestock: SingleLivestockSpecie[]
-): SingleLivestockSpecie {
+): SingleLivestockSpecie | null {
   // main specie is specie that has the biggest overall weight in the tank
-  return livestock.reduce(
-    (currentMainSpecie, currentSpecie) =>
-      currentSpecie.weight > currentMainSpecie.weight
-        ? currentSpecie
-        : currentMainSpecie,
-    livestock[0]
+  return (
+    livestock.reduce(
+      (currentMainSpecie, currentSpecie) =>
+        currentSpecie.weight > currentMainSpecie.weight
+          ? currentSpecie
+          : currentMainSpecie,
+      livestock[0]
+    ) || null
   );
 }

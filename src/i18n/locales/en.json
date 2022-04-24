@@ -100,6 +100,9 @@
       "selectFeed":"selectFeed",
       "updateFrequency":"Dose update frequency",
       "doseUpdateFrequencyDisplay":"@:feedInformation.updateFrequency@:global.: {updateFrequency}"
+    },
+    "tank":{
+      "noLivestockIsSet":"The tank  doesn't have livestock. {button} to add livestock"
     }
   
 }

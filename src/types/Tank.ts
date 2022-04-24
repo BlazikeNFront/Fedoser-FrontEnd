@@ -7,6 +7,6 @@ export interface Tank {
   _id?: string;
   mainTankInformation: MainTankInformation;
   annotations: TankAnnotation[];
-  livestockInformation: LivestockInformation | null;
-  feedInformation: FeedInformation | null;
+  livestockInformation: LivestockInformation;
+  feedInformation: FeedInformation;
 }

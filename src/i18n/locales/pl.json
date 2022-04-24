@@ -106,6 +106,9 @@
       "name":"@:global.tankName@:global.: {name}",
       "volume":"@:global.volume@:global.: {volume}",
       "description":"@:global.description@:global.: {description}"
+    },
+    "tank":{
+      "noLivestockIsSet":"Zbiornik aktualnie nie posiada obsaday. {button} aby dodac obsade"
     }
 
 }

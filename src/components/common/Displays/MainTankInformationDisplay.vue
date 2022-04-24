@@ -10,7 +10,7 @@
         :keypath="`mainTankInformationDisplay.${key}`"
         tag="p"
         scope="global"
-        class="d-flex align-center justify-centerfont-weight-bold text-center"
+        class="d-flex align-center justify-center font-weight-bold text-center"
       >
         <template #[key]>
           <p

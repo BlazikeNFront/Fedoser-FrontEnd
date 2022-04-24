@@ -8,65 +8,29 @@
       <v-tabs v-model="currentTab" grow>
         <v-tab
           v-for="key in TABS"
-          :key="key"
+          :key="key.tab"
           selected-class="single-tank__tab--active"
           class="f-15 single-tank__tab"
-          v-text="$t(`global.${key}`)"
-        ></v-tab>
+          v-text="$t(`global.${key.text}`)"
+        />
       </v-tabs>
+
       <v-window v-model="currentTab">
-        <v-window-item
-          :value="TABS[0]"
-          class="d-flex align-center justify-center"
-        >
-          <main-tank-information-display
-            :main-tank-information="tank.mainTankInformation"
-            :single-information-attrs="{
-              class:
-                'ma-2 py-3 px-5 radius-4 d-flex align-center justify-center f-15',
-            }"
+        <v-window-item :value="0"><main-info-tab :tank="tank" /></v-window-item>
+        <v-window-item :value="1"><livestock-tab :tank="tank" /></v-window-item>
+        <v-window-item :value="2"
+          ><feed-information-display :feed-information="tank.feedInformation"
         /></v-window-item>
-        <v-window-item
-          :value="TABS[1]"
-          class="d-flex align-center justify-center"
-        >
-          <main-tank-information-display
-            :main-tank-information="tank.mainTankInformation"
-            :single-information-attrs="{
-              class:
-                'ma-2 py-3 px-5 radius-4 d-flex align-center justify-center f-15',
-            }"
-        /></v-window-item>
-        <v-window-item
-          :value="TABS[2]"
-          class="d-flex align-center justify-center"
-        >
-          <main-tank-information-display
-            :main-tank-information="tank.mainTankInformation"
-            :single-information-attrs="{
-              class:
-                'ma-2 py-3 px-5 radius-4 d-flex align-center justify-center f-15',
-            }"
-        /></v-window-item>
-        <v-window-item
-          :value="TABS[3]"
-          class="d-flex align-center justify-center"
-        >
-          <main-tank-information-display
-            :main-tank-information="tank.mainTankInformation"
-            :single-information-attrs="{
-              class:
-                'ma-2 py-3 px-5 radius-4 d-flex align-center justify-center f-15',
-            }"
-        /></v-window-item>
+        <v-window-item :value="3"></v-window-item>
       </v-window>
     </section>
   </v-card>
 </template>
 <script setup lang="ts">
-import { ref, onBeforeMount, readonly, provide } from "vue";
+import { ref, onBeforeMount, watch, readonly, provide } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import MainTankInformationDisplay from "@/components/common/Displays/MainTankInformationDisplay.vue";
+import MainInfoTab from "@/components/modules/singleTank/Tabs/MainInfoTab.vue";
+import LivestockTab from "@/components/modules/singleTank/Tabs/LivestockTab.vue";
 import { Tank } from "@/types/Tank";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import TankService from "@/services/endpoints/Tank";
@@ -74,20 +38,29 @@ import { TANK_ID } from "@/constants/providersNames/providersNames";
 import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
 import { API_DATA_KEY } from "@/constants/global";
 
-const TABS = ["mainData", "livestock", "feedProgram", "annotations"];
+import FeedInformationDisplay from "@/components/common/Displays/FeedInformationDisplay.vue";
+// for some reason v-tabs always update as number - maybe vuetify beta 'feature', when it will operate also on string array could be reduced to arrays of texts =>[]string
+const TABS = [
+  { tab: 0, text: "mainData" },
+  { tab: 1, text: "livestock" },
+  { tab: 2, text: "feedProgram" },
+  { tab: 3, text: "annotations" },
+];
 const route = useRoute();
 const tankId = route.params.id as string;
 
 const router = useRouter();
 const tank = ref<Required<Tank> | null>(null);
 const currentTab = ref<number>(0);
-
+watch(currentTab, (newVal) => console.log(newVal));
 onBeforeMount(async () => {
   const request = await TankService.get(tankId);
+
   if (API_DATA_KEY in request) tank.value = request.data;
 });
 
 provide(TANK_ID, readonly({ tankId }));
+
 function addFeedInfomartionTemplate() {
   if (tank.value) tank.value.feedInformation = new FeedInformationDTO({});
 }

@@ -36,7 +36,6 @@ import CurrentFeedDisplay from "@/components/common/TankBasicInfoDisplays/Curren
 import TankVolumeDisplay from "@/components/common/TankBasicInfoDisplays/TankVolumeDisplay.vue";
 import AnnotationsDisplay from "@/components/common/TankBasicInfoDisplays/AnnotationsDisplay.vue";
 import { TankCardExpansionConfig } from "@/types/TankCardExpansionConfig";
-import { findMainSpecieInLivestock } from "@/helpers/findMainSpecieInLivestock";
 
 withDefaults(
   defineProps<{
@@ -94,9 +93,7 @@ function addAdditionInformation(
     basicInformationConfig.push({
       component: MainSpecieDisplay,
       attrs: {
-        mainSpecie: findMainSpecieInLivestock(
-          tank.livestockInformation?.livestock
-        ).name,
+        livestock: tank.livestockInformation.livestock,
       },
     });
   }
