@@ -36,6 +36,9 @@ $main-font-color:#1b1c1c;
 .shadow-bg {
 background-color: $shadow-color !important;
 }
+.app-button-background {
+	background-color: rgb(var(--v-theme-red));
+}
 
 @for $i from 1 through 10 {
 	.h-#{$i} {
@@ -98,7 +101,7 @@ html {
 $nav-menu-item : 300;
 $nav-menu-background : 200;
 
-
+//ANIMATIONS
 .fade-enter-active,
 .fade-leave-active {
   transition: all 0.5s linear;

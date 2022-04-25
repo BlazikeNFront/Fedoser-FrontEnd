@@ -17,10 +17,3 @@ import UserGreetingsCard from "@/components/modules/appHome/UserGreetingsCard.vu
 import NewsSection from "@/components/modules/appHome/NewsSection.vue";
 import TodayActions from "@/components/modules/appHome/TodayActions.vue";
 </script>
-<style>
-.spacer {
-  width: 10px;
-  height: 10px;
-  background-color: blue;
-}
-</style>

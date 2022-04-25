@@ -21,7 +21,9 @@
         <v-window-item :value="2"
           ><feed-information-display :feed-information="tank.feedInformation"
         /></v-window-item>
-        <v-window-item :value="3"></v-window-item>
+        <v-window-item :value="3"
+          ><notes-tab :notes="tank.annotations"
+        /></v-window-item>
       </v-window>
     </section>
   </v-card>
@@ -31,6 +33,7 @@ import { ref, onBeforeMount, watch, readonly, provide } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import MainInfoTab from "@/components/modules/singleTank/Tabs/MainInfoTab.vue";
 import LivestockTab from "@/components/modules/singleTank/Tabs/LivestockTab.vue";
+import NotesTab from "@/components/modules/singleTank/Tabs/NotesTab.vue";
 import { Tank } from "@/types/Tank";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import TankService from "@/services/endpoints/Tank";
@@ -39,7 +42,7 @@ import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
 import { API_DATA_KEY } from "@/constants/global";
 
 import FeedInformationDisplay from "@/components/common/Displays/FeedInformationDisplay.vue";
-// for some reason v-tabs always update as number - maybe vuetify beta 'feature', when it will operate also on string array could be reduced to arrays of texts =>[]string
+// for some reason v-tabs always update as number - maybe its's vuetify beta 'feature'... When it will operate also on string array could be reduced to arrays of texts =>[]string
 const TABS = [
   { tab: 0, text: "mainData" },
   { tab: 1, text: "livestock" },
@@ -52,7 +55,7 @@ const tankId = route.params.id as string;
 const router = useRouter();
 const tank = ref<Required<Tank> | null>(null);
 const currentTab = ref<number>(0);
-watch(currentTab, (newVal) => console.log(newVal));
+
 onBeforeMount(async () => {
   const request = await TankService.get(tankId);
 
