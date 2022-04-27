@@ -1,12 +1,8 @@
 <template>
   <section class="d-flex flex-column align-center justify-center">
     <h3 class="my-3 text-h3 text-center" v-text="$t('notes.notes')"></h3>
-    <v-btn
-      @click="addNoteDialog = !addNoteDialog"
-      class="app-button-background mr-4 f-15 align-self-end"
-      style="margin-top: -2.5rem"
-      v-text="$t('notes.addNote')"
-    />
+    <note-editor-dialog :annotation="editNote" />
+
     <v-expansion-panels v-if="notes.length">
       <v-container
         ><v-row
@@ -24,11 +20,13 @@
   </section>
 </template>
 <script setup lang="ts">
-import { TankAnnotation } from "@/types/TankAnnotation";
 import { ref } from "vue";
+import { TankAnnotation } from "@/types/TankAnnotation";
 import NoteExpansionListItem from "@/components/modules/singleTank/Notes/NoteExpansionListItem.vue";
+import NoteEditorDialog from "@/components/modules/singleTank/Notes/NoteEdtiorDialog.vue";
+import { tankAnnotationFactory } from "@/utils/factories/TankAnnotation";
 defineProps<{
   notes: Required<TankAnnotation[]>;
 }>();
-const addNoteDialog = ref(false);
+const editNote = ref<TankAnnotation>(tankAnnotationFactory());
 </script>

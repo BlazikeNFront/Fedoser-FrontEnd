@@ -25,7 +25,7 @@
     <section v-else>
       <v-container>
         <v-row>
-          <v-col cols="12" lg="6">
+          <v-col cols="12" xl="6">
             <h4
               class="my-4 text-h4 text-center"
               v-text="$t('tank.currentLivestockState')"
@@ -35,7 +35,7 @@
               table-class="shadow-bg text-white tank__livestock-table"
             />
           </v-col>
-          <v-col cols="12" lg="6">
+          <v-col cols="12" xl="6">
             <h4
               class="my-4 text-h4 text-center"
               v-text="$t('tank.initialLivestockState')"
