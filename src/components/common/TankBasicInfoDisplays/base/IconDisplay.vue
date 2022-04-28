@@ -1,5 +1,9 @@
 <template>
-  <i18n-t tag="p" scope="global" class="f-15">
+  <i18n-t
+    tag="p"
+    scope="global"
+    class="d-flex align-center justify-center f-15"
+  >
     <template #[templateName]>
       <v-icon
         class="ml-2 f-2"

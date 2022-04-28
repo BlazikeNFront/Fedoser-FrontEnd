@@ -89,6 +89,7 @@ async function signUpRequest() {
     )
   );
   signUpFormData.loader = false;
+  console.log(result);
   if (result.success) router.push({ name: RoutesNames.SIGN_IN });
 }
 </script>

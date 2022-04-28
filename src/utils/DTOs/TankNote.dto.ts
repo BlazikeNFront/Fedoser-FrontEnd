@@ -1,6 +1,6 @@
 import { EnviromentalData } from "@/types/EnviromentalData";
-import { TankAnnotation } from "@/types/TankAnnotation";
-export class TankAnnotationDTO implements TankAnnotation {
+import { TankNote } from "@/types/TankAnnotation";
+export class TankNoteDto implements TankNote {
   id?: string;
   date: string;
   title: string;
@@ -8,9 +8,10 @@ export class TankAnnotationDTO implements TankAnnotation {
   enviromentalData: EnviromentalData | null;
   isImportant: boolean;
 
-  constructor(tankAnnotation: TankAnnotation) {
+  constructor(tankNote: TankNote) {
     const { id, date, title, description, enviromentalData, isImportant } =
-      tankAnnotation;
+      tankNote;
+    console.log(enviromentalData);
     this.id = id;
     this.date = date;
     this.title = title;

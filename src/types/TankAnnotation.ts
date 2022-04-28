@@ -1,6 +1,6 @@
 import { EnviromentalData } from "@/types/EnviromentalData";
 
-export interface TankAnnotation {
+export interface TankNote {
   id?: string;
   date: string;
   title: string;

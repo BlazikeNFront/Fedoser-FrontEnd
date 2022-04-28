@@ -1,9 +1,13 @@
 <template>
-  <base-display keypath="notes.date" :span-value="date" template-name="date" />
+  <base-display
+    keypath="notes.ph"
+    :span-value="ph.toString()"
+    template-name="ph"
+  />
 </template>
 <script setup lang="ts">
 import BaseDisplay from "@/components/common/TankBasicInfoDisplays/base/BaseDisplay.vue";
 defineProps<{
-  date: string;
+  ph: number;
 }>();
 </script>

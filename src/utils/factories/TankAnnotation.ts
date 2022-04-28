@@ -1,7 +1,7 @@
 import { getCurrentDate } from "@/helpers/date";
-import { TankAnnotation } from "@/types/TankAnnotation";
+import { TankNote } from "@/types/TankAnnotation";
 
-export function tankAnnotationFactory(): TankAnnotation {
+export function tankNoteFactory(): TankNote {
   return {
     date: getCurrentDate(),
     title: "Annotation Title",

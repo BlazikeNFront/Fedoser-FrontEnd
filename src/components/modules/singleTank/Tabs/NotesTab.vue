@@ -21,12 +21,12 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { TankAnnotation } from "@/types/TankAnnotation";
+import { TankNote } from "@/types/TankAnnotation";
 import NoteExpansionListItem from "@/components/modules/singleTank/Notes/NoteExpansionListItem.vue";
 import NoteEditorDialog from "@/components/modules/singleTank/Notes/NoteEdtiorDialog.vue";
-import { tankAnnotationFactory } from "@/utils/factories/TankAnnotation";
+import { tankNoteFactory } from "@/utils/factories/TankAnnotation";
 defineProps<{
-  notes: Required<TankAnnotation[]>;
+  notes: Required<TankNote[]>;
 }>();
-const editNote = ref<TankAnnotation>(tankAnnotationFactory());
+const editNote = ref<TankNote>(tankNoteFactory());
 </script>

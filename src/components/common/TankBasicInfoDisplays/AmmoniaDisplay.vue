@@ -1,13 +1,13 @@
 <template>
   <base-display
-    keypath="global.title"
-    :span-value="title"
-    template-name="title"
+    keypath="notes.ammonia"
+    :span-value="ammonia.toString()"
+    template-name="ammonia"
   />
 </template>
 <script setup lang="ts">
 import BaseDisplay from "@/components/common/TankBasicInfoDisplays/base/BaseDisplay.vue";
 defineProps<{
-  title: string;
+  ammonia: number;
 }>();
 </script>

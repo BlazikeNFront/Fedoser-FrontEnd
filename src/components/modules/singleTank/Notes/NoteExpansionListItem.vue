@@ -9,10 +9,10 @@
   </v-expansion-panel>
 </template>
 <script setup lang="ts">
-import { TankAnnotation } from "@/types/TankAnnotation";
+import { TankNote } from "@/types/TankAnnotation";
 import NoteDisplay from "@/components/common/Displays/NoteDisplay.vue";
 
 defineProps<{
-  note: TankAnnotation;
+  note: TankNote;
 }>();
 </script>

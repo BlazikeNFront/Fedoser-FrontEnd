@@ -1,12 +1,12 @@
 import { LivestockInformation } from "@/types/Livestock";
 import { MainTankInformation } from "@/types/MainTankInformation";
 import { FeedInformation } from "@/types/FeedInfomation";
-import { TankAnnotation } from "@/types/TankAnnotation";
+import { TankNote } from "@/types/TankAnnotation";
 
 export interface Tank {
   _id?: string;
   mainTankInformation: MainTankInformation;
-  annotations: TankAnnotation[];
+  annotations: TankNote[];
   livestockInformation: LivestockInformation;
   feedInformation: FeedInformation;
 }

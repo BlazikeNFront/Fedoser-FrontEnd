@@ -109,6 +109,16 @@
     },
     "tank":{
       "noLivestockIsSet":"Zbiornik aktualnie nie posiada obsaday. {button} aby dodac obsade"
+    },
+    "notes":{
+      "date":"Data: {date}",
+      "name":"Nazwa: {name}",
+      "isImportant":"Istotny: {icon}",
+      "temperature":"Temperature: {temperature}",
+      "ammonia":"Poziom amoniaku: {ammonia}",
+      "ph":"Ph: {ph}",
+      "weather":"Pogoda: {weather}"
     }
+
 
 }
