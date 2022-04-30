@@ -1,14 +1,13 @@
 <template>
   <base-display
-    keypath="notes.weather"
-    :span-value="weather.toString()"
-    template-name="weather"
+    keypath="mainTankInformationDisplay.description"
+    :span-value="description"
+    template-name="description"
   />
 </template>
 <script setup lang="ts">
 import BaseDisplay from "@/components/common/TankBasicInfoDisplays/base/BaseDisplay.vue";
-import { Weather } from "@/constants/enums/Weather";
 defineProps<{
-  weather: Weather;
+  description: string;
 }>();
 </script>

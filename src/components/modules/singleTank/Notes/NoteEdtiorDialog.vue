@@ -7,7 +7,7 @@
     >
       <v-btn
         @click="toggleDialog"
-        class="app-button-background mr-4 f-15 align-self-end"
+        class="app-button mr-4 f-15 align-self-end"
         block
         v-text="$t('notes.addNote')"
       />
@@ -114,7 +114,7 @@
               </v-col>
               <v-col cols="12"
                 ><v-btn
-                  class="app-button-background mr-4 f-15 align-self-end"
+                  class="app-button mr-4 f-15 align-self-end"
                   block
                   v-text="$t('global.save')"
                   @click="addNote"
@@ -127,7 +127,7 @@
   </v-expansion-panels>
 </template>
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, watch } from "vue";
 import { TankNote } from "@/types/TankAnnotation";
 import { ref, reactive } from "vue";
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
@@ -137,6 +137,7 @@ import { Weather } from "@/constants/enums/Weather";
 import TankNotesService from "@/services/endpoints/TankNotes";
 import { TankNoteDto } from "@/utils/DTOs/TankNote.dto";
 import { useRoute } from "vue-router";
+import { EnviromentalData } from "@/types/EnviromentalData";
 const { params } = useRoute();
 const showDialog = ref<string[]>([]);
 const props = defineProps<{
@@ -145,6 +146,7 @@ const props = defineProps<{
 const showEnviromentalData = ref(false);
 const enviromentalDataForm = ref<HTMLFormElement | null>(null);
 const enviromentalData = reactive(enviromentalDataFactory());
+
 const annotationCopy = computed(() => props.annotation);
 const weatherSelectValues = computed(() =>
   Object.values(Weather).filter((key) => Number.isInteger(Number(key)))
@@ -154,6 +156,13 @@ function toggleDialog() {
   if (showDialog.value.length) return showDialog.value.pop();
   showDialog.value.push("addNoteDialog");
 }
+function setEnviromentalData(enviromentData: EnviromentalData) {
+  Object.keys(enviromentData).forEach(
+    (key) =>
+      (enviromentalData[key as keyof typeof enviromentalData] =
+        enviromentData[key as keyof typeof enviromentalData])
+  );
+}
 async function addNote() {
   if (
     enviromentalDataForm.value &&
@@ -162,10 +171,24 @@ async function addNote() {
     return;
   const payload = { ...annotationCopy.value };
   if (showEnviromentalData.value) payload.enviromentalData = enviromentalData;
-  const result = await TankNotesService.create(
-    new TankNoteDto(payload),
-    params.id as string
-  );
+  let result;
+  if (payload.id) {
+    result = await TankNotesService.update(
+      params.id as string,
+      new TankNoteDto(payload)
+    );
+  } else {
+    result = await TankNotesService.create(
+      new TankNoteDto(payload),
+      params.id as string
+    );
+  }
+
   if (result.success) showDialog.value.pop();
 }
+defineExpose({
+  showDialog,
+  showEnviromentalData,
+  setEnviromentalData,
+});
 </script>

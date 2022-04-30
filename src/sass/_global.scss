@@ -36,8 +36,14 @@ $main-font-color:#1b1c1c;
 .shadow-bg {
 background-color: $shadow-color !important;
 }
-.app-button-background {
+.app-button {
 	background-color: rgb(var(--v-theme-red));
+}
+.edit-button {
+	background-color: rgb(var(--v-theme-yellow));
+}
+.delete-button {
+	background-color: rgb(var(--v-theme-error));
 }
 
 @for $i from 1 through 10 {

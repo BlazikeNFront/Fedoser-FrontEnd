@@ -6,7 +6,7 @@ import { TankNote } from "@/types/TankAnnotation";
 export interface Tank {
   _id?: string;
   mainTankInformation: MainTankInformation;
-  annotations: TankNote[];
+  annotations: Required<TankNote>[];
   livestockInformation: LivestockInformation;
   feedInformation: FeedInformation;
 }

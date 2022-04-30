@@ -103,6 +103,16 @@
     },
     "tank":{
       "noLivestockIsSet":"The tank  doesn't have livestock. {button} to add livestock"
+    },
+      "notes":{
+      "date":"Date: {date}",
+      "name":"Title: {name}",
+      "isImportant":"Important: {icon}",
+      "temperature":"Temperature: {temperature}",
+      "ammonia":"Ammonia level: {ammonia}",
+      "ph":"Ph: {ph}",
+      "weather":"Weather: {weather}",
+      "enviromantalData":"Enviromental data"
     }
   
 }

@@ -9,7 +9,7 @@ import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
 export class TankDTO {
   _id: string;
   mainTankInformation: MainTankInformation;
-  annotations: TankNote[];
+  annotations: Required<TankNote>[];
   livestockInformation: LivestockInformation;
   feedInformation: FeedInformation;
   constructor(tank: Tank) {

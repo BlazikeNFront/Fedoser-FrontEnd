@@ -117,7 +117,8 @@
       "temperature":"Temperature: {temperature}",
       "ammonia":"Poziom amoniaku: {ammonia}",
       "ph":"Ph: {ph}",
-      "weather":"Pogoda: {weather}"
+      "weather":"Pogoda: {weather}",
+      "enviromantalData":"Dane srodowiskowe"
     }
 
 
