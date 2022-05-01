@@ -14,7 +14,7 @@
           }"
       /></v-col>
       <v-col cols="12" lg="6">
-        <h4 class="text-h4 my-4 text-center" v-text="$t('tank.others')"></h4>
+        <h4 class="text-h4 my-4 text-center" v-text="$t('global.others')"></h4>
         <main-specie-display
           :livestock="tank.livestockInformation.livestock"
           class="shadow-bg ma-2 py-3 px-5 radius-4 d-flex align-center justify-center f-15 font-weight-bold"

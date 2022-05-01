@@ -6,7 +6,7 @@ export interface FeedInformation {
   currentFeed: Feed | null;
   usedFeedTotalWeight: number;
   feedProgram: FeedDose[];
-  typeOfProgram: TypesOfFeedProgram | null;
+  typeOfProgram: TypesOfFeedProgram;
   doseUpdateFrequency: FeedProgramUpdateFrequency | null;
   currentLivestockWeight: number | null;
 }

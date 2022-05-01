@@ -9,11 +9,12 @@
         <v-row
           ><v-col cols="12">
             <feed-select v-model="copyOfModelValue.currentFeed" />
-            <dose-updater
+          </v-col>
+          <v-col cols="12"
+            ><dose-updater
               ref="doseUpdater"
               v-model="copyOfModelValue.doseUpdateFrequency"
-            />
-          </v-col>
+          /></v-col>
         </v-row>
       </v-container>
       <transition-expand>

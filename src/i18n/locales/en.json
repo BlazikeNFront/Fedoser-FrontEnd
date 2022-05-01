@@ -29,7 +29,13 @@
     "other":"Other",
     "type":"Type",
     "back":"Wstecz",
-      "mainData":"Main data"
+    "mainData":"Main data",
+    "others":"Other",
+    "save":"Save",
+    "yes":"Yes",
+    "no":"No",
+    "temperature":"Temperature",
+     "date":"Date"
   },
     "species":{
     "1":"Rainbow trout",
@@ -82,8 +88,8 @@
   "addTank":{
   "mainTankInformation":"Main tank information",
   "addLivestock":"@:global.add livestock",
-    "addedLivestock":"Current livestock",
-    "addTank":"Add tank"
+  "addedLivestock":"Current livestock",
+  "addTank":"Add tank"
   },
 
    "livestockInformation":{
@@ -96,15 +102,29 @@
      "typeSpecie":"@:global.type @:global.specie"
     },
      "feedInformation":{
-       "feedInformation":"Feed information",
+      "currentfeedProgram":"Aktulny program",
+      "feedInformation":"Feed information",
       "selectFeed":"selectFeed",
       "updateFrequency":"Dose update frequency",
-      "doseUpdateFrequencyDisplay":"@:feedInformation.updateFrequency@:global.: {updateFrequency}"
+      "doseUpdateFrequencyDisplay":"@:feedInformation.updateFrequency@:global.: {updateFrequency}",
+      "calculateFeedDose":"Get feed dose",
+      "dose":"Dawka",
+      "markAsDone":"Execute",
+      "markAsOmitted":"Omit",
+       "weightGainedAfterDose":"Gained weight"
     },
     "tank":{
-      "noLivestockIsSet":"The tank  doesn't have livestock. {button} to add livestock"
+      "noLivestockIsSet":"The tank  doesn't have livestock. {button} to add livestock",
+      "tankDescriptors":"Description",
+      "currentLivestockState":"Aktualny stan obsady",
+      "initialLivestockState":"Poczatkowy stan obsady"
+
     },
-      "notes":{
+    "userTanks":{
+      "noTanks":"You don't have any tanks"
+    },
+    "notes":{
+      "addNote":"@:global.add note",
       "date":"Date: {date}",
       "name":"Title: {name}",
       "isImportant":"Important: {icon}",
@@ -112,7 +132,8 @@
       "ammonia":"Ammonia level: {ammonia}",
       "ph":"Ph: {ph}",
       "weather":"Weather: {weather}",
-      "enviromantalData":"Enviromental data"
+      "enviromantalData":"Enviromental data",
+      "addEnviromantalDataQuestion":"Do you want to add enviromental data ?"
     }
   
 }

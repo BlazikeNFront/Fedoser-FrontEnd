@@ -1,8 +1,7 @@
 <template>
   <section class="d-flex flex-column align-center justify-center">
-    <h3 class="my-3 text-h3 text-center" v-text="$t('notes.notes')"></h3>
+    <h3 class="my-3 text-h3 text-center" v-text="$t('global.annotations')"></h3>
     <note-editor-dialog :annotation="editNote" ref="noteEditorDialog" />
-
     <v-expansion-panels v-if="notes.length">
       <v-container
         ><v-row

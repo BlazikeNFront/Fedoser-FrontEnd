@@ -11,6 +11,8 @@
     "loading":"Wczytywanie",
     "settings":"Ustawienia",
     "add":"Dodaj",
+    "edit":"Edytuj",
+    "delete":"Usun",
     ":":":",
     "tankName":"Nazwa",
     "livestock":"Obsada",
@@ -30,7 +32,13 @@
     "type":"Wpisz",
     "back":"Wstecz",
     "mainData":"Glowne dane",
-    "summary":"Podsumowanie"
+    "summary":"Podsumowanie",
+    "others":"Inne",
+    "save":"Zapisz",
+    "yes":"Tak",
+    "no":"Nie",
+    "temperature":"Temperatura",
+    "date":"Data"
   },
   "species":{
     "rainbowTrout":"Pstrag teczowy",
@@ -97,10 +105,16 @@
       "typeSpecie":"@:global.type @:global.specie"
     },
     "feedInformation":{
-      "feedInformation":"Feed information",
+      "currentfeedProgram":"Current feed program",
+     "feedInformation":"Feed information",
       "selectFeed":"selectFeed",
       "updateFrequency":"Aktualizacja dawki pokarmowej",
-     "doseUpdateFrequencyDisplay":"@:feedInformation.updateFrequency@:global.: {updateFrequency}"
+      "doseUpdateFrequencyDisplay":"@:feedInformation.updateFrequency@:global.: {updateFrequency}",
+      "calculateFeedDose":"Oblicz dawke pokarmowa",
+      "dose":"Dawka",
+      "markAsDone":"Wykonaj",
+      "markAsOmitted":"Pomin",
+      "weightGainedAfterDose":"Przybrana masa"
     },
     "mainTankInformationDisplay":{
       "name":"@:global.tankName@:global.: {name}",
@@ -108,9 +122,18 @@
       "description":"@:global.description@:global.: {description}"
     },
     "tank":{
-      "noLivestockIsSet":"Zbiornik aktualnie nie posiada obsaday. {button} aby dodac obsade"
+      "noLivestockIsSet":"Zbiornik aktualnie nie posiada obsaday. {button} aby dodac obsade",
+      "tankDescriptors":"Opis",
+      "currentLivestockState":"Aktualny stan obsady",
+      "initialLivestockState":"Poczatkowy stan obsady"
+    },
+    "userTanks":{
+      "noTanks":"Brak zapisanych zbiornikow"
     },
     "notes":{
+      "addNote":"@:global.add notatke",
+      "editNote":"@:global.edit notatke",
+      "deleteNote":"@:global.delete notatke",
       "date":"Data: {date}",
       "name":"Nazwa: {name}",
       "isImportant":"Istotny: {icon}",
@@ -118,7 +141,8 @@
       "ammonia":"Poziom amoniaku: {ammonia}",
       "ph":"Ph: {ph}",
       "weather":"Pogoda: {weather}",
-      "enviromantalData":"Dane srodowiskowe"
+      "enviromantalData":"Dane srodowiskowe",
+      "addEnviromantalDataQuestion":"Czy chcesz dodac dane srodowiske ?"
     }
 
 

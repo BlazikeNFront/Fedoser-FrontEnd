@@ -4,11 +4,12 @@
       value="addNoteDialog"
       bg-color="violet"
       style="border-radius: 10px !important"
+      class="d-flex align-center justify-center flex-column"
     >
       <v-btn
         @click="toggleDialog"
-        class="app-button mr-4 f-15 align-self-end"
-        block
+        class="app-button mx-auto f-15 align-self-end"
+        width="300"
         v-text="$t('notes.addNote')"
       />
 
@@ -127,7 +128,7 @@
   </v-expansion-panels>
 </template>
 <script setup lang="ts">
-import { computed, watch } from "vue";
+import { computed } from "vue";
 import { TankNote } from "@/types/TankAnnotation";
 import { ref, reactive } from "vue";
 import TransitionExpand from "@/components/common/TransitionExpand.vue";

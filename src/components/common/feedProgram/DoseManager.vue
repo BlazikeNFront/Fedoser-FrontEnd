@@ -1,69 +1,108 @@
 <template>
-  <div>
-    <li class="d-flex flex-column align-center justify-center">
-      <transition name="hide" mode="out-in">
-        <div
-          class="d-flex align-center justify-center flex-column"
-          style="border: 1px solid blue; padding: 5px 10px"
-        >
-          <div class="list-element">
-            <div class="d-flex flex-column">
-              <div>
-                <span style="font-size: 15px; font-weight: 600">{{
-                  currentDose.number
-                }}</span>
-                <div class="d-flex align center justify-center flex-column">
-                  <p>
-                    Date of dose:<span>{{ getCurrentDate() }}</span>
-                  </p>
+  <v-card class="w-90 my-4" color="transparent" elevation="20">
+    <v-form>
+      <v-container
+        ><v-row
+          ><v-col cols="12">
+            <p class="f-2 text-center" v-text="currentDose.number"></p
+          ></v-col>
+          <v-col cols="12">
+            <v-text-field
+              v-model="currentDoseDate"
+              type="date"
+              :label="$t('global.date')"
+          /></v-col>
+          <v-col cols="12" class="d-flex align-center justify-center">
+            <v-btn
+              @click="handleDoseProposeRequest"
+              class="app-button f-15"
+              v-text="$t('feedInformation.calculateFeedDose')"
+          /></v-col>
+          <v-col cols="12">
+            <v-text-field
+              v-model="temperatureInput"
+              type="number"
+              :label="$t('global.temperature')"
+          /></v-col>
+          <v-col cols="12">
+            <v-text-field
+              v-model="proposedFeedDose"
+              type="number"
+              :label="$t('feedInformation.dose')"
+          /></v-col>
+          <v-col cols="12">
+            <v-text-field
+              v-model="weightGainedAfterFeed"
+              type="number"
+              :label="$t('feedInformation.weightGainedAfterDose')"
+          /></v-col>
+          <v-col cols="12" class="d-flex align-center justify-center">
+            <v-btn
+              @click="setDoseAsTerminated"
+              width="150"
+              class="save-button f-15 mr-4"
+              v-text="$t('feedInformation.markAsDone')" />
+            <v-btn
+              @click="setDoseAsOmitted"
+              width="150"
+              class="edit-button f-15"
+              v-text="$t('feedInformation.markAsOmitted')"
+          /></v-col> </v-row
+      ></v-container>
 
-                  <label for="dose date">Dose date</label>
-                  <input
-                    name="dose date"
-                    type="text"
-                    v-model="currentDoseDate"
-                  />
-                </div>
-              </div>
-              <div class="form-control">
-                <label for="temperature">Temperature:</label>
-                <input name="temperature" v-model.number="temperatureInput" />
-                <button class="button" @click="handleDoseProposeRequest">
-                  Calc feed dose
-                </button>
-                <p v-if="temperatureFormError.isVisible" class="form-error">
-                  {{ temperatureFormError.text }}
-                </p>
-              </div>
-              <div class="form-control">
-                <label for="temperature">Proposed feed dose:</label>
-                <input
-                  type="text"
-                  class="text-center"
-                  :value="proposedFeedDose"
-                />g
-              </div>
-              <div>
-                <label for="temperature">Gain weight after feed:</label>
-                <input
-                  name="temperature"
-                  v-model.number="weightGainedAfterFeed"
-                />kg
-              </div>
-              <div class="d-flex">
-                <button class="button" @click="setDoseAsTerminated">
-                  Mark as Done
-                </button>
-                <button class="button" @click="setDoseAsOmitted">
-                  Mark as Omitted
-                </button>
-              </div>
+      <!-- <div
+      class="d-flex align-center justify-center flex-column"
+      style="border: 1px solid blue; padding: 5px 10px"
+    >
+      <div class="list-element">
+        <div class="d-flex flex-column">
+          <div>
+            <span style="font-size: 15px; font-weight: 600">{{
+              currentDose.number
+            }}</span>
+            <div class="d-flex align center justify-center flex-column">
+              <p>
+                Date of dose:<span>{{ getCurrentDate() }}</span>
+              </p>
+
+              <label for="dose date">Dose date</label>
+              <input name="dose date" type="text" v-model="currentDoseDate" />
             </div>
           </div>
+          <div class="form-control">
+            <label for="temperature">Temperature:</label>
+            <input name="temperature" v-model.number="temperatureInput" />
+            <button class="button" @click="handleDoseProposeRequest">
+              Calc feed dose
+            </button>
+            <p v-if="temperatureFormError.isVisible" class="form-error">
+              {{ temperatureFormError.text }}
+            </p>
+          </div>
+          <div class="form-control">
+            <label for="temperature">Proposed feed dose:</label>
+            <input type="text" class="text-center" :value="proposedFeedDose" />g
+          </div>
+          <div>
+            <label for="temperature">Gain weight after feed:</label>
+            <input
+              name="temperature"
+              v-model.number="weightGainedAfterFeed"
+            />kg
+          </div>
+          <div class="d-flex">
+            <button class="button" @click="setDoseAsTerminated">
+              Mark as Done
+            </button>
+            <button class="button" @click="setDoseAsOmitted">
+              Mark as Omitted
+            </button>
+          </div>
         </div>
-      </transition>
-    </li>
-  </div>
+      </div>
+    </div> -->
+    </v-form>
+  </v-card>
 </template>
 
 <script setup lang="ts">
@@ -85,11 +124,11 @@ const emit = defineEmits<{
 }>();
 const currentDoseDate = ref(getCurrentDate());
 const currentDose = computed(
-  //get dose from stable feed program or create dose in dynamic feed program
   () =>
     new FeedDoseDTO({
       ...(props.feedProgram[indexOfCurrentDose.value] || {
         number: props.feedProgram.length + 1,
+        date: getCurrentDate(),
       }),
     })
 );

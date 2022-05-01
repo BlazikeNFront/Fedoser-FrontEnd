@@ -39,6 +39,9 @@ background-color: $shadow-color !important;
 .app-button {
 	background-color: rgb(var(--v-theme-red));
 }
+.save-button {
+		background-color: rgb(var(--v-theme-success));
+}
 .edit-button {
 	background-color: rgb(var(--v-theme-yellow));
 }

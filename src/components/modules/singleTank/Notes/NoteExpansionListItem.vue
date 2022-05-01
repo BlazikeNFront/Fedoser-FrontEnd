@@ -47,11 +47,12 @@ defineEmits<{
 }>();
 const loader = ref(false);
 async function deleteNote() {
+  if (!tank) return;
   const {
     note: { id },
   } = props;
   loader.value = true;
-  const result = await TankNotes.delete(id, tank?._id);
+  const result = await TankNotes.delete(tank._id, id);
   loader.value = false;
   if (result.success) filterTankNotes(id);
 }
