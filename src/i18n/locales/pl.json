@@ -38,7 +38,8 @@
     "yes":"Tak",
     "no":"Nie",
     "temperature":"Temperatura",
-    "date":"Data"
+    "date":"Data",
+    "number":"Numer"
   },
   "species":{
     "rainbowTrout":"Pstrag teczowy",
@@ -105,8 +106,8 @@
       "typeSpecie":"@:global.type @:global.specie"
     },
     "feedInformation":{
-      "currentfeedProgram":"Current feed program",
-     "feedInformation":"Feed information",
+      "currentfeedProgram":"Aktualny program zywieniowy",
+      "feedInformation":"Feed information",
       "selectFeed":"selectFeed",
       "updateFrequency":"Aktualizacja dawki pokarmowej",
       "doseUpdateFrequencyDisplay":"@:feedInformation.updateFrequency@:global.: {updateFrequency}",
@@ -114,7 +115,10 @@
       "dose":"Dawka",
       "markAsDone":"Wykonaj",
       "markAsOmitted":"Pomin",
-      "weightGainedAfterDose":"Przybrana masa"
+      "weightGainedAfterDose":"Przybrana masa (kg)",
+      "doseWeight":"Dawka (g)",
+      "showTerminateDoses":"Pokaz historie programu"
+  
     },
     "mainTankInformationDisplay":{
       "name":"@:global.tankName@:global.: {name}",

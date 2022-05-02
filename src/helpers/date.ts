@@ -1,14 +1,5 @@
-export const getCurrentDate = (): string => {
-  const currentDay = new Date();
-  return `${currentDay.getDate()}-${
-    currentDay.getMonth() + 1
-  }-${currentDay.getFullYear()}`;
-};
+import { DateTime } from "luxon";
 
-export const calcDate = (addDays: number): string => {
-  const currentDay = new Date();
-  currentDay.setDate(currentDay.getDate() + addDays);
-  return `${currentDay.getDate()}-${
-    currentDay.getMonth() + 1
-  }-${currentDay.getFullYear()}`;
+export const getCurrentDate = (): string => {
+  return DateTime.now().toFormat("yyyy-MM-dd");
 };

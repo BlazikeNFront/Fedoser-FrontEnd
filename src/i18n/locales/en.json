@@ -35,7 +35,8 @@
     "yes":"Yes",
     "no":"No",
     "temperature":"Temperature",
-     "date":"Date"
+    "date":"Date",
+    "number":"Number"
   },
     "species":{
     "1":"Rainbow trout",
@@ -108,10 +109,11 @@
       "updateFrequency":"Dose update frequency",
       "doseUpdateFrequencyDisplay":"@:feedInformation.updateFrequency@:global.: {updateFrequency}",
       "calculateFeedDose":"Get feed dose",
-      "dose":"Dawka",
+      "dose":"Dose (g)",
       "markAsDone":"Execute",
       "markAsOmitted":"Omit",
-       "weightGainedAfterDose":"Gained weight"
+      "weightGainedAfterDose":"Gained weight (kg)",
+      "showTerminateDoses":"Show program history"
     },
     "tank":{
       "noLivestockIsSet":"The tank  doesn't have livestock. {button} to add livestock",

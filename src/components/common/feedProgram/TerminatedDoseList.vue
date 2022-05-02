@@ -1,93 +1,66 @@
 <template>
-  <div class="d-flex flex-column">
-    <button
-      class="button"
-      @click="showAllTerminatedDoses = !showAllTerminatedDoses"
-    >
-      Show all doses
-    </button>
-    <transition-expand>
-      <ul v-if="showAllTerminatedDoses">
-        <li
-          class="d-flex align-center justify-center"
-          v-for="(dose, index) in terminatedDoseList"
-          :key="dose.number"
-        >
-          <div
-            class="d-flex align-center justify-center flex-column"
-            style="border: 1px solid blue; padding: 5px 10px"
-          >
-            <div class="d-flex flex-column align-center justify-center">
-              <button
-                v-if="index === terminatedDoseList.length - 1"
-                class="button"
-                @click="showEditDialog = true"
-              >
-                EDIT
-              </button>
-              <span style="font-size: 15px; font-weight: 600"
-                >{{ dose.number }}.</span
-              >
-              <p>Terminated date: {{ dose.date }}</p>
-              <div v-if="dose.terminated === DoseTermination.DONE">
-                <p>Dose:{{ dose.amount }}kg</p>
-                <p>
-                  Livestock weight gain after dose:{{
-                    dose.weightGainAfterDose
-                  }}
-                </p>
-              </div>
-              <p v-else>Dose marked as omitted</p>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </transition-expand>
-    <li
-      v-if="!showAllTerminatedDoses && lastDose"
-      class="d-flex align-center justify-center"
-    >
-      <div
-        class="d-flex align-center justify-center flex-column"
-        style="border: 1px solid blue; padding: 5px 10px"
-      >
-        <div class="d-flex flex-column align-center justify-center">
-          <button class="button">EDIT</button>
-          <span style="font-size: 15px; font-weight: 600"
-            >{{ lastDose.number }}.</span
-          >
-          <p>Terminated date: {{ lastDose.date }}</p>
-          <div v-if="lastDose.terminated === DoseTermination.DONE">
-            <p>Dose:{{ lastDose.amount }}kg</p>
-            <p>
-              Livestock weight gain after dose:{{
-                lastDose.weightGainAfterDose
-              }}
-            </p>
-          </div>
-          <p v-else>Dose marked as omitted</p>
-        </div>
-      </div>
-    </li>
-  </div>
+  <article class="d-flex flex-column">
+    <v-container
+      ><v-row
+        ><v-col cols="12" class="d-flex align-center justify-center">
+          <v-btn
+            class="app-button f-15"
+            @click="showAllTerminatedDoses = !showAllTerminatedDoses"
+            v-text="$t('feedInformation.showTerminateDoses')"
+        /></v-col>
+        <v-col cols="12">
+          <transition-expand>
+            <v-table
+              v-if="showAllTerminatedDoses"
+              class="terminated-dose-list__table radius-4"
+              ><thead class="f-15 text-center">
+                <tr class="text-center">
+                  <th v-text="$t('global.number')"></th>
+                  <th v-text="$t('global.date')"></th>
+                  <th v-text="$t('feedInformation.dose')"></th>
+                  <th v-text="$t('feedInformation.weightGainedAfterDose')"></th>
+                </tr>
+              </thead>
+              <tbody class="text-center">
+                <tr v-for="dose in terminatedDoseList" :key="dose.number">
+                  <td v-text="dose.number"></td>
+                  <td v-text="dose.date"></td>
+                  <td v-text="dose.amount"></td>
+                  <td v-text="dose.weightGainAfterDose"></td>
+                </tr>
+              </tbody>
+            </v-table>
+          </transition-expand>
+        </v-col> </v-row
+    ></v-container>
+  </article>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { DoseTermination } from "@/constants/enums/DoseTermination";
+import { ref } from "vue";
+
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
 import { FeedDose } from "@/types/FeedDose";
-const props = defineProps<{
+defineProps<{
   terminatedDoseList: FeedDose[];
 }>();
 
 const showAllTerminatedDoses = ref(false);
-const showEditDialog = ref(false);
-const lastDose = computed(() =>
-  props.terminatedDoseList.find(
-    (_, index) => index === props.terminatedDoseList.length - 1
-  )
-);
 </script>
+<style lang="scss">
+.terminated-dose-list__table {
+  @extend .shadow-bg;
+  color: white;
 
-<style></style>
+  th {
+    text-align: center !important;
+    font-size: 1.5rem !important;
+  }
+  td {
+    font-size: 1.5rem !important;
+  }
+  tr:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+}
+</style>

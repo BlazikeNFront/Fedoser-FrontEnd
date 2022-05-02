@@ -49,64 +49,12 @@
               v-text="$t('feedInformation.markAsOmitted')"
           /></v-col> </v-row
       ></v-container>
-
-      <!-- <div
-      class="d-flex align-center justify-center flex-column"
-      style="border: 1px solid blue; padding: 5px 10px"
-    >
-      <div class="list-element">
-        <div class="d-flex flex-column">
-          <div>
-            <span style="font-size: 15px; font-weight: 600">{{
-              currentDose.number
-            }}</span>
-            <div class="d-flex align center justify-center flex-column">
-              <p>
-                Date of dose:<span>{{ getCurrentDate() }}</span>
-              </p>
-
-              <label for="dose date">Dose date</label>
-              <input name="dose date" type="text" v-model="currentDoseDate" />
-            </div>
-          </div>
-          <div class="form-control">
-            <label for="temperature">Temperature:</label>
-            <input name="temperature" v-model.number="temperatureInput" />
-            <button class="button" @click="handleDoseProposeRequest">
-              Calc feed dose
-            </button>
-            <p v-if="temperatureFormError.isVisible" class="form-error">
-              {{ temperatureFormError.text }}
-            </p>
-          </div>
-          <div class="form-control">
-            <label for="temperature">Proposed feed dose:</label>
-            <input type="text" class="text-center" :value="proposedFeedDose" />g
-          </div>
-          <div>
-            <label for="temperature">Gain weight after feed:</label>
-            <input
-              name="temperature"
-              v-model.number="weightGainedAfterFeed"
-            />kg
-          </div>
-          <div class="d-flex">
-            <button class="button" @click="setDoseAsTerminated">
-              Mark as Done
-            </button>
-            <button class="button" @click="setDoseAsOmitted">
-              Mark as Omitted
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
     </v-form>
   </v-card>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive } from "vue";
+import { ref, computed, reactive, watch } from "vue";
 import { getCurrentDate } from "@/helpers/date";
 import { TypesOfFeedProgram } from "@/constants/enums/FeedSelect";
 import { FeedDose } from "@/types/FeedDose";
@@ -171,12 +119,7 @@ function setDoseAsTerminated() {
     terminated: DoseTermination.DONE,
   });
   emit("dose-terminated", terminatedFeedDose);
-  if (props.typeOfProgram === TypesOfFeedProgram.FEED_PROGRAM) {
-    feedProgramModel.value.push(
-      new FeedDoseDTO({ number: currentDose.value.number + 1 })
-    );
-    setDefaultValuesInForm();
-  }
+  setDefaultValuesInForm();
 }
 function setDoseAsOmitted() {
   const terminatedFeedDose = new FeedDoseDTO({
@@ -188,12 +131,7 @@ function setDoseAsOmitted() {
     terminated: DoseTermination.OMITTED,
   });
   emit("dose-omitted", terminatedFeedDose);
-  if (props.typeOfProgram === TypesOfFeedProgram.FEED_PROGRAM) {
-    setDefaultValuesInForm();
-    feedProgramModel.value.push(
-      new FeedDoseDTO({ number: currentDose.value.number + 1 })
-    );
-  }
+  setDefaultValuesInForm();
 }
 </script>
 <style scoped>

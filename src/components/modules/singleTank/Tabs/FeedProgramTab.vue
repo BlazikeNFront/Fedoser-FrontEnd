@@ -8,13 +8,20 @@
       v-if="tank?.feedInformation"
       :feed-information="tank.feedInformation"
     />
-    <dose-manager
+    <div
       v-if="tank?.feedInformation"
-      :feed-program="tank?.feedInformation.feedProgram"
-      :type-of-program="tank.feedInformation.typeOfProgram"
-      @dose-omitted="terminateDose"
-      @dose-terminated="terminateDose"
-    />
+      class="d-flex flex-column align-center justify-center"
+    >
+      <terminated-dose-list
+        :terminated-dose-list="tank?.feedInformation.feedProgram"
+      />
+      <dose-manager
+        :feed-program="tank?.feedInformation.feedProgram"
+        :type-of-program="tank.feedInformation.typeOfProgram"
+        @dose-omitted="terminateDose"
+        @dose-terminated="terminateDose"
+      />
+    </div>
     <p
       v-else
       class="my-3 f-15 text-center"
@@ -27,20 +34,24 @@ import { useTankStore } from "@/stores/TankStore";
 import { storeToRefs } from "pinia";
 import DoseManager from "@/components/common/feedProgram/DoseManager.vue";
 import FeedInformationDisplay from "@/components/common/Displays/FeedInformationDisplay.vue";
+import TerminatedDoseList from "@/components/common/feedProgram/TerminatedDoseList.vue";
 import { FeedInformationDoseService } from "@/services/endpoints/TankFeedInformation";
 import { FeedDose } from "@/types/FeedDose";
-
+import { TerminatedFeedDoseDTO } from "@/utils/DTOs/TerminatedFeedDose.dto";
 const { tank } = storeToRefs(useTankStore());
 
 async function terminateDose(dose: FeedDose) {
-  if (!tank.value) return;
-  const result = await FeedInformationDoseService.update(
-    tank.value._id,
-    dose,
-    "add-feed-dose"
+  if (!tank.value || !tank.value.feedInformation.currentLivestockWeight) return;
+  const weightsData = {
+    currentLivestockWeight: tank.value.feedInformation.currentLivestockWeight,
+    usedFeedTotalWeight: tank.value.feedInformation.usedFeedTotalWeight,
+  };
+  const result = await FeedInformationDoseService.create(
+    new TerminatedFeedDoseDTO(dose, weightsData),
+    `${tank.value._id}/add-feed-dose`
   );
   if (result.success) {
-    console.log(result);
+    tank.value.feedInformation.feedProgram.push(dose);
   }
 }
 </script>
