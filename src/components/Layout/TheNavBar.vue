@@ -1,5 +1,6 @@
 <template>
   <v-navigation-drawer
+    v-if="mdAndUp"
     permanent
     color="app-background"
     width="300"
@@ -63,6 +64,7 @@
       </ul>
     </nav>
   </v-navigation-drawer>
+  <the-mobile-app-bar v-else />
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
@@ -72,9 +74,12 @@ import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { useUserStore } from "@/stores/UserStore";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { NavOption } from "@/types/NavOptions";
+import { useDisplay } from "vuetify/lib/framework";
+import TheMobileAppBar from "@/components/Layout/TheMobileAppBar.vue";
 const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
+const { mdAndUp } = useDisplay();
 
 const NAV_OPTIONS: NavOptions = [
   { icon: Icons.HOME, name: RoutesNames.APP_HOME, text: "navBar.home" },
@@ -113,7 +118,7 @@ function logoutUser() {
   router.push({ name: RoutesNames.HOME });
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @mixin menu__rounded-side-pseudo-elements-shared {
   content: "";
   position: absolute;

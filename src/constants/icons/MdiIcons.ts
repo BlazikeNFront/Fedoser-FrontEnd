@@ -10,4 +10,5 @@ export enum Icons {
   MOVE_RESIZE = "mdi-move-resize-variant",
   ACCOUNT_SETTINGS = "mdi-account-edit",
   EXIT = "mdi-close",
+  MENU = "mdi-menu",
 }
