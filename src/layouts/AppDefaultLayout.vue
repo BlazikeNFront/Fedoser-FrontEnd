@@ -1,9 +1,10 @@
 <template>
   <v-layout class="app__app-layot-wrapper">
     <the-nav-bar />
-    <v-main tag="div" :class="mdAndUp ? '' : 'mt-10'">
+    <v-main tag="div" :class="[mdAndUp ? '' : 'mt-10', 'w-100']">
+      <!-- <v-container><v-row><v-col cols="12"></v-col></v-row></v-container> -->
       <the-header v-if="mdAndUp" />
-      <main>
+      <main class="">
         <router-view v-slot="{ Component }">
           <transition name="fade" mode="out-in">
             <component :is="Component" />

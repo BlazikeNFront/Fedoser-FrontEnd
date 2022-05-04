@@ -31,10 +31,12 @@
               v-model:livestockInformation="livestockInformation"
             >
               <template #default="{ isAtLeaseOneSpieceAdded }">
-                <div class="d-flex align-center justify-end">
+                <div
+                  class="d-flex flex-column flex-md-row align-center justify-end"
+                >
                   <v-btn
                     width="150"
-                    class="f-2 mr-2"
+                    class="f-2 mr-md-2"
                     color="red"
                     @click="step--"
                     v-text="$t('global.back')"
@@ -42,7 +44,7 @@
                   <v-btn
                     width="150"
                     color="grey"
-                    class="f-2 mr-2"
+                    class="f-2 my-2 mr-md-2"
                     style="color: white !important"
                     @click="omitLivestockStep"
                     v-text="$t('global.omit')"
@@ -67,10 +69,12 @@
           :livestock-weight="livestockInformation.initialLivestockWeight"
         >
           <template #default="{ validateFeedInformation }">
-            <div class="d-flex align-center justify-end">
+            <div
+              class="d-flex flex-column flex-md-row align-center justify-end"
+            >
               <v-btn
                 width="150"
-                class="f-2 mr-2"
+                class="f-2 mr-md-2"
                 color="red"
                 @click="step--"
                 v-text="$t('global.back')"
@@ -78,7 +82,7 @@
               <v-btn
                 width="150"
                 color="grey"
-                class="f-2 mr-2"
+                class="f-2 my-2 mr-md-2"
                 style="color: white !important"
                 @click="omitFeedInformationStep"
                 v-text="$t('global.omit')"

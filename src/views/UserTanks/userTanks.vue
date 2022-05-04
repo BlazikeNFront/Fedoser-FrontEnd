@@ -14,7 +14,7 @@
             <tank-card-expansion
               :tank="tank"
               tank-card-title-classes="h-4"
-              class="my-3"
+              class="my-3 w-100"
             >
               <v-btn
                 class="mt-4 f-15"

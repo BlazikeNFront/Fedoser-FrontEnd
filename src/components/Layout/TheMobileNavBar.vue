@@ -6,8 +6,8 @@
     class="mobile-nav-bar"
   >
     <div
-      class="mx-auto py-4 d-flex flex-column justify-space-between h-100"
-      style="width: 300px"
+      class="mx-auto py-4 d-flex flex-column justify-space-between"
+      style="width: 300px; min-height: 80vh"
     >
       <div>
         <h3

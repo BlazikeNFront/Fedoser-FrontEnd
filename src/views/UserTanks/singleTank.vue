@@ -1,11 +1,11 @@
 <template>
-  <v-card color="violet">
+  <v-card color="violet" min-height="80vh">
     <section v-if="tank">
       <h2
         class="h-2 text-center py-2"
         v-text="tank.mainTankInformation.name"
       ></h2>
-      <v-tabs v-model="currentTab" grow>
+      <v-tabs class="single-tank__tabs" v-model="currentTab" grow show-arrows>
         <v-tab
           v-for="key in TABS"
           :key="key.tab"
@@ -61,11 +61,21 @@ onBeforeMount(async () => {
   }
 });
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .single-tank__tab {
   background-color: rgba(var(--v-theme-yellow), 0.75);
   &--active {
     background-color: rgba(var(--v-theme-yellow), 1);
   }
+}
+
+.single-tank__tabs :deep(.v-tab:first-child) {
+  margin-inline-start: 0px !important;
+}
+.single-tank__tabs :deep(.v-tab:last-child) {
+  margin-inline-end: 0px !important;
+}
+.single-tank__tabs :deep(.v-icon--size-default) {
+  font-size: 4rem !important;
 }
 </style>
