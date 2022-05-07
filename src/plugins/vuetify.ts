@@ -26,6 +26,7 @@ export default createVuetify({
           'light-violet': colors.purple.lighten5,
           'semi-violet': colors.purple.lighten4,
           red: '#f25767',
+          'dark-blue':'#024564'
     
     
         },
@@ -43,6 +44,7 @@ export default createVuetify({
           'light-violet': colors.purple.lighten5,
           'semi-violet': colors.purple.lighten4,
           red: '#f25767',
+        'dark-blue':'#024564'
        
         },
       },
