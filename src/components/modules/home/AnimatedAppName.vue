@@ -4,7 +4,7 @@
     height="79"
     viewBox="0 0 447 79"
     fill="none"
-    id="animated-letters"
+    :id="IdAttributes.ANIMATED_LETTERS"
   >
     <path
       d="M43.216 6.088V13.192H14.128V35.752H37.744V42.856H14.128V73H5.39203V6.088H43.216Z"
@@ -43,53 +43,51 @@
     />
   </svg>
 </template>
-
-<style lang="scss">
+<script setup lang="ts">
+import { IdAttributes } from "@/constants/IdAttributes";
+</script>
+<style lang="scss" scoped>
 #animated-letters {
-  animation: fill 0.5s ease forwards 3s;
+  animation: logo-letters-animation-fill 0.5s ease forwards 3s;
+  path {
+    animation: logo-letters-animation 3s linear forwards;
+  }
 }
 #animated-letters path:nth-child(1) {
   stroke-dasharray: 256.7;
   stroke-dashoffset: 256.7;
-  animation: logoAnim 3s linear forwards;
 }
 #animated-letters path:nth-child(2) {
   stroke-dasharray: 309.31;
   stroke-dashoffset: 309.31;
-  animation: logoAnim 3s linear forwards;
 }
 #animated-letters path:nth-child(3) {
   stroke-dasharray: 381.05;
   stroke-dashoffset: 381.05;
-  animation: logoAnim 3s linear forwards;
 }
 #animated-letters path:nth-child(4) {
   stroke-dasharray: 377.3;
   stroke-dashoffset: 377.3;
-  animation: logoAnim 3s linear forwards;
 }
 #animated-letters path:nth-child(5) {
   stroke-dasharray: 329.27;
   stroke-dashoffset: 329.27;
-  animation: logoAnim 3s linear forwards;
 }
 #animated-letters path:nth-child(6) {
   stroke-dasharray: 309.31;
   stroke-dashoffset: 309.31;
-  animation: logoAnim 3s linear forwards;
 }
 #animated-letters path:nth-child(7) {
   stroke-dasharray: 366.04;
   stroke-dashoffset: 366.04;
-  animation: logoAnim 3s linear forwards;
 }
 
-@keyframes logoAnim {
+@keyframes logo-letters-animation {
   to {
     stroke-dashoffset: 0;
   }
 }
-@keyframes fill {
+@keyframes logo-letters-animation-fill {
   from {
     fill: transparent;
   }

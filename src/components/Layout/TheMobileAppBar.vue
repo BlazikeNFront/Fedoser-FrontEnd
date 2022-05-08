@@ -20,6 +20,7 @@
         <v-col cols="8" class="d-flex align-center justify-center">
           <v-app-bar-title
             class="f-3 text-center text-uppercase font-weight-bold"
+            @click="$router.push({ name: RoutesNames.APP_HOME })"
             v-text="APP_NAME"
           />
         </v-col>
@@ -59,6 +60,7 @@ import { useNavDrawer } from "@/stores/NavDrawerStore";
 import { APP_NAME } from "@/constants/global";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { SUPPORTED_LOCALES, loadLocaleMessages } from "@/i18n/i18n";
+import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 const { toggleDrawer } = useNavDrawer();
 const mobileLanguageSwitcher = ref(false);
 const i18n = useI18n();

@@ -42,7 +42,7 @@
       />
     </v-form>
     <i18n-t
-      class="mt-7 f-15"
+      class="mx-2 mt-7 f-15"
       keypath="auth.alreadyHaveAccount"
       tag="p"
       scope="global"
@@ -51,7 +51,7 @@
         <v-btn
           @click="$router.push({ name: RoutesNames.SIGN_IN })"
           color="blue"
-          class="mx-2 f-125"
+          class="mx-2 my-2 f-125"
           v-t="'global.clickHere'"
         />
       </template>

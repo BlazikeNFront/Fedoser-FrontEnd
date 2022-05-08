@@ -36,7 +36,7 @@
       ></p>
     </transition-expand>
     <i18n-t
-      class="mt-7 f-15"
+      class="mx-4 mt-7 f-15"
       keypath="auth.notHaveAccount"
       tag="p"
       scope="global"
@@ -45,7 +45,7 @@
         <v-btn
           @click="$router.push({ name: RoutesNames.SIGN_UP })"
           color="blue"
-          class="mx-2 f-15"
+          class="mx-2 my-2 f-15"
           v-t="'global.clickHere'"
         />
       </template>

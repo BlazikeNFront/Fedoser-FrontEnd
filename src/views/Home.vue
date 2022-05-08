@@ -19,15 +19,24 @@
       <div class="w-100 h-100 video-overlay"></div>
     </div>
     <div class="pa-8 initial-view__content-wrapper">
-      <div class="d-flex align-center justify-space-between">
-        <p
-          class="f-3 text-uppercase text-white font-weight-bold"
-          style="letter-spacing: 2px"
-          @click="$router.push({ name: RoutesNames.HOME })"
-          v-text="APP_NAME"
-        ></p>
-        <language-switcher :select-icon-width="30" :select-width="200" />
-      </div>
+      <v-container
+        ><v-row>
+          <v-spacer />
+          <v-col cols="8">
+            <p
+              class="text-uppercase text-center text-white font-weight-bold"
+              :class="mdAndUp ? 'f-3' : 'f-4'"
+              style="letter-spacing: 2px"
+              @click="$router.push({ name: RoutesNames.HOME })"
+              v-text="APP_NAME"
+            ></p></v-col
+          ><v-col cols="2" class="d-flex align-center justify-center">
+            <language-switcher
+              class="d-flex align-center justify-center"
+              :select-icon-width="30"
+              :select-width="mdAndUp ? 200 : 60" /></v-col></v-row
+      ></v-container>
+
       <v-main class="d-flex flex-column align-center justify-space-around">
         <h1
           class="mt-10 h-1 font-secondary text-white text-center text-uppercase"
@@ -56,8 +65,10 @@ import { APP_NAME, APP_SLOGAN } from "@/constants/global";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import LanguageSwitcher from "@/components/common/LanguageSwitcher.vue";
 import { useHomePageStore } from "@/stores/HomePageStore";
+import { useDisplay } from "vuetify/lib/framework";
 const { showAboutSection } = storeToRefs(useHomePageStore());
 const { scrollIntoAboutSection } = useHomePageStore();
+const { mdAndUp } = useDisplay();
 const AboutSection = defineAsyncComponent(
   async () =>
     await import(

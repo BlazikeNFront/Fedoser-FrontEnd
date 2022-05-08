@@ -13,8 +13,13 @@
               : 'language-select--home-theme'
           "
         >
-          <p class="py-2 text-white">
-            <v-icon class="mr-4" :icon="Icons.GLOBE" :size="selectIconWidth" />
+          <v-icon
+            color="white"
+            :class="mdAndUp ? 'mr-4' : ''"
+            :icon="Icons.GLOBE"
+            :size="selectIconWidth"
+          />
+          <p v-if="mdAndUp" class="py-2 text-white">
             {{SUPPORTED_LOCALES[currentLanguage as keyof typeof SUPPORTED_LOCALES]}}
           </p></v-card
         >
@@ -39,7 +44,7 @@
               :src="require(`@/assets/countryFlags/${key}.png`)"
               :alt="`${item} flag`"
           /></span>
-          <p class="text-white" v-text="item"></p>
+          <p v-if="mdAndUp" class="text-white" v-text="item"></p>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -50,13 +55,13 @@ import { useI18n } from "vue-i18n";
 import { computed, ref } from "vue";
 import { SUPPORTED_LOCALES, loadLocaleMessages } from "@/i18n/i18n";
 import { Icons } from "@/constants/icons/MdiIcons";
-
+import { useDisplay } from "vuetify/lib/framework";
 defineProps<{
   appTheme?: boolean;
   selectWidth: number;
   selectIconWidth: number;
 }>();
-
+const { mdAndUp } = useDisplay();
 const i18n = useI18n();
 const currentLanguage = computed(() => i18n.locale.value);
 const showMenu = ref(false);
@@ -77,8 +82,6 @@ async function changeAppLanguage(newLanguage: string) {
 <style lang="scss" scoped>
 .language-select--home-theme {
   background: transparent;
-  border: 2px solid white;
-  border-radius: 0;
   font-size: 1.5rem;
 }
 .language-select-menu--home-theme {
@@ -123,6 +126,12 @@ async function changeAppLanguage(newLanguage: string) {
   p {
     font-size: 1.2rem;
     width: 40%;
+  }
+}
+@media (min-width: 960px) {
+  .language-select--home-theme {
+    border: 2px solid white;
+    border-radius: 0;
   }
 }
 </style>

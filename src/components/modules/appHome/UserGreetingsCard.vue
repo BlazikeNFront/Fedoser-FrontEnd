@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="d-flex align-center justify-center flex-column py-4"
+    class="px-2 py-4 d-flex align-center justify-center flex-column text-center"
     width="90%"
     tag="section"
     color="yellow"

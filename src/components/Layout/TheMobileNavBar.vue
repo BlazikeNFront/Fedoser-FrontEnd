@@ -3,7 +3,7 @@
     v-model="showDrawer"
     color="violet"
     width="300"
-    class="mobile-nav-bar"
+    style="position: fixed"
   >
     <div
       class="mx-auto py-4 d-flex flex-column justify-space-between"
