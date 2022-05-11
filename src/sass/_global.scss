@@ -4,7 +4,7 @@ $primary-color-dark:#e1e1f4;
 $secondary-color: #282263;
 $tertiary-color: #ffa000;
 $forth-color:#f25767;
-$app-background:#024564;
+$app-background:rgb(28, 28, 28);
 
 $main-background-color: #f6f6fc;
 $shadow-color:rgba(0,0,0,0.4);
@@ -35,6 +35,9 @@ $main-font-color:#1b1c1c;
 }
 .shadow-bg {
 background-color: $shadow-color !important;
+}
+.app-background {
+	background-color:var(--v-theme-app-background)!important;
 }
 .app-button {
 	background-color: rgb(var(--v-theme-red));
@@ -86,7 +89,10 @@ body {
 	color: $main-font-color;
 	scroll-behavior: smooth;
 }
-
+#app {
+	margin:0 auto;
+	max-width: 1920px;
+}
 .home-form-card {
 	background-color: rgba(#024564, 0.5);
 }

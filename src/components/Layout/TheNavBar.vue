@@ -5,65 +5,69 @@
     color="app-background"
     width="300"
     border="none"
+    style="position: fixed; left: initial"
   >
-    <nav
-      class="mx-auto h-90 d-flex flex-column justify-space-around"
-      style="margin-top: 18%"
-    >
-      <h4
-        class="ml-4 pt-6 h-4 text-white-text text-center"
-        v-text="$t('global.appName')"
-      ></h4>
-      <ul
-        class="py-4 pb-12 d-flex flex-column align-end justify-center over-hidden"
+    <div class="h-100 w-100 d-flex align-center">
+      <nav
+        class="mx-auto d-flex flex-column justify-space-around"
+        style="height: clamp(750px, 100%, 850px)"
       >
-        <li
-          v-for="option in NAV_OPTIONS"
-          :key="option.name"
-          @click="$router.push({ name: option.name })"
-          class="py-6 w-100 d-flex align-end justify-end text-center text-uppercase over-hidden"
+        <h4
+          class="ml-4 pt-6 h-4 text-white-text text-center"
+          v-text="$t('global.appName')"
+        ></h4>
+        <ul
+          class="py-4 pb-12 d-flex flex-column align-end justify-center over-hidden"
         >
-          <div
-            class="menu__item pos-relative d-flex align-center justify-center pointer w-100"
+          <li
+            v-for="option in NAV_OPTIONS"
+            :key="option.name"
+            @click="$router.push({ name: option.name })"
+            class="py-6 w-100 d-flex align-end justify-end text-center text-uppercase over-hidden"
           >
-            <div class="d-flex align-center w-70">
-              <v-icon
-                style="z-index: 500"
-                :icon="option.icon"
-                color="yellow"
-                size="25"
-              />
-              <p
-                :class="[
-                  'menu__text',
-                  isRouteActive(option) ? 'menu__text--active' : '',
-                ]"
-                v-text="$t(option.text)"
-              ></p>
+            <div
+              class="menu__item pos-relative d-flex align-center justify-center pointer w-100"
+            >
+              <div class="d-flex align-center w-70">
+                <v-icon
+                  style="z-index: 500"
+                  :icon="option.icon"
+                  color="yellow"
+                  size="25"
+                />
+                <p
+                  :class="[
+                    'menu__text',
+                    isRouteActive(option) ? 'menu__text--active' : '',
+                  ]"
+                  v-text="$t(option.text)"
+                ></p>
+              </div>
+              <transition name="menuItemBackground">
+                <div
+                  v-if="isRouteActive(option)"
+                  class="menu__item--background"
+                ></div>
+              </transition>
+              <transition name="menuItemroundedSide">
+                <div
+                  v-if="isRouteActive(option)"
+                  class="menu__rounded-side"
+                ></div>
+              </transition>
             </div>
-            <transition name="menuItemBackground">
-              <div
-                v-if="isRouteActive(option)"
-                class="menu__item--background"
-              ></div>
-            </transition>
-            <transition name="menuItemroundedSide">
-              <div
-                v-if="isRouteActive(option)"
-                class="menu__rounded-side"
-              ></div>
-            </transition>
-          </div>
-        </li>
-        <v-btn
-          @click="logoutUser"
-          class="mt-8 f-15 align-self-center"
-          color="red"
-          v-text="$t('auth.logout')"
-        />
-      </ul>
-    </nav>
+          </li>
+          <v-btn
+            @click="logoutUser"
+            class="mt-8 f-15 align-self-center"
+            color="red"
+            v-text="$t('auth.logout')"
+          />
+        </ul>
+      </nav>
+    </div>
   </v-navigation-drawer>
+
   <the-mobile-app-bar v-else />
 </template>
 <script setup lang="ts">

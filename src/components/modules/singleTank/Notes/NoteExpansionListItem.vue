@@ -13,17 +13,20 @@
     <v-expansion-panel-text tag="article" class="d-flex flex-column">
       <note-display :note="note">
         <template #default>
-          <v-col cols="12" lg="6" class="d-flex align-center justify-center">
+          <v-col
+            cols="12"
+            class="d-flex flex-column flex-sm-row align-center justify-center"
+          >
             <v-btn
               @click="$emit('edit-note', note.id)"
               :disabled="loader"
-              class="edit-button mr-4 f-15 align-self-end"
+              class="edit-button my-2 mr-sm-2 f-15"
               v-text="$t('notes.editNote')"
             />
             <v-btn
               @click="deleteNote"
               :disabled="loader"
-              class="delete-button mr-4 f-15 align-self-end"
+              class="delete-button f-15"
               v-text="$t('notes.deleteNote')"
             />
           </v-col>

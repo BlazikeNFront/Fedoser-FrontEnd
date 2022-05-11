@@ -188,9 +188,19 @@ defineExpose({
   top: 50% !important;
   left: 50% !important;
   transform: translate(-50%, -50%) !important;
-  overflow-y: scroll !important;
+  height: 100%;
+  overflow-y: auto;
   max-height: initial !important;
   min-width: initial !important;
   max-width: initial !important;
+}
+@media (min-width: 960px) {
+  .v-overlay__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: initial !important;
+  }
 }
 </style>

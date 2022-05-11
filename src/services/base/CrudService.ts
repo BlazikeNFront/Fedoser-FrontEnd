@@ -3,8 +3,8 @@ import ReadonlyApiService from "@/services/base/ReadOnlyService";
 import { ApiError } from "@/types/ApiError";
 import { UploadResponse } from "@/types/UploadDataResponse";
 class ModelApiService<T> extends ReadonlyApiService<T> {
-  constructor(resource: string) {
-    super(resource);
+  constructor(resource: string, useCache = false) {
+    super(resource, useCache);
   }
 
   async create(

@@ -3,7 +3,7 @@
     <the-nav-bar />
     <v-main tag="div" :class="[mdAndUp ? '' : 'mt-10', 'w-100']">
       <the-header v-if="mdAndUp" />
-      <main class="">
+      <main class="app-background">
         <router-view v-slot="{ Component }">
           <transition name="fade" mode="out-in">
             <component :is="Component" />
@@ -11,6 +11,7 @@
         </router-view>
       </main>
     </v-main>
+
     <the-footer />
   </v-layout>
 </template>
