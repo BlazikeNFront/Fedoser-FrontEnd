@@ -81,6 +81,7 @@ async function changeAppLanguage(newLanguage: string) {
 </script>
 <style lang="scss" scoped>
 .language-select--home-theme {
+  top: 0;
   background: transparent;
   font-size: 1.5rem;
 }

@@ -39,7 +39,9 @@
     "no":"Nie",
     "temperature":"Temperatura",
     "date":"Data",
-    "number":"Numer"
+    "number":"Numer",
+    "close":"Zamknij",
+    "title":"Tytul"
   },
   "species":{
     "rainbowTrout":"Pstrag teczowy",
@@ -134,6 +136,12 @@
     "userTanks":{
       "noTanks":"Brak zapisanych zbiornikow"
     },
+      "enviroment":{
+      "temperature":"Temperatura",
+      "ammonia":"Amoniak",
+      "pH":"pH",
+      "weather":"Pogoda"
+    },
     "notes":{
       "addNote":"@:global.add notatke",
       "editNote":"@:global.edit notatke",
@@ -141,12 +149,12 @@
       "date":"Data: {date}",
       "name":"Nazwa: {name}",
       "isImportant":"Istotny: {icon}",
-      "temperature":"Temperature: {temperature}",
-      "ammonia":"Poziom amoniaku: {ammonia}",
-      "ph":"Ph: {ph}",
-      "weather":"Pogoda: {weather}",
+      "temperature":"@:enviroment.temperature : {temperature}",
+      "ammonia":"@:enviroment.ammonia : {ammonia}",
+      "ph":"@:enviroment.pH : {ph}",
+      "weather":"@:enviroment.weather : {weather}",
       "enviromantalData":"Dane srodowiskowe",
-      "addEnviromantalDataQuestion":"Czy chcesz dodac dane srodowiske ?"
+      "addEnviromantalDataQuestion":"Czy chcesz dodac dane srodowiskowe?"
     }
 
 

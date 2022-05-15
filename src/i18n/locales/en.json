@@ -11,6 +11,8 @@
      "loading":"Loading",
      "settings":"Settings",
      "add":"Add",
+      "edit":"Edit",
+    "delete":"Delete",
      ":":":",
     "tankName":"Tank name",
     "livestock":"Livestock",
@@ -36,7 +38,9 @@
     "no":"No",
     "temperature":"Temperature",
     "date":"Date",
-    "number":"Number"
+    "number":"Number",
+    "close":"Close",
+     "title":"Title"
   },
     "species":{
     "1":"Rainbow trout",
@@ -92,7 +96,11 @@
   "addedLivestock":"Current livestock",
   "addTank":"Add tank"
   },
-
+  "mainTankInformationDisplay":{
+      "name":"@:global.tankName@:global.: {name}",
+      "volume":"@:global.volume@:global.: {volume}",
+      "description":"@:global.description@:global.: {description}"
+    },
    "livestockInformation":{
     "weight":"@:global.weight (kg)",
      "meanWeight":"Mean weight (g)",
@@ -125,17 +133,26 @@
     "userTanks":{
       "noTanks":"You don't have any tanks"
     },
+     "enviroment":{
+      "temperature":"Temperature",
+      "ammonia":"Ammonia",
+      "pH":"pH",
+      "weather":"Weather"
+    },
     "notes":{
       "addNote":"@:global.add note",
+      "editNote":"@:global.edit note",
+      "deleteNote":"@:global.delete note",
       "date":"Date: {date}",
       "name":"Title: {name}",
       "isImportant":"Important: {icon}",
-      "temperature":"Temperature: {temperature}",
-      "ammonia":"Ammonia level: {ammonia}",
-      "ph":"Ph: {ph}",
-      "weather":"Weather: {weather}",
+       "temperature":"@:enviroment.temperature : {temperature}",
+      "ammonia":"@:enviroment.ammonia : {ammonia}",
+      "ph":"@:enviroment.pH : {ph}",
+      "weather":"@:enviroment.weather : {weather}",
       "enviromantalData":"Enviromental data",
       "addEnviromantalDataQuestion":"Do you want to add enviromental data ?"
     }
+   
   
 }

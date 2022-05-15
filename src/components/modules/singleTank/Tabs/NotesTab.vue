@@ -39,7 +39,7 @@ async function setNoteToEdit(noteId: string) {
   const noteToEdit = props.notes.find((note) => note.id === noteId);
   if (noteToEdit && noteEditorDialog.value) {
     editNote.value = noteToEdit;
-    noteEditorDialog.value.showDialog.push("addNoteDialog");
+    noteEditorDialog.value.toggleDialog();
     //this whole block of code will be not necessery if v-dialog comes to play
     if (noteToEdit.enviromentalData) {
       noteEditorDialog.value.showEnviromentalData = true;

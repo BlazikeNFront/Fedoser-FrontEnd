@@ -2,7 +2,7 @@
   <v-card
     class="my-2 px-4 text-white single-news"
     :style="`border: 2px solid rgb(var(--v-theme-violet));
-      background-image: url(${masterImage.url});`"
+      background-image: url(${backgroundImage.url});background-size: cover;`"
     rounded
   >
     <div class="w-100 h-100 single-news__img-filter"></div>
@@ -11,41 +11,22 @@
     >
       <h4 class="pt-4 pb-2 h-4" v-text="article.header"></h4>
 
-      <p
-        class="f-15 text-justify"
-        v-text="showWholeArticle ? article.content : shortArticleText"
-      ></p>
+      <p class="f-15 text-justify" v-text="shortArticleText"></p>
       <div class="my-2 d-flex align-center justify-end">
-        <v-btn
-          @click="showWholeArticle = !showWholeArticle"
-          class="align-self-end f-15 font-weight-bold text-light-blue shadow-bg"
-          text
-          v-text="
-            showWholeArticle ? $t('global.hide') : $t('appHome.showANews')
-          "
-        />
+        <single-news-display :article="article" />
       </div>
     </div>
   </v-card>
 </template>
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { NewsImages } from "@/types/NewsArticle";
+import { computed } from "vue";
+import { NewsArticle } from "@/types/NewsArticle";
+import SingleNewsDisplay from "@/components/modules/appHome/SingleNewsDisplay.vue";
+import useSingleNews from "@/hooks/useSingleNews";
 const props = defineProps<{
-  article: {
-    header: string;
-    content: string;
-    images: NewsImages[];
-  };
+  article: NewsArticle;
 }>();
-const showWholeArticle = ref(false);
-const masterImage = computed(
-  () =>
-    props.article.images.find((image) => image.master) || {
-      url: "https://picsum.photos/1920/1080?random",
-    }
-);
-
+const { backgroundImage } = useSingleNews(props.article);
 const shortArticleText = computed(
   () => props.article.content.split(" ").slice(0, 20).join(" ") + "..."
 );

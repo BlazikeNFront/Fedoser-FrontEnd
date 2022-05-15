@@ -106,7 +106,7 @@
           </v-col>
           <v-col cols="12"
             ><v-btn
-              class="app-button mr-4 f-15 align-self-end"
+              class="app-button mr-4 f-15 align-self-end text-white"
               block
               v-text="$t('global.save')"
               @click="addNote"
@@ -177,30 +177,35 @@ async function addNote() {
   if (result.success) toggleDialog();
 }
 defineExpose({
-  showDialog,
+  toggleDialog,
   showEnviromentalData,
   setEnviromentalData,
 });
 </script>
 <style lang="scss">
 //dialog is currently broken
-.v-overlay__content {
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  height: 100%;
-  overflow-y: auto;
-  max-height: initial !important;
-  min-width: initial !important;
-  max-width: initial !important;
-}
-@media (min-width: 960px) {
+.note-editor-dialog {
   .v-overlay__content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: initial !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    height: 100%;
+    overflow-y: auto;
+    max-height: initial !important;
+    min-width: initial !important;
+    max-width: initial !important;
+  }
+}
+
+@media (min-width: 960px) {
+  .note-editor-dialog {
+    .v-overlay__content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: initial !important;
+    }
   }
 }
 </style>

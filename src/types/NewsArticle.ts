@@ -1,5 +1,5 @@
 export interface NewsImages {
-  master: boolean;
+  background: boolean;
   url: string;
 }
 
