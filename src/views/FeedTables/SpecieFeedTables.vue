@@ -12,12 +12,14 @@ import { useRoute } from "vue-router";
 import FeedEntityService from "@/services/endpoints/Feeds";
 const { params } = useRoute();
 const isLoading = ref(false);
-const feeds = ref<FeedTable[]|null>(null)
+// const feeds = ref<FeedTable[]|null>(null)
 async function getFeedsForSpecie() {
   const response = await FeedEntityService.fetch({
     params: { specie: params.specie },
   });
-  if(response.success)
+  if (response.success) {
+    console.log(response.data);
+  }
 }
 onBeforeMount(() => getFeedsForSpecie());
 </script>

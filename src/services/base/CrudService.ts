@@ -20,7 +20,7 @@ class ModelApiService<T> extends ReadonlyApiService<T> {
       return { data: response.data, success: true };
     } catch (error: any) {
       //catch accept only unknown or any type/ its possible to work with unknown with type casting but in my opinion doing  it here its overkill
-      if (error.data as ApiError) {
+      if (error?.data as ApiError) {
         this.handleError(error.data as ApiError);
         return error.data as ApiError;
       }
@@ -43,7 +43,7 @@ class ModelApiService<T> extends ReadonlyApiService<T> {
     } catch (error: any) {
       //catch accept only unknown or any type/ its possible to work with unknown with type casting but in my opinion doing it here its overkill
 
-      if (error.data as ApiError) {
+      if (error?.data as ApiError) {
         this.handleError(error.data as ApiError);
         return error.data as ApiError;
       }
@@ -64,7 +64,7 @@ class ModelApiService<T> extends ReadonlyApiService<T> {
     } catch (error: any) {
       //catch accept only unknown or any type/ its possible to work with unknown with type casting but in my opinion  doing it here its overkill
 
-      if (error.data as ApiError) {
+      if (error?.data as ApiError) {
         this.handleError(error.data as ApiError);
         return error.data as ApiError;
       }
