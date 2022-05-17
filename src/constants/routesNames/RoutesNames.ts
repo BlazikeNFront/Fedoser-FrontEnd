@@ -8,8 +8,10 @@ export enum RoutesNames {
   ADD_TANK = "addTank",
   USER_TANKS = "userTanks",
   TANK_DETAILS = "tankDetails",
-  LIVESTOCK_MOVE = "livestockMove",
+  FEED_TABLES = "feedTables",
+  SPECIE_FEED_TABLES = "specieFeedTables",
   USER_SETTINGS = "userSettings",
+  FALLBACK = "fallback",
 }
 
 export const HomeLayoutPages: RouteRecordName[] = [

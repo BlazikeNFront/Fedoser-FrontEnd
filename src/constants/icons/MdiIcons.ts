@@ -11,4 +11,5 @@ export enum Icons {
   ACCOUNT_SETTINGS = "mdi-account-edit",
   EXIT = "mdi-close",
   MENU = "mdi-menu",
+  ALERT = "mdi-alert-octagon",
 }

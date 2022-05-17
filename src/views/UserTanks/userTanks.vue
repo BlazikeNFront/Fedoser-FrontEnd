@@ -38,7 +38,7 @@
         ></v-container>
       </v-expansion-panels>
 
-      <p v-else v-text="$t('userTanks.noTanks')"></p>
+      <p v-else class="text-center f-2" v-text="$t('userTanks.noTanks')"></p>
     </div>
   </section>
 </template>

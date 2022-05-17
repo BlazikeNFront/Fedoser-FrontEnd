@@ -77,7 +77,7 @@ const NAV_OPTIONS: NavOptions = [
   },
   {
     icon: Icons.CLIPBOARD,
-    name: RoutesNames.LIVESTOCK_MOVE,
+    name: RoutesNames.FEED_TABLES,
     text: "navBar.feedTables",
   },
   {

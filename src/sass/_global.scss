@@ -78,7 +78,9 @@ background-color: $shadow-color !important;
 .pointer {
 	cursor: pointer;
 }
-
+.text-uppercase {
+	text-transform: uppercase !important;
+}
 //GLOBALS
 body {
 	margin: 0;

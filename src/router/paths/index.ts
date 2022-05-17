@@ -3,11 +3,12 @@ import AppHome from "@/views/AppHome.vue";
 import AddTank from "@/views/Addtank/addTank.vue";
 import UserTanks from "@/views/UserTanks/userTanks.vue";
 import SingleTank from "@/views/UserTanks/singleTank.vue";
-import LivestockMove from "@/views/LivestockMove/LivestockMove.vue";
+import FeedTables from "@/views/FeedTables/FeedTables.vue";
 import UserSettings from "@/views/UserSettings/UserSettings.vue";
 import SignIn from "@/views/Home/SignIn.vue";
 import SignUp from "@/views/Home/SignUp.vue";
 import Index from "@/views/Home/index.vue";
+import SpecieFeedTables from "@/views/FeedTables/SpecieFeedTables.vue";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { RouteRecordRaw } from "vue-router";
 import { PortalRoles } from "@/constants/enums/PortalRoles";
@@ -47,15 +48,27 @@ const routes: Array<RouteRecordRaw> = [
     meta: { roles: [PortalRoles.USER] },
   },
   {
-    name: RoutesNames.LIVESTOCK_MOVE,
-    path: "/livestockMove",
-    component: LivestockMove,
+    name: RoutesNames.FEED_TABLES,
+    path: "/feedTables",
+    component: FeedTables,
+    meta: { roles: [PortalRoles.USER] },
+  },
+  {
+    name: RoutesNames.SPECIE_FEED_TABLES,
+    path: "/feedTables/:specie",
+    component: SpecieFeedTables,
     meta: { roles: [PortalRoles.USER] },
   },
   {
     name: RoutesNames.USER_SETTINGS,
     path: "/userSettings",
     component: UserSettings,
+    meta: { roles: [PortalRoles.USER] },
+  },
+  {
+    name: RoutesNames.FALLBACK,
+    path: "/:catchAll(.*)",
+    component: AppHome,
     meta: { roles: [PortalRoles.USER] },
   },
 ];
