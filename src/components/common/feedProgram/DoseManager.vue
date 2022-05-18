@@ -87,7 +87,7 @@ import { FeedDose } from "@/types/FeedDose";
 import { FeedDoseDTO } from "@/utils/DTOs/FeedDose.dto";
 import { DoseTermination } from "@/constants/enums/DoseTermination";
 import { Icons } from "@/constants/icons/MdiIcons";
-import { useFeedStore } from "@/stores/FeedsStore";
+import { useFeedTablesStore } from "@/stores/FeedTablesStore";
 import { storeToRefs } from "pinia";
 
 const props = defineProps<{
@@ -99,8 +99,8 @@ const emit = defineEmits<{
   (e: "dose-terminated", dose: FeedDose): void;
   (e: "dose-omitted", dose: FeedDose): void;
 }>();
-const { feeds } = storeToRefs(useFeedStore());
-const { getFeeds } = useFeedStore();
+const { feeds } = storeToRefs(useFeedTablesStore());
+const { getFeeds } = useFeedTablesStore();
 const isLoadingFeeds = ref(false);
 const currentDoseDate = ref(getCurrentDate());
 const currentDose = computed(

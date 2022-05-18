@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
-import { FeedStore } from "@/types/store/FeedStore";
-import FeedEntityService from "@/services/endpoints/Feeds";
-export const useFeedStore = defineStore("FeedStore", {
+import { FeedTablesStore } from "@/types/store/FeedTablesStore";
+import FeedEntityService from "@/services/endpoints/FeedTables";
+export const useFeedTablesStore = defineStore("FeedTablesStore", {
   state: () =>
     ({
       feeds: [],
-    } as FeedStore),
+    } as FeedTablesStore),
   actions: {
     async getFeeds() {
       const response = await FeedEntityService.fetch();

@@ -14,15 +14,10 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted } from "vue";
 import UserGreetingsCard from "@/components/modules/appHome/UserGreetingsCard.vue";
 import NewsSection from "@/components/modules/appHome/NewsSection.vue";
 import TodayActions from "@/components/modules/appHome/TodayActions.vue";
 import { useDisplay } from "vuetify/lib/framework";
-import { useFeedStore } from "@/stores/FeedsStore";
+
 const { lgAndUp } = useDisplay();
-const { getFeeds } = useFeedStore();
-onMounted(() => {
-  getFeeds();
-});
 </script>

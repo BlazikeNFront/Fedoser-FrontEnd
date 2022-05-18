@@ -12,4 +12,5 @@ export enum Icons {
   EXIT = "mdi-close",
   MENU = "mdi-menu",
   ALERT = "mdi-alert-octagon",
+  DOWNLOAD = "mdi-download",
 }

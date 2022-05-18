@@ -20,14 +20,12 @@ export default class ReadonlyApiService<T> extends BaseService {
     const url = this.getEndpointUrl(id, resourceSuffix, resourcePrefix);
     try {
       if (this.useCache) {
-        const cachedResponse = await this.getItemFromIndexedDB<T>(
-          this.getEndpointUrl()
-        );
+        const cachedResponse = await this.getItemFromIndexedDB<T>(url);
         if (cachedResponse) return { data: cachedResponse.data, success: true };
       }
       const response = await AxiosInstance.get<T>(url);
       if (this.useCache) {
-        await this.setItemInIndexedDB<T>(this.getEndpointUrl(), response.data);
+        await this.setItemInIndexedDB<T>(url, response.data);
       }
       return { data: response.data, success: true };
     } catch (error: any) {
@@ -48,17 +46,12 @@ export default class ReadonlyApiService<T> extends BaseService {
 
     try {
       if (this.useCache) {
-        const cachedResponse = await this.getItemFromIndexedDB<T[]>(
-          this.getEndpointUrl()
-        );
+        const cachedResponse = await this.getItemFromIndexedDB<T[]>(url);
         if (cachedResponse) return { data: cachedResponse.data, success: true };
       }
       const response = await AxiosInstance.get<T[]>(url, config);
       if (this.useCache) {
-        await this.setItemInIndexedDB<T[]>(
-          this.getEndpointUrl(),
-          response.data
-        );
+        await this.setItemInIndexedDB<T[]>(url, response.data);
       }
       return { data: response.data, success: true };
     } catch (error: any) {
