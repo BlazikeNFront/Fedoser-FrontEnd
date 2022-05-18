@@ -18,12 +18,21 @@ export default class ReadonlyApiService<T> extends BaseService {
     resourcePrefix?: string
   ): Promise<GetResponse<T> | ApiError> {
     const url = this.getEndpointUrl(id, resourceSuffix, resourcePrefix);
+
     try {
       if (this.useCache) {
         const cachedResponse = await this.getItemFromIndexedDB<T>(url);
+
         if (cachedResponse) return { data: cachedResponse.data, success: true };
       }
-      const response = await AxiosInstance.get<T>(url);
+      let response;
+      if (resourceSuffix?.includes("pdf")) {
+        response = await AxiosInstance.get<T>(url, {
+          responseType: "blob",
+        });
+        return { data: response.data, success: true };
+      } else response = await AxiosInstance.get<T>(url);
+
       if (this.useCache) {
         await this.setItemInIndexedDB<T>(url, response.data);
       }

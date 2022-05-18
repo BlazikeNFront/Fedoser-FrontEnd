@@ -1,10 +1,17 @@
 import ReadonlyApiService from "@/services/base/ReadOnlyService";
+import BaseApiService from "@/services/base/BaseService";
 import { FeedTablesForSpecieDTO } from "@/utils/DTOs/FeedTablesForSpecie.dto";
 
-class FeedTablesService extends ReadonlyApiService<FeedTablesForSpecieDTO> {
+class FeedTablesDataService extends ReadonlyApiService<FeedTablesForSpecieDTO> {
   constructor() {
     super("feedTables", true);
   }
 }
+class FeedTablesPdfDataService extends ReadonlyApiService<Blob> {
+  constructor() {
+    super("feedTables");
+  }
+}
 
-export default new FeedTablesService();
+export const FeedTablesService = new FeedTablesDataService();
+export const FeedTablesPdfService = new FeedTablesPdfDataService();

@@ -6,7 +6,7 @@
     <v-img
       v-if="specieImageSrc"
       :src="specieImageSrc"
-      class="mx-auto"
+      class="mx-auto radius-4"
       style="width: clamp(300px, 100%, 600px)"
     />
     <v-expansion-panels v-if="feedsTables">
@@ -41,6 +41,7 @@
                         <v-btn
                           class="f-2"
                           :label="$t('feedTables.downloadFeedTable')"
+                          :loading="isDownloadingTablePdf"
                           color="red"
                           :icon="Icons.DOWNLOAD"
                           @click="downloadFeedTable(table.fileName)"
@@ -60,13 +61,18 @@
 <script setup lang="ts">
 import { ref, computed, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
-import FeedEntityService from "@/services/endpoints/FeedTables";
+import {
+  FeedTablesService,
+  FeedTablesPdfService,
+} from "@/services/endpoints/FeedTables";
 import { Species } from "@/constants/enums/Species";
 import { FeedTablesForSpecie } from "@/types/FeedTablesForSpecie";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { camelizeString } from "@/helpers/stringOperations";
+
 const { params } = useRoute();
 const isLoading = ref(false);
+const isDownloadingTablePdf = ref(false);
 // const feeds = ref<FeedTable[]|null>(null)
 const feedsTables = ref<FeedTablesForSpecie | null>(null);
 const specieImageSrc = computed(() =>
@@ -74,7 +80,7 @@ const specieImageSrc = computed(() =>
 );
 async function getFeedsForSpecie() {
   isLoading.value = true;
-  const response = await FeedEntityService.get(
+  const response = await FeedTablesService.get(
     String(Species[changeRouteParamToEnumValue() as keyof typeof Species])
   );
   if (response.success) {
@@ -89,7 +95,15 @@ function changeRouteParamToEnumValue() {
   else return specie.replaceAll(" ", "_").toUpperCase();
 }
 async function downloadFeedTable(fileName: string) {
-  console.log(fileName);
+  isDownloadingTablePdf.value = true;
+  const response = await FeedTablesPdfService.get(
+    String(Species[changeRouteParamToEnumValue() as keyof typeof Species]),
+    fileName
+  );
+  if (response.success) {
+    window.open(URL.createObjectURL(response.data));
+  }
+  isDownloadingTablePdf.value = false;
 }
 onBeforeMount(() => getFeedsForSpecie());
 </script>

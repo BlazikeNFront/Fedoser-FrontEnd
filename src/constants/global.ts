@@ -12,3 +12,8 @@ export enum InputTypes {
 export enum Weight {
   GRAMS_IN_KILOGRAMS = 1000,
 }
+
+export enum ResponseTypes {
+  PDF = "application/pdf",
+  ARRAYBUFFER = "arraybuffer",
+}

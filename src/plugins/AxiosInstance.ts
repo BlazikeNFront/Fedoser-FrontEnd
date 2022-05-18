@@ -1,4 +1,5 @@
 import axios from "axios";
+import { i18nInstance } from "@/i18n/i18n";
 
 const AxiosInstance = axios.create({
   baseURL:
@@ -13,12 +14,19 @@ const AxiosInstance = axios.create({
     "Content-type": "application/json; charset=UTF-8",
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+    "X-User-Lang": `${i18nInstance.global.locale.value}`,
   },
   withCredentials: true,
 });
 
 AxiosInstance.interceptors.response.use(
-  (data) => data,
+  (response) => {
+    console.log(response.headers["content-type"] === "application/pdf");
+    if (response.headers["content-type"] === "application/pdf") {
+      return response;
+    }
+    return response;
+  },
   (error) => {
     throw error.response;
   }
