@@ -32,19 +32,43 @@
                   class="d-flex align-center justify-space-around"
                   color="transparent"
                 >
-                  <p class="f-2 font-weight-bold">
+                  <p class="f-15 font-weight-bold">
                     {{ `${$t("feedTables.feedQuality")} ${table.quality}` }}
                   </p>
                   <v-tooltip anchor="bottom"
                     ><template #activator="{ props }">
                       <div v-bind="props">
                         <v-btn
-                          class="f-2"
+                          class="f-15"
                           :label="$t('feedTables.downloadFeedTable')"
-                          :loading="isDownloadingTablePdf"
+                          :disabled="isDownloadingTablePdf"
+                          color="blue"
+                          size="small"
+                          :icon="Icons.MAGNIFY_GLASS"
+                          @click="
+                            fetchTable(
+                              table.fileName,
+                              PdfActions.OPEN_IN_NEW_WINDOW
+                            )
+                          "
+                        />
+                      </div>
+                    </template>
+                    <p class="f-15" v-text="$t('feedTable.downloadFeedTable')"
+                  /></v-tooltip>
+                  <v-tooltip anchor="bottom"
+                    ><template #activator="{ props }">
+                      <div v-bind="props">
+                        <v-btn
+                          class="f-15"
+                          :label="$t('feedTables.downloadFeedTable')"
+                          :disabled="isDownloadingTablePdf"
                           color="red"
+                          size="small"
                           :icon="Icons.DOWNLOAD"
-                          @click="downloadFeedTable(table.fileName)"
+                          @click="
+                            fetchTable(table.fileName, PdfActions.DOWNLOAD)
+                          "
                         />
                       </div>
                     </template>
@@ -69,11 +93,14 @@ import { Species } from "@/constants/enums/Species";
 import { FeedTablesForSpecie } from "@/types/FeedTablesForSpecie";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { camelizeString } from "@/helpers/stringOperations";
-
+import { PdfActions } from "@/constants/enums/PdfActions";
+import useOnPdfResponse from "@/hooks/useOnPdfResponse";
 const { params } = useRoute();
+
+const { downloadPdf, openPdfInNewWindow } = useOnPdfResponse();
+
 const isLoading = ref(false);
 const isDownloadingTablePdf = ref(false);
-// const feeds = ref<FeedTable[]|null>(null)
 const feedsTables = ref<FeedTablesForSpecie | null>(null);
 const specieImageSrc = computed(() =>
   require(`@/assets/species/${camelizeString(params.specie as string)}.jpg`)
@@ -94,17 +121,20 @@ function changeRouteParamToEnumValue() {
     return specie[0].replaceAll(" ", "_").toUpperCase();
   else return specie.replaceAll(" ", "_").toUpperCase();
 }
-async function downloadFeedTable(fileName: string) {
+async function fetchTable(fileName: string, typeOfPdfAction: PdfActions) {
   isDownloadingTablePdf.value = true;
   const response = await FeedTablesPdfService.get(
     String(Species[changeRouteParamToEnumValue() as keyof typeof Species]),
     fileName
   );
   if (response.success) {
-    window.open(URL.createObjectURL(response.data));
+    typeOfPdfAction == PdfActions.DOWNLOAD
+      ? downloadPdf(response.data, fileName)
+      : openPdfInNewWindow(response.data);
   }
   isDownloadingTablePdf.value = false;
 }
+
 onBeforeMount(() => getFeedsForSpecie());
 </script>
 

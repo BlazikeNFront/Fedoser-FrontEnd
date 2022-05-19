@@ -13,4 +13,5 @@ export enum Icons {
   MENU = "mdi-menu",
   ALERT = "mdi-alert-octagon",
   DOWNLOAD = "mdi-download",
+  MAGNIFY_GLASS = "mdi-magnify",
 }

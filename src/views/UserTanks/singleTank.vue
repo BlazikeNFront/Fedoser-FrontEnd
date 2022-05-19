@@ -36,7 +36,6 @@ import TankService from "@/services/endpoints/Tank";
 import { API_DATA_KEY } from "@/constants/global";
 import { useTankStore } from "@/stores/TankStore";
 import { storeToRefs } from "pinia";
-import FeedInformationDisplay from "@/components/common/Displays/FeedInformationDisplay.vue";
 import FeedProgramTab from "@/components/modules/singleTank/Tabs/FeedProgramTab.vue";
 // for some reason v-tabs always update as number - maybe its's vuetify beta 'feature'... When it will operate also on string array could be reduced to arrays of texts =>[]string
 const TABS = [

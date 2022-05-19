@@ -8,6 +8,7 @@ export const useFeedTablesStore = defineStore("FeedTablesStore", {
     } as FeedTablesStore),
   actions: {
     async getFeeds() {
+      console.log("store");
       const response = await FeedTablesService.fetch();
       if (response.success) this.feeds = response.data;
     },
