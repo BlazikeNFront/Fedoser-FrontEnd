@@ -15,21 +15,29 @@ export const FEEDS: Feed[] = [
   {
     name: "Aller Aqua Futura",
     size: "0.1-0.5",
-    fcr: 0.7,
+
+    quality: 1,
+    fileName: "string",
   },
   {
-    name: "Aller Aqua Brone",
-    size: "0.5-1",
-    fcr: 0.8,
+    name: "Aller Aqua Futura 2",
+    size: "0.1-0.5",
+
+    quality: 1,
+    fileName: "string",
   },
   {
-    name: "Aller Aqua Silver",
-    size: "1-2",
-    fcr: 0.9,
+    name: "Aller Aqua Futura 3",
+    size: "0.1-0.5",
+
+    quality: 1,
+    fileName: "string",
   },
   {
-    name: "Aller Aqua Gold",
-    size: "2-5",
-    fcr: 1,
+    name: "Aller Aqua Futura 4",
+    size: "0.1-0.5",
+
+    quality: 1,
+    fileName: "string",
   },
 ];

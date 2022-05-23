@@ -1,5 +1,8 @@
+import { FeedQuality } from "@/constants/enums/FeedQuality";
 export interface Feed {
   name: string;
   size: string;
-  fcr: number;
+  quality: FeedQuality;
+  fileName: string;
+  _id?: string | null;
 }

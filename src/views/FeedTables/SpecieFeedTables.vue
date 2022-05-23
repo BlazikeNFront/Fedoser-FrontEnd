@@ -13,17 +13,17 @@
       <v-container
         ><v-row
           ><v-col
-            cols="12"
-            sm="6"
             v-for="(table, index) in feedsTables.feedTables"
             :key="index"
+            cols="12"
+            sm="6"
           >
             <v-expansion-panel class="feedTables__table-list-item">
               <v-expansion-panel-title class="f-2 text-center">
-                <p>
-                  {{ table.feedName }}
+                <p class="text-center w-100">
+                  {{ table.name }}
                   <span
-                    class="font-weight-bold"
+                    class="mt-1 d-block font-weight-bold"
                     v-text="`${table.size}mm`"
                   /></p
               ></v-expansion-panel-title>
@@ -91,28 +91,63 @@ import {
 } from "@/services/endpoints/FeedTables";
 import { Species } from "@/constants/enums/Species";
 import { FeedTablesForSpecie } from "@/types/FeedTablesForSpecie";
+import FeedService from "@/services/endpoints/Feeds";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { camelizeString } from "@/helpers/stringOperations";
 import { PdfActions } from "@/constants/enums/PdfActions";
+import { Feed } from "@/types/Feed";
+import { FeedDTO } from "@/utils/DTOs/Feed.dto";
 import useOnPdfResponse from "@/hooks/useOnPdfResponse";
+import { GetResponse } from "@/types/GetResponse";
+import { ApiError } from "@/types/ApiError";
+import { SingleFeedTableForSpecieWithFeedDetails } from "@/types/FeedTablesForSpecie";
 const { params } = useRoute();
 
 const { downloadPdf, openPdfInNewWindow } = useOnPdfResponse();
 
 const isLoading = ref(false);
 const isDownloadingTablePdf = ref(false);
-const feedsTables = ref<FeedTablesForSpecie | null>(null);
+const feedsTables = ref<FeedTablesForSpecie<
+  SingleFeedTableForSpecieWithFeedDetails[]
+> | null>(null);
+
 const specieImageSrc = computed(() =>
   require(`@/assets/species/${camelizeString(params.specie as string)}.jpg`)
 );
+async function getFeedTablesDetails(feedsId: string[]): Promise<Feed[]> {
+  let requests: Promise<ApiError | GetResponse<FeedDTO>>[] = [];
+  feedsId.forEach((feedId) => {
+    console.log(feedId);
+    requests.push(FeedService.get(feedId));
+  });
+  const feedDetailsResponses = await Promise.all(requests);
+  return feedDetailsResponses
+    .filter(
+      (singleResponse): singleResponse is GetResponse<FeedDTO> =>
+        singleResponse.success
+    )
+    .map((getResponssesData) => getResponssesData.data);
+}
 async function getFeedsForSpecie() {
   isLoading.value = true;
   const response = await FeedTablesService.get(
     String(Species[changeRouteParamToEnumValue() as keyof typeof Species])
   );
   if (response.success) {
-    feedsTables.value = response.data;
+    const feedDetails = await getFeedTablesDetails(
+      response.data.feedTables.map((feedTable) => feedTable.feedId)
+    );
+    response.data.feedTables = response.data.feedTables.map(
+      (feedTable, index) => ({
+        ...feedTable,
+        ...feedDetails[index],
+      })
+    );
+    feedsTables.value = response.data as FeedTablesForSpecie<
+      SingleFeedTableForSpecieWithFeedDetails[]
+    >;
   }
+
   isLoading.value = false;
 }
 function changeRouteParamToEnumValue() {

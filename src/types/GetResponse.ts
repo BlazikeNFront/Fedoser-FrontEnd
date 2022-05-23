@@ -1,4 +1,4 @@
 export interface GetResponse<T> {
   data: T;
-  success: boolean;
+  success: true;
 }

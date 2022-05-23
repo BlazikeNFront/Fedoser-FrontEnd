@@ -21,7 +21,6 @@ const AxiosInstance = axios.create({
 
 AxiosInstance.interceptors.response.use(
   (response) => {
-    console.log(response.headers["content-type"] === "application/pdf");
     if (response.headers["content-type"] === "application/pdf") {
       return response;
     }
