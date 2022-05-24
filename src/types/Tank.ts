@@ -1,12 +1,42 @@
-import { LivestockInformation } from "@/types/Livestock";
-import { MainTankInformation } from "@/types/MainTankInformation";
-import { FeedInformation } from "@/types/FeedInfomation";
-import { TankNote } from "@/types/TankAnnotation";
+import {
+  FeedProgramUpdateFrequency,
+  TypesOfFeedProgram,
+} from "@/constants/enums/Feed";
+import { FeedDose, Feed } from "@/types/Feed";
+import { EnviromentalData } from "@/types/EnviromentalData";
+import { SingleLivestockSpecie } from "@/types/Livestock";
 
+export interface MainTankInformation {
+  name: string;
+  volume: number;
+  description?: string;
+}
+export interface TankFeedInformation {
+  currentFeed: Feed | null;
+  usedFeedTotalWeight: number;
+  feedProgram: FeedDose[];
+  typeOfProgram: TypesOfFeedProgram;
+  doseUpdateFrequency: FeedProgramUpdateFrequency | null;
+  currentLivestockWeight: number | null;
+}
+
+export interface LivestockInformation {
+  livestock: SingleLivestockSpecie[];
+  initialLivestockWeight: number;
+}
+
+export interface TankNote {
+  id?: string;
+  date: string;
+  title: string;
+  description: string | null;
+  enviromentalData: EnviromentalData | null;
+  isImportant: boolean;
+}
 export interface Tank {
   _id?: string;
   mainTankInformation: MainTankInformation;
   annotations: Required<TankNote>[];
   livestockInformation: LivestockInformation;
-  feedInformation: FeedInformation;
+  feedInformation: TankFeedInformation;
 }

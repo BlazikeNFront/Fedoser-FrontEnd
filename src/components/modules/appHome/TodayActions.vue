@@ -10,8 +10,9 @@
       <v-list color="light-yellow" tag="ul">
         <v-list-item
           v-for="(action, index) in todayActions"
-          :key="`${action.tankId}${index}`"
+          :key="index"
           tag="li"
+          v-text="action"
         />
       </v-list>
     </section>
@@ -19,10 +20,10 @@
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { TankAction } from "@/types/TankAction";
+
 import { Icons } from "@/constants/icons/MdiIcons";
 import LoaderCommon from "@/components/common/Loader.vue";
-const todayActions = ref<TankAction[]>([]);
+const todayActions = ref<string[]>([]);
 const loader = ref(false);
 
 async function getListOfTodayActions() {

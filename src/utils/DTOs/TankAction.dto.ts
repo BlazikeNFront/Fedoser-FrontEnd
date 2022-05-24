@@ -1,6 +1,4 @@
-import { TankAction } from "@/types/TankAction";
-
-export class TankActionDTO implements TankAction {
+export class TankActionDTO {
   tankId: string;
 
   constructor(tankId: string) {

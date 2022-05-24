@@ -37,17 +37,17 @@
   </v-card>
 </template>
 <script setup lang="ts">
-import MainTankInformationDisplay from "@/components/common/Displays/MainTankInformationDisplay.vue";
-import LivestockList from "@/components/common/Displays/LivestockList.vue";
-import FeedInformationDisplay from "@/components/common/Displays/FeedInformationDisplay.vue";
-import { MainTankInformation } from "@/types/MainTankInformation";
-import { LivestockInformation } from "@/types/Livestock";
-import { FeedInformation } from "@/types/FeedInfomation";
+import MainTankInformationDisplay from "@/components/common/Tank/MainTankInformationDisplay.vue";
+import LivestockList from "@/components/common/Livestock/LivestockList.vue";
+import FeedInformationDisplay from "@/components/common/Feed/FeedInformationDisplay.vue";
+import { MainTankInformation } from "@/types/Tank";
+import { LivestockInformation } from "@/types/Tank";
+import { TankFeedInformation } from "@/types/Tank";
 
 defineProps<{
   mainTankInformation: MainTankInformation;
   livestockInformation: LivestockInformation;
-  feedInformation: FeedInformation;
+  feedInformation: TankFeedInformation;
 }>();
 </script>
 <style lang="scss">

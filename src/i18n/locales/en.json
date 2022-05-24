@@ -40,14 +40,11 @@
     "date":"Date",
     "number":"Number",
     "close":"Close",
-     "title":"Title"
+     "title":"Title",
+     "efficiency":"Efficiency"
   },
-    "species":{
-    "1":"Rainbow trout",
-    "2":"Salmon",
-    "3":"Tilapipa",
-    "4":"Brook trout",
-    "5":"Whitefish"
+   "species":{
+    "0":"Rainbow Trout"
   },
    "rules":{
     "fieldRequired":"Field required",
@@ -63,7 +60,9 @@
     "signUp":"Sign up",
     "notHaveAccount":"You don't have an account? {button} to sign up",
     "alreadyHaveAccount":"You already have an account? {button} to login",
+    "clickHereToSignUp":"{button} to create account",
     "unauthorized":"Incorrect email or password",
+    "passwordsDoNotMatchMessage":"Passwords do not match",
     "logout":"Logout"
   },
   "appHome":{
@@ -121,7 +120,11 @@
       "markAsDone":"Execute",
       "markAsOmitted":"Omit",
       "weightGainedAfterDose":"Gained weight (kg)",
-      "showTerminateDoses":"Show program history"
+      "showTerminateDoses":"Show program history",
+      "lowQuality":"Low",
+      "hightQuality":"High",
+      "feedQualityLegend":"Determination of the efficiency and quality of feeds",
+      "feedQuality":"Feed quality"
     },
     "tank":{
       "noLivestockIsSet":"The tank  doesn't have livestock. {button} to add livestock",
@@ -152,7 +155,10 @@
       "weather":"@:enviroment.weather : {weather}",
       "enviromantalData":"Enviromental data",
       "addEnviromantalDataQuestion":"Do you want to add enviromental data ?"
+    },
+    "feedTables":{
+      "downloadFeedTable":"Download table",
+      "openFeedTable":"Open in new window",
+      "tableForSpecie":"Feed tables"
     }
-   
-  
 }

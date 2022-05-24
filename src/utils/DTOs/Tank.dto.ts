@@ -1,8 +1,11 @@
 import { Tank } from "@/types/Tank";
-import { LivestockInformation } from "@/types/Livestock";
-import { MainTankInformation } from "@/types/MainTankInformation";
-import { FeedInformation } from "@/types/FeedInfomation";
-import { TankNote } from "@/types/TankAnnotation";
+import {
+  LivestockInformation,
+  MainTankInformation,
+  TankFeedInformation,
+  TankNote,
+} from "@/types/Tank";
+
 import { LivestockInformationDTO } from "@/utils/DTOs/LivestockInformation.dto";
 import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
 
@@ -11,7 +14,7 @@ export class TankDTO {
   mainTankInformation: MainTankInformation;
   annotations: Required<TankNote>[];
   livestockInformation: LivestockInformation;
-  feedInformation: FeedInformation;
+  feedInformation: TankFeedInformation;
   constructor(tank: Tank) {
     const {
       _id,

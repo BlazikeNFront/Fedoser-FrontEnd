@@ -1,4 +1,5 @@
-import { LivestockInformation, SingleLivestockSpecie } from "@/types/Livestock";
+import { SingleLivestockSpecie } from "@/types/Livestock";
+import { LivestockInformation } from "@/types/Tank";
 
 export class LivestockInformationDTO implements LivestockInformation {
   livestock: SingleLivestockSpecie[];

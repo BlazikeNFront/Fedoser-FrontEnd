@@ -1,14 +1,20 @@
 <template>
-  <v-card tag="section" color="violet" class="px-3 py-2">
+  <v-card
+    tag="section"
+    color="violet"
+    class="d-flex flex-column align-center justify-center px-3 py-2"
+  >
     <h2 class="text-h2 my-2 text-center">
-      {{ $t("feedTables.tableFor") }} <span v-text="$route.params.specie" />
+      {{ $t("feedTables.tableForSpecie") }}
     </h2>
+    <h3 class="text-h3">{{ specieEnumValue }}</h3>
     <v-img
       v-if="specieImageSrc"
       :src="specieImageSrc"
-      class="mx-auto radius-4"
+      class="mx-auto my-3 radius-4"
       style="width: clamp(300px, 100%, 600px)"
     />
+    <feed-quality-legend />
     <v-expansion-panels v-if="feedsTables">
       <v-container
         ><v-row
@@ -29,11 +35,15 @@
               ></v-expansion-panel-title>
               <v-expansion-panel-text>
                 <v-sheet
-                  class="d-flex align-center justify-space-around"
+                  class="mx-auto d-flex align-center justify-space-around"
                   color="transparent"
+                  max-width="400"
                 >
-                  <p class="f-15 font-weight-bold">
-                    {{ `${$t("feedTables.feedQuality")} ${table.quality}` }}
+                  <p class="d-flex align-center f-15 font-weight-bold">
+                    {{ $t("feedInformation.feedQuality") }}
+                    <span class="ml-2"
+                      ><feed-quality-display :quality="+table.quality"
+                    /></span>
                   </p>
                   <v-tooltip anchor="bottom"
                     ><template #activator="{ props }">
@@ -54,7 +64,7 @@
                         />
                       </div>
                     </template>
-                    <p class="f-15" v-text="$t('feedTable.downloadFeedTable')"
+                    <p class="f-15" v-text="$t('feedTables.openFeedTable')"
                   /></v-tooltip>
                   <v-tooltip anchor="bottom"
                     ><template #activator="{ props }">
@@ -72,7 +82,7 @@
                         />
                       </div>
                     </template>
-                    <p class="f-15" v-text="$t('feedTable.downloadFeedTable')"
+                    <p class="f-15" v-text="$t('feedTables.downloadFeedTable')"
                   /></v-tooltip>
                 </v-sheet>
               </v-expansion-panel-text>
@@ -83,6 +93,8 @@
 </template>
 
 <script setup lang="ts">
+import FeedQualityLegend from "@/components/common/Feed/FeedQuality/FeedQualityLegend.vue";
+import FeedQualityDisplay from "@/components/common/Feed/FeedQuality/FeedQualityDisplay.vue";
 import { ref, computed, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
 import {
@@ -90,7 +102,10 @@ import {
   FeedTablesPdfService,
 } from "@/services/endpoints/FeedTables";
 import { Species } from "@/constants/enums/Species";
-import { FeedTablesForSpecie } from "@/types/FeedTablesForSpecie";
+import {
+  FeedTablesForSpecie,
+  SingleFeedTableForSpecie,
+} from "@/types/FeedTablesForSpecie";
 import FeedService from "@/services/endpoints/Feeds";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { camelizeString } from "@/helpers/stringOperations";
@@ -98,11 +113,10 @@ import { PdfActions } from "@/constants/enums/PdfActions";
 import { Feed } from "@/types/Feed";
 import { FeedDTO } from "@/utils/DTOs/Feed.dto";
 import useOnPdfResponse from "@/hooks/useOnPdfResponse";
-import { GetResponse } from "@/types/GetResponse";
-import { ApiError } from "@/types/ApiError";
+import { GetResponse, ApiError } from "@/types/ApiResponses";
 import { SingleFeedTableForSpecieWithFeedDetails } from "@/types/FeedTablesForSpecie";
-const { params } = useRoute();
 
+const { params } = useRoute();
 const { downloadPdf, openPdfInNewWindow } = useOnPdfResponse();
 
 const isLoading = ref(false);
@@ -110,16 +124,15 @@ const isDownloadingTablePdf = ref(false);
 const feedsTables = ref<FeedTablesForSpecie<
   SingleFeedTableForSpecieWithFeedDetails[]
 > | null>(null);
-
+const specieEnumValue = computed(() =>
+  String(Species[changeRouteParamToEnumValue() as keyof typeof Species])
+);
 const specieImageSrc = computed(() =>
   require(`@/assets/species/${camelizeString(params.specie as string)}.jpg`)
 );
 async function getFeedTablesDetails(feedsId: string[]): Promise<Feed[]> {
   let requests: Promise<ApiError | GetResponse<FeedDTO>>[] = [];
-  feedsId.forEach((feedId) => {
-    console.log(feedId);
-    requests.push(FeedService.get(feedId));
-  });
+  feedsId.forEach((feedId) => requests.push(FeedService.get(feedId)));
   const feedDetailsResponses = await Promise.all(requests);
   return feedDetailsResponses
     .filter(
@@ -130,15 +143,15 @@ async function getFeedTablesDetails(feedsId: string[]): Promise<Feed[]> {
 }
 async function getFeedsForSpecie() {
   isLoading.value = true;
-  const response = await FeedTablesService.get(
-    String(Species[changeRouteParamToEnumValue() as keyof typeof Species])
-  );
+  const response = await FeedTablesService.get(specieEnumValue.value);
   if (response.success) {
     const feedDetails = await getFeedTablesDetails(
-      response.data.feedTables.map((feedTable) => feedTable.feedId)
+      response.data.feedTables.map(
+        (feedTable: SingleFeedTableForSpecie) => feedTable.feedId
+      )
     );
     response.data.feedTables = response.data.feedTables.map(
-      (feedTable, index) => ({
+      (feedTable: SingleFeedTableForSpecie, index: number) => ({
         ...feedTable,
         ...feedDetails[index],
       })
@@ -159,7 +172,7 @@ function changeRouteParamToEnumValue() {
 async function fetchTable(fileName: string, typeOfPdfAction: PdfActions) {
   isDownloadingTablePdf.value = true;
   const response = await FeedTablesPdfService.get(
-    String(Species[changeRouteParamToEnumValue() as keyof typeof Species]),
+    specieEnumValue.value,
     fileName
   );
   if (response.success) {

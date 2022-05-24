@@ -41,14 +41,11 @@
     "date":"Data",
     "number":"Numer",
     "close":"Zamknij",
-    "title":"Tytul"
+    "title":"Tytul",
+    "efficiency":"Wydajnosc"
   },
   "species":{
-    "rainbowTrout":"Pstrag teczowy",
-    "salmon":"Losos",
-    "tilapia":"Tilapia",
-    "brookTrout":"Pstrag zrodlany",
-    "whitefish":"Sieja"
+    "0":"Pstrag teczowy"
   },
   "rules":{
     "fieldRequired":"Pole wymagane",
@@ -66,6 +63,7 @@
     "alreadyHaveAccount":"Masz juz konto? {button} zeby sie zalogowac",
     "clickHereToSignUp":"{button} zeby sie zalozyc konto",
     "unauthorized":"Nieprawidlowy email lub haslo",
+    "passwordsDoNotMatchMessage":"Hasla nie sa identyczne",
     "logout":"Wyloguj"
   },
     "appHome":{
@@ -119,7 +117,11 @@
       "markAsOmitted":"Pomin",
       "weightGainedAfterDose":"Przybrana masa (kg)",
       "doseWeight":"Dawka (g)",
-      "showTerminateDoses":"Pokaz historie programu"
+      "showTerminateDoses":"Pokaz historie programu",
+      "lowQuality":"Niska",
+      "hightQuality":"Wysoka",
+      "feedQualityLegend":"Oznaczenia wydajnosci i jakosci pasz",
+      "feedQuality":"wydajnosc pasz"
   
     },
     "mainTankInformationDisplay":{
@@ -155,7 +157,11 @@
       "weather":"@:enviroment.weather : {weather}",
       "enviromantalData":"Dane srodowiskowe",
       "addEnviromantalDataQuestion":"Czy chcesz dodac dane srodowiskowe?"
+    },
+    "feedTables":{
+      "downloadFeedTable":"Pobierz tabele",
+      "openFeedTable":"Otworz tabele w nowym oknie",
+      "tableForSpecie":"Tabele paszowe"
     }
-
 
 }

@@ -1,5 +1,5 @@
 import { EnviromentalData } from "@/types/EnviromentalData";
-import { TankNote } from "@/types/TankAnnotation";
+import { TankNote } from "@/types/Tank";
 export class TankNoteDto implements TankNote {
   id?: string;
   date: string;
@@ -11,7 +11,7 @@ export class TankNoteDto implements TankNote {
   constructor(tankNote: TankNote) {
     const { id, date, title, description, enviromentalData, isImportant } =
       tankNote;
-    console.log(enviromentalData);
+
     this.id = id;
     this.date = date;
     this.title = title;

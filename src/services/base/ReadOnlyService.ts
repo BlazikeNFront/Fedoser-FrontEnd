@@ -1,7 +1,6 @@
 import AxiosInstance from "@/plugins/AxiosInstance";
 import BaseService from "./BaseService";
-import { ApiError } from "@/types/ApiError";
-import { GetResponse } from "@/types/GetResponse";
+import { ApiError, GetResponse } from "@/types/ApiResponses";
 import { TimeInMiliseconds } from "@/constants/enums/Time";
 import { CachedResponse } from "@/types/CachedResponse";
 import localForage from "localforage";

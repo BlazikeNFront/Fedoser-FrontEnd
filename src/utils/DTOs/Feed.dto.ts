@@ -1,5 +1,5 @@
 import { Feed } from "@/types/Feed";
-import { FeedQuality } from "@/constants/enums/FeedQuality";
+import { FeedQuality } from "@/constants/enums/Feed";
 
 export class FeedDTO implements Feed {
   name: string;

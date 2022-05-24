@@ -32,11 +32,11 @@
 <script setup lang="ts">
 import { useTankStore } from "@/stores/TankStore";
 import { storeToRefs } from "pinia";
-import DoseManager from "@/components/common/feedProgram/DoseManager.vue";
-import FeedInformationDisplay from "@/components/common/Displays/FeedInformationDisplay.vue";
-import TerminatedDoseList from "@/components/common/feedProgram/TerminatedDoseList.vue";
+import DoseManager from "@/components/modules/singleTank/FeedProgram/DoseManager.vue";
+import FeedInformationDisplay from "@/components/common/Feed/FeedInformationDisplay.vue";
+import TerminatedDoseList from "@/components/modules/singleTank/FeedProgram/TerminatedDoseList.vue";
 import { FeedInformationDoseService } from "@/services/endpoints/TankFeedInformation";
-import { FeedDose } from "@/types/FeedDose";
+import { FeedDose } from "@/types/Feed";
 import { TerminatedFeedDoseDTO } from "@/utils/DTOs/TerminatedFeedDose.dto";
 const { tank } = storeToRefs(useTankStore());
 

@@ -38,10 +38,10 @@
   </v-container>
 </template>
 <script setup lang="ts">
-import MainTankInformationDisplay from "@/components/common/Displays/MainTankInformationDisplay.vue";
-import LivestockWeightDisplay from "@/components/common/TankBasicInfoDisplays/LivestockWeightDisplay.vue";
-import MainSpecieDisplay from "@/components/common/TankBasicInfoDisplays/MainSpecieDisplay.vue";
-import AnnotationsDisplay from "@/components/common/TankBasicInfoDisplays/AnnotationsDisplay.vue";
+import MainTankInformationDisplay from "@/components/common/Tank/MainTankInformationDisplay.vue";
+import LivestockWeightDisplay from "@/components/common/Tank/TankBasicInfoDisplays/LivestockWeightDisplay.vue";
+import MainSpecieDisplay from "@/components/common/Tank/TankBasicInfoDisplays/MainSpecieDisplay.vue";
+import AnnotationsDisplay from "@/components/common/Tank/TankBasicInfoDisplays/AnnotationsDisplay.vue";
 import { Tank } from "@/types/Tank";
 defineProps<{
   tank: Tank;

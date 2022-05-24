@@ -29,12 +29,12 @@
 </template>
 <script setup lang="ts">
 import { Tank } from "@/types/Tank";
-import LivestockWeightDisplay from "@/components/common/TankBasicInfoDisplays/LivestockWeightDisplay.vue";
-import MainSpecieDisplay from "@/components/common/TankBasicInfoDisplays/MainSpecieDisplay.vue";
-import FeedProgramDisplay from "@/components/common/TankBasicInfoDisplays/FeedProgramDisplay.vue";
-import CurrentFeedDisplay from "@/components/common/TankBasicInfoDisplays/CurrentFeedDisplay.vue";
-import TankVolumeDisplay from "@/components/common/TankBasicInfoDisplays/TankVolumeDisplay.vue";
-import AnnotationsDisplay from "@/components/common/TankBasicInfoDisplays/AnnotationsDisplay.vue";
+import LivestockWeightDisplay from "@/components/common/Tank/TankBasicInfoDisplays/LivestockWeightDisplay.vue";
+import MainSpecieDisplay from "@/components/common/Tank/TankBasicInfoDisplays/MainSpecieDisplay.vue";
+import FeedProgramDisplay from "@/components/common/Tank/TankBasicInfoDisplays/FeedProgramDisplay.vue";
+import CurrentFeedDisplay from "@/components/common/Tank/TankBasicInfoDisplays/CurrentFeedDisplay.vue";
+import TankVolumeDisplay from "@/components/common/Tank/TankBasicInfoDisplays/TankVolumeDisplay.vue";
+import AnnotationsDisplay from "@/components/common/Tank/TankBasicInfoDisplays/AnnotationsDisplay.vue";
 import { TankCardExpansionConfig } from "@/types/TankCardExpansionConfig";
 
 withDefaults(

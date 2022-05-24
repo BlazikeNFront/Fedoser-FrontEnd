@@ -1,7 +1,7 @@
 import AxiosInstance from "@/plugins/AxiosInstance";
 import ReadonlyApiService from "@/services/base/ReadOnlyService";
-import { ApiError } from "@/types/ApiError";
-import { UploadResponse } from "@/types/UploadDataResponse";
+import { ApiError, UploadResponse } from "@/types/ApiResponses";
+
 class ModelApiService<T> extends ReadonlyApiService<T> {
   constructor(resource: string, useCache = false) {
     super(resource, useCache);

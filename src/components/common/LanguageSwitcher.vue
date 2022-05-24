@@ -4,14 +4,14 @@
       <template #activator="{ props }">
         <v-card
           v-bind="props"
-          flat
           :width="selectWidth"
-          class="d-flex align-center justify-center"
+          flat
           :class="
             appTheme
               ? 'language-select--app-theme'
               : 'language-select--home-theme'
           "
+          class="d-flex align-center justify-center"
         >
           <v-icon
             color="white"
@@ -51,20 +51,24 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
 import { computed, ref } from "vue";
 import { SUPPORTED_LOCALES, loadLocaleMessages } from "@/i18n/i18n";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { useDisplay } from "vuetify/lib/framework";
+import { useI18n } from "vue-i18n";
+
 defineProps<{
   appTheme?: boolean;
   selectWidth: number;
   selectIconWidth: number;
 }>();
+
 const { mdAndUp } = useDisplay();
 const i18n = useI18n();
-const currentLanguage = computed(() => i18n.locale.value);
+
 const showMenu = ref(false);
+const currentLanguage = computed(() => i18n.locale.value);
+
 async function changeAppLanguage(newLanguage: string) {
   if (newLanguage === currentLanguage.value) {
     showMenu.value = false;
@@ -80,6 +84,7 @@ async function changeAppLanguage(newLanguage: string) {
 }
 </script>
 <style lang="scss" scoped>
+//css should be adjusted after changes menu to v-select when it will work properly with objects
 .language-select--home-theme {
   top: 0;
   background: transparent;

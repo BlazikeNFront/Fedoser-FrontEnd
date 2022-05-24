@@ -37,8 +37,8 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { TankNote } from "@/types/TankAnnotation";
-import NoteDisplay from "@/components/common/Displays/NoteDisplay.vue";
+import { TankNote } from "@/types/Tank";
+import NoteDisplay from "@/components/modules/singleTank/Notes/NoteDisplay.vue";
 import TankNotes from "@/services/endpoints/TankNotes";
 import { useTankStore } from "@/stores/TankStore";
 const props = defineProps<{

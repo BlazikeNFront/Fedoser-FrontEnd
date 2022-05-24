@@ -1,4 +1,4 @@
-import { ApiError } from "@/types/ApiError";
+import { ApiError } from "@/types/ApiResponses";
 
 export default class BaseApiService {
   constructor(private resource: string) {}

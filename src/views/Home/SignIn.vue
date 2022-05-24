@@ -14,11 +14,16 @@
         v-model.trim="loginForm.password"
         :type="passwordVisibility.type"
         :label="$t('auth.password')"
-        :append-inner-icon="passwordVisibility.icon"
-        @click:append-inner="changePasswordVisibility"
         :rules="[FormRules.required, FormRules.maxLength(30)]"
         @input="loginForm.showUnauthorizedError = false"
-      />
+        ><template #appendInner>
+          <v-icon
+            @click="changePasswordVisibility"
+            :icon="passwordVisibility.icon"
+            class="pointer"
+          ></v-icon>
+        </template>
+      </v-text-field>
       <v-btn
         @click="loginRequest"
         class="f-15"
@@ -101,6 +106,6 @@ async function loginRequest() {
   router.push({ name: RoutesNames.APP_HOME });
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/sass/global";
 </style>

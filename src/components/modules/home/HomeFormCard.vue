@@ -6,7 +6,7 @@
     <v-progress-linear
       :active="loader"
       :indeterminate="loader"
-      color="blue"
+      color="yellow"
       height="5"
     />
     <p class="f-3 my-3" v-text="headerText" />

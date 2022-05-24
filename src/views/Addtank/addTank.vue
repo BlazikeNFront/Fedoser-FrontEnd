@@ -128,35 +128,36 @@
 </template>
 
 <script setup lang="ts">
-import LivestockEditor from "@/components/common/Editors/LivestockEditor.vue";
+import LivestockEditor from "@/components/modules/addTank/LivestockEditor.vue";
 import AddTankSummaryDisplay from "@/components/modules/addTank/AddTankSummaryDisplay.vue";
-import { LivestockInformation } from "@/types/Livestock";
+import MainTankInformationEditor from "@/components/modules/addTank/MainTankInformationEditor.vue";
+import FeedInformationEditor from "@/components//modules/addTank/FeedInformationEditor.vue";
+import { LivestockInformation } from "@/types/Tank";
 import { LivestockInformationDTO } from "@/utils/DTOs/LivestockInformation.dto";
-import MainTankInformationEditor from "@/components/common/Editors/MainTankInformationEditor.vue";
-import FeedInformationEditor from "@/components/common/Editors/FeedInformationEditor.vue";
+import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
+import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { TankDTO } from "@/utils/DTOs/Tank.dto";
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
-import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
-import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import TankService from "@/services/endpoints/Tank";
+
 const router = useRouter();
 
-const step = ref(1);
-const isLoading = ref(false);
 const mainTankInformationEditor = ref<InstanceType<
   typeof MainTankInformationEditor
 > | null>(null);
+
+const step = ref(1);
+const isLoading = ref(false);
 const mainTankInformation = reactive({
   name: "Rainbow Fry 3",
   volume: 25,
   description: "Tank with fry rainbows trout",
 });
-
+const feedInformation = ref(new FeedInformationDTO({}));
 const livestockInformation = ref<LivestockInformation>(
   new LivestockInformationDTO({})
 );
-const feedInformation = ref(new FeedInformationDTO({}));
 
 function omitLivestockStep() {
   livestockInformation.value = new LivestockInformationDTO({});

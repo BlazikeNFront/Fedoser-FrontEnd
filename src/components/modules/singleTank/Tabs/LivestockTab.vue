@@ -53,7 +53,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { Tank } from "@/types/Tank";
-import LivestockList from "@/components/common/Displays/LivestockList.vue";
+import LivestockList from "@/components/common/Livestock/LivestockList.vue";
 import { Weight } from "@/constants/global";
 const props = defineProps<{
   tank: Tank;

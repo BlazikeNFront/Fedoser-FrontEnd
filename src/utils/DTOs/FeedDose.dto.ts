@@ -1,5 +1,5 @@
 import { DoseTermination } from "@/constants/enums/DoseTermination";
-import { FeedDose } from "@/types/FeedDose";
+import { FeedDose } from "@/types/Feed";
 export class FeedDoseDTO implements FeedDose {
   number: number;
   amount: number;

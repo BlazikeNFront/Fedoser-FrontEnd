@@ -1,8 +1,5 @@
-import { FeedDose } from "@/types/FeedDose";
-import {
-  TerminatedFeedDose,
-  WeightsData,
-} from "@/types/TerminatedFeedDose.dto";
+import { FeedDose, TerminatedFeedDose, WeightsData } from "@/types/Feed";
+
 export class TerminatedFeedDoseDTO implements TerminatedFeedDose {
   feedDose: FeedDose;
   weightsData: WeightsData;

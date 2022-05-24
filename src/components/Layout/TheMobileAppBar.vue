@@ -50,20 +50,23 @@
       </v-row>
     </v-container>
   </v-app-bar>
-  <the-mobile-nav-bar />
+  <mobile-nav-bar />
 </template>
 <script setup lang="ts">
+import MobileNavBar from "@/components/Layout/NavBars/MobileNavBar.vue";
 import { ref, computed } from "vue";
-import { useI18n } from "vue-i18n";
-import TheMobileNavBar from "@/components/Layout/TheMobileNavBar.vue";
-import { useNavDrawer } from "@/stores/NavDrawerStore";
 import { APP_NAME } from "@/constants/global";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { SUPPORTED_LOCALES, loadLocaleMessages } from "@/i18n/i18n";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
-const { toggleDrawer } = useNavDrawer();
-const mobileLanguageSwitcher = ref(false);
+import { useNavDrawer } from "@/stores/NavDrawerStore";
+import { useI18n } from "vue-i18n";
+
 const i18n = useI18n();
+const { toggleDrawer } = useNavDrawer();
+
+const mobileLanguageSwitcher = ref(false);
+
 const currentLanguage = computed(() => i18n.locale.value);
 async function changeAppLanguage(newLanguage: string) {
   if (newLanguage === currentLanguage.value) {

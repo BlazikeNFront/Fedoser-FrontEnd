@@ -30,7 +30,11 @@
         v-model.trim="signUpFormData.confirmedPassword"
         type="password"
         :label="$t('auth.confirmPassword')"
-        :rules="[FormRules.required, FormRules.maxLength(30)]"
+        :rules="[
+          FormRules.required,
+          FormRules.maxLength(30),
+          checkPasswordsMatch,
+        ]"
       />
       <v-btn
         @click="signUpRequest"
@@ -68,31 +72,36 @@ import HomeFormCard from "@/components/modules/home/HomeFormCard.vue";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { IdAttributes } from "@/constants/IdAttributes";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 const router = useRouter();
+const { t } = useI18n();
 const signUpFormData = reactive({
   email: "test@mail.com",
   password: "testPassword1",
   confirmedPassword: "testPassword1",
   loader: false,
 });
+
 const signUpForm = ref<ComponentPublicInstance<HTMLFormElement>>();
 
+function checkPasswordsMatch() {
+  const { password, confirmedPassword } = signUpFormData;
+  if (password === confirmedPassword) return true;
+  return t("auth.passwordsDoNotMatchMessage");
+}
 async function signUpRequest() {
+  const { email, password, confirmedPassword } = signUpFormData;
   const validationData = await signUpForm.value?.validate();
   if (!validationData.valid) return;
   signUpFormData.loader = true;
   const result = await SignUpService.create(
-    new SignUpDTO(
-      signUpFormData.email,
-      signUpFormData.password,
-      signUpFormData.confirmedPassword
-    )
+    new SignUpDTO(email, password, confirmedPassword)
   );
   signUpFormData.loader = false;
-  console.log(result);
+
   if (result.success) router.push({ name: RoutesNames.SIGN_IN });
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/sass/global";
 </style>

@@ -1,4 +1,3 @@
-import { FeedQuality } from "@/constants/enums/FeedQuality";
 import { Feed } from "./Feed";
 import { Species } from "@/constants/enums/Species";
 export interface FeedTableSpecie {

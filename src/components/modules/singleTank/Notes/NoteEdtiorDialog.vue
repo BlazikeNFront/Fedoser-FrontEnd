@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="showDialog" class="note-editor-dialog">
+  <v-dialog v-model="showDialog" class="editor-dialog">
     <template #activator="{ props }">
       <v-btn
         v-bind="props"
@@ -118,7 +118,7 @@
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
-import { TankNote } from "@/types/TankAnnotation";
+import { TankNote } from "@/types/Tank";
 import { ref, reactive } from "vue";
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
 import { enviromentalDataFactory } from "@/utils/factories/EnviromentalData";
@@ -184,12 +184,11 @@ defineExpose({
 </script>
 <style lang="scss">
 //dialog is currently broken
-.note-editor-dialog {
+.editor-dialog {
   .v-overlay__content {
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
-    height: 100%;
     overflow-y: auto;
     max-height: initial !important;
     min-width: initial !important;
@@ -198,11 +197,11 @@ defineExpose({
 }
 
 @media (min-width: 960px) {
-  .note-editor-dialog {
+  .editor-dialog {
     .v-overlay__content {
       position: absolute;
-      top: 50%;
-      left: 50%;
+
+      left: calc(50% + 120px) !important;
       transform: translate(-50%, -50%);
       height: initial !important;
     }
