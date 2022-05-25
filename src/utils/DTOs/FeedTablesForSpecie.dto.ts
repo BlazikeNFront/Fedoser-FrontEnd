@@ -3,10 +3,10 @@ import {
   SingleFeedTableForSpecie,
 } from "@/types/FeedTablesForSpecie";
 
-import { Species } from "@/constants/enums/Species";
+import { SpeciesValues } from "@/types/Livestock";
 export class FeedTablesForSpecieDTO implements FeedTablesForSpecie {
   _id: string;
-  specie: Species;
+  specie: SpeciesValues;
   feedTables: SingleFeedTableForSpecie[];
   constructor(feedEntity: FeedTablesForSpecie) {
     const { _id, specie, feedTables } = feedEntity;

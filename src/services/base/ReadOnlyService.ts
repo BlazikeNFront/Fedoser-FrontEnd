@@ -15,25 +15,27 @@ export default class ReadonlyApiService<T> extends BaseService {
     id: string,
     resourceSuffix?: string,
     resourcePrefix?: string
-  ): Promise<GetResponse<T> | ApiError> {
+  ): Promise<GetResponse<Required<T>> | ApiError> {
     const url = this.getEndpointUrl(id, resourceSuffix, resourcePrefix);
 
     try {
       if (this.useCache) {
-        const cachedResponse = await this.getItemFromIndexedDB<T>(url);
+        const cachedResponse = await this.getItemFromIndexedDB<Required<T>>(
+          url
+        );
 
         if (cachedResponse) return { data: cachedResponse.data, success: true };
       }
       let response;
       if (resourceSuffix?.includes("pdf")) {
-        response = await AxiosInstance.get<T>(url, {
+        response = await AxiosInstance.get<Required<T>>(url, {
           responseType: "blob",
         });
         return { data: response.data, success: true };
-      } else response = await AxiosInstance.get<T>(url);
+      } else response = await AxiosInstance.get<Required<T>>(url);
 
       if (this.useCache) {
-        await this.setItemInIndexedDB<T>(url, response.data);
+        await this.setItemInIndexedDB<Required<T>>(url, response.data);
       }
       return { data: response.data, success: true };
     } catch (error: any) {
@@ -49,15 +51,17 @@ export default class ReadonlyApiService<T> extends BaseService {
     config = {},
     resourceSuffix?: string,
     resourcePrefix?: string
-  ): Promise<GetResponse<T[]> | ApiError> {
+  ): Promise<GetResponse<Required<T>[]> | ApiError> {
     const url = this.getEndpointUrl(resourceSuffix, resourcePrefix);
 
     try {
       if (this.useCache) {
-        const cachedResponse = await this.getItemFromIndexedDB<T[]>(url);
+        const cachedResponse = await this.getItemFromIndexedDB<Required<T>[]>(
+          url
+        );
         if (cachedResponse) return { data: cachedResponse.data, success: true };
       }
-      const response = await AxiosInstance.get<T[]>(url, config);
+      const response = await AxiosInstance.get<Required<T>[]>(url, config);
       if (this.useCache) {
         await this.setItemInIndexedDB<T[]>(url, response.data);
       }

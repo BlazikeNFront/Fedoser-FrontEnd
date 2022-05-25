@@ -30,7 +30,7 @@
             <livestock-editor
               v-model:livestockInformation="livestockInformation"
             >
-              <template #default="{ isAtLeaseOneSpieceAdded }">
+              <template #default="{ isAtLeastOneSpieceAdded }">
                 <div
                   class="d-flex flex-column flex-md-row align-center justify-end"
                 >
@@ -53,7 +53,7 @@
                     width="150"
                     class="f-2"
                     color="success"
-                    @click="handleNextStepRequest(isAtLeaseOneSpieceAdded)"
+                    @click="handleNextStepRequest(isAtLeastOneSpieceAdded)"
                     v-text="$t('global.next')"
                   />
                 </div>

@@ -14,20 +14,32 @@
           </p></v-card
         >
       </template>
-      <v-list class="rounded-t-0">
+      <v-list
+        class="rounded-t-0 radius-4"
+        color="violet"
+        tag="ul"
+        style="height: 40rem"
+      >
+        <v-list-item class="text-center text-white shadow-bg"
+          ><p class="f-15 w-50">{{ $t("global.feed") }}</p>
+          <p class="f-15 w-50">
+            {{ $t("global.efficiency") }}
+          </p></v-list-item
+        >
         <v-list-item
           v-for="(item, key) in feedsOptions"
           :key="key"
-          class="d-flex align-center justify-center text-center"
+          tag="li"
+          class="text-center"
           @click="onFeedSelect(item)"
         >
-          <p class="my-3 f-15">
+          <p class="my-3 f-15 w-50">
             {{ `${item?.name} ${item?.size}mm` }}
           </p>
+          <feed-quality-display class="mx-auto w-50" :quality="item?.quality" />
         </v-list-item>
       </v-list>
     </v-menu>
-    <feed-quality-display v-if="modelValue" :quality="modelValue?.quality" />
   </div>
 </template>
 <script setup lang="ts">
@@ -53,6 +65,7 @@ const props = withDefaults(
     label: "feedInformation.selectFeed",
   }
 );
+
 const emit = defineEmits<{
   (e: "update:modelValue", feed: Feed): void;
 }>();
@@ -71,6 +84,6 @@ function onFeedSelect(feed: Feed) {
   showMenu.value = false;
 }
 onBeforeMount(() => {
-  if (!props.modelValue) emit("update:modelValue", props.feedsOptions[1]);
+  if (!props.modelValue) emit("update:modelValue", props.feedsOptions[0]);
 });
 </script>

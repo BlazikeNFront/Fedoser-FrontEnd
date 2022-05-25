@@ -15,13 +15,9 @@
               ><v-col cols="12">
                 <v-select
                   v-model="formInputs.specieSelect"
-                  :items="[...species, $t('global.other')]"
-                  :label="$t('global.specie')" />
-                <v-text-field
-                  v-if="formInputs.specieSelect === $t('global.other')"
-                  :label="$t('livestockInformation.typeSpecie')"
-                  :rules="[FormRules.required]"
-                  v-model="formInputs.specieInput" /></v-col
+                  :items="[...Object.values(Species), $t('global.other')]"
+                  :label="$t('global.specie')"
+                /> </v-col
               ><v-col cols="12">
                 <v-text-field
                   :label="$t('livestockInformation.weight')"
@@ -96,14 +92,16 @@ import LivestockList from "@/components/common/Livestock/LivestockList.vue";
 import { LivestockInformation } from "@/types/Tank";
 import { SingleLivestockSpecie } from "@/types/Livestock";
 import { FormRules } from "@/helpers/FormRules";
-import { species } from "@/constants/enums/Species";
+import { Species } from "@/constants/enums/Species";
 import { VForm } from "vuetify/lib/components";
+import { SpeciesValues } from "@/types/Livestock";
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
 const props = defineProps<{
   livestockInformation: LivestockInformation;
 }>();
 
 const livestockInformationModel = computed(() => props.livestockInformation);
+
 const emit = defineEmits<{
   (
     e: "update:livestockInformation",
@@ -112,11 +110,10 @@ const emit = defineEmits<{
 }>();
 const livestockEditorForm = ref<InstanceType<typeof VForm> | null>(null);
 const formInputs = reactive({
-  specieSelect: species[0],
+  specieSelect: Object.values(Species)[0],
   specieWeight: "",
   specieMeanWeight: "",
   fishQuantity: "",
-  specieInput: "",
 });
 
 const showNoLivestockError = ref(false);
@@ -176,20 +173,19 @@ function onFishAmountInput() {
 function clearInputs() {
   formInputs.specieWeight = "";
   formInputs.specieMeanWeight = "";
-  formInputs.specieSelect = "";
-  formInputs.specieInput = "";
+  formInputs.specieSelect = Object.values(Species)[0];
   formInputs.fishQuantity = "";
 }
 
-function checkIfSpecieAlreadyWasAddedToList(speciesName: string) {
+function checkIfSpecieAlreadyWasAddedToList(speciesName: SpeciesValues) {
   return props.livestockInformation.livestock.some(
-    (species) => species.name === speciesName
+    (specieData) => specieData.specie === speciesName
   );
 }
 
-function addWeightToSpecie(speciesName: string) {
+function addWeightToSpecie(speciesName: SpeciesValues) {
   const specieIndex = props.livestockInformation.livestock.findIndex(
-    (species) => species.name === speciesName
+    (specieData) => specieData.specie === speciesName
   );
   livestockInformationModel.value.livestock[specieIndex].weight += parseInt(
     formInputs.specieWeight
@@ -216,18 +212,16 @@ function adjustSpecieMeanWeight(specieIndex: number) {
 async function addStockToList() {
   if (!(await validateLivestockInformationForm())) return;
   //if specie is selected as other get value from input
-  const speciesName =
-    formInputs.specieSelect !== species[species.length]
-      ? formInputs.specieSelect
-      : formInputs.specieInput;
+  const { specieSelect, specieWeight, specieMeanWeight, fishQuantity } =
+    formInputs;
   // if specie already exist in livestock list just add weight
-  if (checkIfSpecieAlreadyWasAddedToList(speciesName)) {
-    addWeightToSpecie(speciesName);
+  if (checkIfSpecieAlreadyWasAddedToList(specieSelect)) {
+    addWeightToSpecie(specieSelect);
     return;
   }
-  const { specieWeight, specieMeanWeight, fishQuantity } = formInputs;
+
   const payload: SingleLivestockSpecie = {
-    name: speciesName,
+    specie: specieSelect,
     weight: parseInt(specieWeight),
     meanWeight: Number(specieMeanWeight),
     quantity: parseInt(fishQuantity),
@@ -249,7 +243,7 @@ function calcLivestockMass(livestock: SingleLivestockSpecie[]) {
 function deleteSpecie(specieName: string) {
   const copyOfLiveStockProp = { ...props.livestockInformation };
   copyOfLiveStockProp.livestock = copyOfLiveStockProp.livestock.filter(
-    (specie) => specie.name !== specieName
+    (specieData) => specieData.specie !== specieName
   );
   copyOfLiveStockProp.initialLivestockWeight = calcLivestockMass(
     copyOfLiveStockProp.livestock

@@ -8,7 +8,13 @@
       <v-container @click="showValidationError = false">
         <v-row
           ><v-col cols="12">
-            <feed-select v-model="copyOfModelValue.currentFeed" />
+            <v-sheet :loading="loadingFeeds" color="transparent">
+              <feed-select
+                v-if="feeds.length"
+                v-model="copyOfModelValue.currentFeed"
+                :feeds-options="feeds"
+              />
+            </v-sheet>
           </v-col>
           <v-col cols="12"
             ><dose-updater
@@ -33,10 +39,12 @@
 import FeedSelect from "@/components/modules/addTank/FeedSelect.vue";
 import DoseUpdater from "@/components/modules/addTank/DoseUpdater.vue";
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
-import { ref, computed, withDefaults } from "vue";
+import { ref, computed, withDefaults, onBeforeMount } from "vue";
 import { TankFeedInformation } from "@/types/Tank";
 import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
 import { TypesOfFeedProgram } from "@/constants/enums/Feed";
+import { useFeedStore } from "@/stores/FeedStore";
+import { storeToRefs } from "pinia";
 
 const props = withDefaults(
   defineProps<{
@@ -50,6 +58,10 @@ const props = withDefaults(
 const emit = defineEmits<{
   (e: "update:modelValue", feedInformation: TankFeedInformation): void;
 }>();
+
+const { feeds, loadingFeeds } = storeToRefs(useFeedStore());
+const { getFeeds } = useFeedStore();
+
 const doseUpdater = ref<InstanceType<typeof DoseUpdater> | null>(null);
 
 const showValidationError = ref(false);
@@ -71,4 +83,7 @@ async function validateFeedInformation(): Promise<boolean> {
   );
   return true;
 }
+onBeforeMount(() => {
+  if (!feeds.value.length) getFeeds();
+});
 </script>

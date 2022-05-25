@@ -1,7 +1,11 @@
 <template>
   <i18n-t keypath="tankCard.mainSpecie" tag="p" scope="global" class="f-15">
     <template #mainSpecie>
-      <span v-if="mainSpecie" class="ml-2" v-text="mainSpecie.name"></span>
+      <span
+        v-if="mainSpecie"
+        class="ml-2"
+        v-text="$t(`species.${mainSpecie.specie}`)"
+      ></span>
       <v-icon v-else v-bind="textAttrs" class="ml-2" :icon="Icons.EXIT" />
     </template>
   </i18n-t>

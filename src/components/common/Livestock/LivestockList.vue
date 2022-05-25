@@ -16,16 +16,16 @@
         </thead>
         <tbody class="livestocklist__tbody text-center">
           <tr
-            v-for="(specie, index) in livestockInformation.livestock"
+            v-for="(specieInfo, index) in livestockInformation.livestock"
             :key="index"
           >
-            <td v-text="specie.name"></td>
-            <td v-text="specie.weight"></td>
-            <td v-text="specie.meanWeight"></td>
-            <td v-text="specie.quantity"></td>
+            <td v-text="$t(`species.${specieInfo.specie}`)"></td>
+            <td v-text="specieInfo.weight"></td>
+            <td v-text="specieInfo.meanWeight"></td>
+            <td v-text="specieInfo.quantity"></td>
             <td v-if="deleteOption">
               <v-btn
-                @click="$emit('delete-request', specie.name)"
+                @click="$emit('delete-request', specieInfo.specie)"
                 :icon="Icons.EXIT"
                 size="x-small"
                 color="error"
@@ -48,6 +48,7 @@ import { withDefaults } from "vue";
 import { LivestockInformation } from "@/types/Tank";
 import LivestockWeightDisplay from "@/components/common/Tank/TankBasicInfoDisplays/LivestockWeightDisplay.vue";
 import { Icons } from "@/constants/icons/MdiIcons";
+import { SpeciesValues } from "@/types/Livestock";
 
 withDefaults(
   defineProps<{
@@ -60,7 +61,7 @@ withDefaults(
   }
 );
 defineEmits<{
-  (e: "delete-request", specieName: string): void;
+  (e: "delete-request", specieName: SpeciesValues): void;
 }>();
 </script>
 <style lang="scss">

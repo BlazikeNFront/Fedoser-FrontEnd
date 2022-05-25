@@ -73,8 +73,10 @@ import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { IdAttributes } from "@/constants/IdAttributes";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { useErrorModal } from "@/stores/ErrorModalStore";
 const router = useRouter();
 const { t } = useI18n();
+const { showErrorModal } = useErrorModal();
 const signUpFormData = reactive({
   email: "test@mail.com",
   password: "testPassword1",
@@ -100,6 +102,7 @@ async function signUpRequest() {
   signUpFormData.loader = false;
 
   if (result.success) router.push({ name: RoutesNames.SIGN_IN });
+  else showErrorModal(t("errorMessages.accountAlreadyExist"));
 }
 </script>
 <style lang="scss" scoped>

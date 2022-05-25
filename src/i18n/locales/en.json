@@ -44,7 +44,10 @@
      "efficiency":"Efficiency"
   },
    "species":{
-    "0":"Rainbow Trout"
+    "rainbowTrout":"Rainbow Trout"
+  },
+  "errorMessages":{
+    "accountAlreadyExist":"Account with provided e-mail address already exists"
   },
    "rules":{
     "fieldRequired":"Field required",
@@ -107,7 +110,8 @@
      "numberOfIndividuals":"Number of individuals",
      "addSpecieToLivestock":"Add to livestock",
      "noLivestock":"No livestock is set",
-     "typeSpecie":"@:global.type @:global.specie"
+     "typeSpecie":"@:global.type @:global.specie",
+     "addLivestockOrOmitStep":"Add livestock or click omit button"
     },
      "feedInformation":{
       "currentfeedProgram":"Aktulny program",
@@ -124,7 +128,9 @@
       "lowQuality":"Low",
       "hightQuality":"High",
       "feedQualityLegend":"Determination of the efficiency and quality of feeds",
-      "feedQuality":"Feed quality"
+      "feedQuality":"Feed quality",
+      "diffrentDosesAlert":"Dose differs from proposed",
+      "proposedDose":"Proposed dose: {dose}"
     },
     "tank":{
       "noLivestockIsSet":"The tank  doesn't have livestock. {button} to add livestock",

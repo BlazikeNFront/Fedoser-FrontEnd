@@ -45,7 +45,10 @@
     "efficiency":"Wydajnosc"
   },
   "species":{
-    "0":"Pstrag teczowy"
+    "rainbowTrout":"Pstrag teczowy"
+  },
+    "errorMessages":{
+    "accountAlreadyExist":"Konto z podanym adresem email juz istnieje"
   },
   "rules":{
     "fieldRequired":"Pole wymagane",
@@ -103,7 +106,8 @@
       "addedLivestock":"Wybrana obsada@:global.:",
       "addSpecieToLivestock":"Dodaj do obsady",
       "noLivestock":"Brak obsady",
-      "typeSpecie":"@:global.type @:global.specie"
+      "typeSpecie":"@:global.type @:global.specie",
+      "addLivestockOrOmitStep":"Dodaj obsade lub kliknij przycisk pomin"
     },
     "feedInformation":{
       "currentfeedProgram":"Aktualny program zywieniowy",
@@ -121,8 +125,10 @@
       "lowQuality":"Niska",
       "hightQuality":"Wysoka",
       "feedQualityLegend":"Oznaczenia wydajnosci i jakosci pasz",
-      "feedQuality":"wydajnosc pasz"
-  
+      "feedQuality":"wydajnosc pasz",
+      "diffrentDosesAlert":"Dawka rozni sie od proponowanej",
+      "proposedDose":"Proponowana dawka: {dose}"
+    
     },
     "mainTankInformationDisplay":{
       "name":"@:global.tankName@:global.: {name}",

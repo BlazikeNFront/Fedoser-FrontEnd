@@ -18,7 +18,7 @@
           v-model="customFrequency"
           type="number"
           style="max-width: 25rem"
-          :label="$t('feedInformation.feedUpadateFrequency')"
+          :label="$t('feedInformation.updateFrequency')"
           @update:model-value="updateDoseFrequency"
         /> </v-col></v-row
   ></v-container>

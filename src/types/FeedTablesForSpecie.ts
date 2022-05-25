@@ -1,5 +1,5 @@
 import { Feed } from "./Feed";
-import { Species } from "@/constants/enums/Species";
+import { SpeciesValues } from "@/types/Livestock";
 export interface FeedTableSpecie {
   specie: string;
   imageUrl: string;
@@ -17,6 +17,6 @@ export interface SingleFeedTableForSpecieWithFeedDetails
 
 export interface FeedTablesForSpecie<T = SingleFeedTableForSpecie[]> {
   _id: string;
-  specie: Species;
+  specie: SpeciesValues;
   feedTables: T;
 }

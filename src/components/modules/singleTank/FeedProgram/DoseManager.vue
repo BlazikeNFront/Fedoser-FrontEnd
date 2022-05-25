@@ -36,7 +36,7 @@
               </template>
               <span
                 class="f-15"
-                v-text="$t('feedProgram.diffrentDosesAlert')"
+                v-text="$t('feedInformation.diffrentDosesAlert')"
               ></span></v-tooltip
           ></v-col>
           <v-col cols="12">
@@ -49,7 +49,9 @@
             <p
               v-show="!isUsingPropsedFeedDose && proposedFeedDose"
               class="mb-2"
-              v-text="$t('feedProgram.propsedDose')"
+              v-text="
+                $t('feedInformation.proposedDose', { dose: proposedFeedDose })
+              "
             ></p>
             <v-text-field
               v-model="feedDose"
@@ -82,12 +84,12 @@
 <script setup lang="ts">
 import { ref, computed, reactive, onBeforeMount } from "vue";
 import { getCurrentDate } from "@/helpers/date";
-import { TypesOfFeedProgram } from "@/constants/enums/FeedSelect";
-import { FeedDose } from "@/types/FeedDose";
+import { TypesOfFeedProgram } from "@/constants/enums/Feed";
+import { FeedDose } from "@/types/Feed";
 import { FeedDoseDTO } from "@/utils/DTOs/FeedDose.dto";
 import { DoseTermination } from "@/constants/enums/DoseTermination";
 import { Icons } from "@/constants/icons/MdiIcons";
-import { useFeedTablesStore } from "@/stores/FeedTablesStore";
+import { useFeedStore } from "@/stores/FeedStore";
 import { storeToRefs } from "pinia";
 
 const props = defineProps<{
@@ -99,9 +101,9 @@ const emit = defineEmits<{
   (e: "dose-terminated", dose: FeedDose): void;
   (e: "dose-omitted", dose: FeedDose): void;
 }>();
-const { feeds } = storeToRefs(useFeedTablesStore());
-const { getFeeds } = useFeedTablesStore();
-const isLoadingFeeds = ref(false);
+const { feeds, loadingFeeds } = storeToRefs(useFeedStore());
+const { getFeeds } = useFeedStore();
+
 const currentDoseDate = ref(getCurrentDate());
 const currentDose = computed(
   () =>
@@ -129,9 +131,7 @@ const temperatureFormError = reactive({
 });
 async function fetchFeeds() {
   if (!feeds.value.length) {
-    isLoadingFeeds.value = true;
     await getFeeds();
-    isLoadingFeeds.value = false;
   }
 }
 
