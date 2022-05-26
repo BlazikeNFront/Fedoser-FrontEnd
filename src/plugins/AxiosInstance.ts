@@ -1,6 +1,6 @@
 import axios from "axios";
-import { i18nInstance } from "@/i18n/i18n";
-
+import { LocalStorageKeys } from "@/constants/LocalStorageKeys";
+import { FALLBACK_LOCALE } from "@/i18n/i18n";
 const AxiosInstance = axios.create({
   baseURL:
     process.env.NODE_ENV !== "development"
@@ -14,11 +14,16 @@ const AxiosInstance = axios.create({
     "Content-type": "application/json; charset=UTF-8",
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-    "X-User-Lang": `${i18nInstance.global.locale.value}`,
   },
   withCredentials: true,
 });
+AxiosInstance.interceptors.request.use((request) => {
+  if (request.headers)
+    request.headers["X-User-Lang"] =
+      localStorage.getItem(LocalStorageKeys.USER_LANGUAGE) || FALLBACK_LOCALE;
 
+  return request;
+});
 AxiosInstance.interceptors.response.use(
   (response) => {
     if (response.headers["content-type"] === "application/pdf") {

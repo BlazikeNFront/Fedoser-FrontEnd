@@ -5,7 +5,7 @@ export const SUPPORTED_LOCALES = Object.freeze({
   en: "English",
   pl: "Polski",
 });
-const FALLBACK_LOCALE = "en";
+export const FALLBACK_LOCALE = "en";
 
 function getUserLanguage() {
   const userSavedLanguage = localStorage.getItem(
@@ -26,6 +26,7 @@ export async function loadLocaleMessages(i18n, locale) {
   const messages = await import(
     /* webpackChunkName: "locale-[request]" */ `./locales/${locale}.json`
   );
+  localStorage.setItem(LocalStorageKeys.USER_LANGUAGE, locale);
   i18n.setLocaleMessage(locale, messages.default);
 
   return nextTick();
