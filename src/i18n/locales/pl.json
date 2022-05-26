@@ -5,6 +5,7 @@
     "clickHere":"Kliknij tutaj",
     "email":"Email",
     "confirm":"Potwierdz",
+    "reject":"Anuluj",
     "show":"Pokaz",
     "hide":"Ukryj",
     "appName":"Fedoser",
@@ -42,7 +43,9 @@
     "number":"Numer",
     "close":"Zamknij",
     "title":"Tytul",
-    "efficiency":"Wydajnosc"
+    "efficiency":"Wydajnosc",
+    "lack":"Brak",
+    "baseDeleteConfirmation":"Czy jestes pewien ze chcesz usunac"
   },
   "species":{
     "rainbowTrout":"Pstrag teczowy"
@@ -91,7 +94,10 @@
     "annotations":"@:global.annotations@:global.:{annotations}",
     "mainSpecie":"@:global.specie@:global.:{mainSpecie}",
     "feedName":"@:global.feed@:global.:{feedName}",
-    "volume":"@:global.volume@:global.:{volume}"
+    "volume":"@:global.volume@:global.:{volume}",
+    "deleteTank":"@:global.delete zbiornik",
+    "deleteConfirmation":"@:global.baseDeleteConfirmation ten zbiornik?"
+    
   },
     "addTank":{
       "mainTankInformation":"Podstawowe informacje o zbiorniku",
@@ -112,7 +118,7 @@
     "feedInformation":{
       "currentfeedProgram":"Aktualny program zywieniowy",
       "feedInformation":"Feed information",
-      "selectFeed":"selectFeed",
+      "selectFeed":"Wybierz pasze",
       "updateFrequency":"Aktualizacja dawki pokarmowej",
       "doseUpdateFrequencyDisplay":"@:feedInformation.updateFrequency@:global.: {updateFrequency}",
       "calculateFeedDose":"Oblicz dawke pokarmowa",
@@ -127,7 +133,9 @@
       "feedQualityLegend":"Oznaczenia wydajnosci i jakosci pasz",
       "feedQuality":"wydajnosc pasz",
       "diffrentDosesAlert":"Dawka rozni sie od proponowanej",
-      "proposedDose":"Proponowana dawka: {dose}"
+      "proposedDose":"Proponowana dawka: {dose}",
+      "terminated":"Wykonano",
+      "typeDoseAmount":"Podaj liczbe "
     
     },
     "mainTankInformationDisplay":{
@@ -151,11 +159,14 @@
       "weather":"Pogoda"
     },
     "notes":{
+      "note":"Notatka",
       "addNote":"@:global.add notatke",
       "editNote":"@:global.edit notatke",
       "deleteNote":"@:global.delete notatke",
+      "noNotes":"@:global.lack notatek",
       "date":"Data: {date}",
       "name":"Nazwa: {name}",
+      "markAsimportant":"Oznacz jako istotny",
       "isImportant":"Istotny: {icon}",
       "temperature":"@:enviroment.temperature : {temperature}",
       "ammonia":"@:enviroment.ammonia : {ammonia}",

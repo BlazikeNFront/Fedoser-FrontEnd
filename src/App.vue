@@ -16,11 +16,11 @@ import { useRoute } from "vue-router";
 
 const route = useRoute();
 const currentLayout = computed(() => {
-  if (route.name) {
+  if (route.name)
     return HomeLayoutPages.includes(route.name)
       ? HomePageLayout
       : AppDefaultLayout;
-  }
+
   return HomePageLayout;
 });
 

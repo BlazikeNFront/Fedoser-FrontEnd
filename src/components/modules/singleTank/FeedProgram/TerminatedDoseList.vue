@@ -12,13 +12,14 @@
           <transition-expand>
             <v-table
               v-if="showAllTerminatedDoses"
-              class="terminated-dose-list__table radius-4"
+              class="default__table radius-4"
               ><thead class="f-15 text-center">
                 <tr class="text-center">
                   <th v-text="$t('global.number')"></th>
                   <th v-text="$t('global.date')"></th>
                   <th v-text="$t('feedInformation.dose')"></th>
                   <th v-text="$t('feedInformation.weightGainedAfterDose')"></th>
+                  <th v-text="$t('feedInformation.terminated')"></th>
                 </tr>
               </thead>
               <tbody class="text-center">
@@ -27,6 +28,14 @@
                   <td v-text="dose.date"></td>
                   <td v-text="dose.amount"></td>
                   <td v-text="dose.weightGainAfterDose"></td>
+                  <td>
+                    <v-icon
+                      :icon="
+                        dose.terminated ? Icons.CHECKMARK_CIRCLE : Icons.EXIT
+                      "
+                      :color="dose.terminated ? 'success' : 'red'"
+                    />
+                  </td>
                 </tr>
               </tbody>
             </v-table>
@@ -37,9 +46,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
+import { Icons } from "@/constants/icons/MdiIcons";
+import { ref } from "vue";
 import { FeedDose } from "@/types/Feed";
 defineProps<{
   terminatedDoseList: FeedDose[];
@@ -47,20 +56,3 @@ defineProps<{
 
 const showAllTerminatedDoses = ref(false);
 </script>
-<style lang="scss">
-.terminated-dose-list__table {
-  @extend .shadow-bg;
-  color: white;
-
-  th {
-    text-align: center !important;
-    font-size: 1.5rem !important;
-  }
-  td {
-    font-size: 1.5rem !important;
-  }
-  tr:hover {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-  }
-}
-</style>

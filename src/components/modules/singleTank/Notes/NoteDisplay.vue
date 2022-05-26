@@ -1,18 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" lg="6">
-        <date-display
-          :date="note.date"
-          class="shadow-bg f-15 text-white py-2 radius-4"
-      /></v-col>
-      <v-col cols="12" lg="6">
-        <note-title-display
-          :title="note.title"
-          class="shadow-bg f-15 text-white py-2 radius-4"
-      /></v-col>
-
-      <v-col cols="12" lg="6" v-if="note.description">
+      <v-col cols="12" lg="12" v-if="note.description">
         <description-display
           :description="note.description"
           class="shadow-bg f-15 text-white py-2 radius-4"
@@ -36,8 +25,6 @@
   </v-container>
 </template>
 <script setup lang="ts">
-import DateDisplay from "@/components/common/Tank/TankBasicInfoDisplays/DateDisplay.vue";
-import NoteTitleDisplay from "@/components/common/Tank/TankBasicInfoDisplays/NoteTitleDisplay.vue";
 import ImportantDisplay from "@/components/common/Tank/TankBasicInfoDisplays/ImportantDisplay.vue";
 import EnviromentalDataDisplay from "@/components/common/Tank/TankBasicInfoDisplays/EnviromentalDataDisplay.vue";
 import DescriptionDisplay from "@/components/common/Tank/TankBasicInfoDisplays/DescriptionDisplay.vue";

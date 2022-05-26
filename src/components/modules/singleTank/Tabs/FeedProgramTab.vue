@@ -13,7 +13,8 @@
       class="d-flex flex-column align-center justify-center"
     >
       <terminated-dose-list
-        :terminated-dose-list="tank?.feedInformation.feedProgram"
+        v-if="tank.feedInformation.feedProgram.length"
+        :terminated-dose-list="tank.feedInformation.feedProgram"
       />
       <dose-manager
         :feed-program="tank?.feedInformation.feedProgram"

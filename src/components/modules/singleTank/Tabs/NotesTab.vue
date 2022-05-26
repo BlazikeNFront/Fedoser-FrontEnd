@@ -23,7 +23,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { TankNote } from "@/types/TankAnnotation";
+import { TankNote } from "@/types/Tank";
 import NoteExpansionListItem from "@/components/modules/singleTank/Notes/NoteExpansionListItem.vue";
 import NoteEditorDialog from "@/components/modules/singleTank/Notes/NoteEdtiorDialog.vue";
 import { tankNoteFactory } from "@/utils/factories/TankAnnotation";

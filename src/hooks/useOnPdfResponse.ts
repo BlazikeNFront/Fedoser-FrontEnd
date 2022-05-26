@@ -6,7 +6,10 @@ export default function useOnPdfResponse() {
     downloadLink.download = fileName;
     downloadLink.click();
     downloadLink.remove();
-    setTimeout(() => window.URL.revokeObjectURL(url), 100);
+    const timeOutId = setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+      clearTimeout(timeOutId);
+    }, 100);
   }
   function openPdfInNewWindow(pdfBlob: Blob) {
     window.open(URL.createObjectURL(pdfBlob));

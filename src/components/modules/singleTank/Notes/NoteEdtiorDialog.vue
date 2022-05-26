@@ -9,30 +9,30 @@
       />
     </template>
 
-    <v-form ref="enviromentalDataForm" style="background-color: white">
+    <v-form
+      ref="noteDataForm"
+      style="background-color: white; overflow-y: auto; max-height: 100vh"
+    >
       <v-container
-        ><v-row
-          ><v-col cols="12" md="5"
+        ><v-row>
+          <v-col cols="12"
+            ><h4 class="text-h4 text-center" v-text="$t('notes.note')"></h4
+          ></v-col>
+          <v-col cols="12" md="6"
             ><v-text-field
               v-model="annotationCopy.date"
               type="date"
               :rules="[FormRules.required]"
               :label="$t('global.date')"
           /></v-col>
-          <v-col cols="12" md="5">
+          <v-col cols="12" md="6">
             <v-text-field
               v-model="annotationCopy.title"
               :rules="[FormRules.required, FormRules.maxLength(100)]"
               :label="$t('global.title')"
             />
           </v-col>
-          <v-col cols="12" md="2">
-            <v-checkbox
-              v-model="annotationCopy.isImportant"
-              :rules="[FormRules.required]"
-              :label="$t('notes.isImportant')"
-            />
-          </v-col>
+
           <v-col cols="12">
             <v-textarea
               :rules="[FormRules.required, FormRules.maxLength(250)]"
@@ -40,7 +40,17 @@
               :label="$t('global.description')"
             />
           </v-col>
-
+          <v-col cols="12" class="d-flex align-center justify-center">
+            <div>
+              <v-checkbox
+                class="noteDataForm__important-checkbox f-2"
+                v-model="annotationCopy.isImportant"
+                :label="$t('notes.markAsimportant')"
+                color="violet"
+                hide-details
+              />
+            </div>
+          </v-col>
           <v-col cols="12">
             <p
               class="f-2 text-center"
@@ -91,7 +101,7 @@
                         FormRules.numberHigherThan(1),
                         FormRules.numberLowerThan(14),
                       ]"
-                      :label="$t('enviroment.ph')"
+                      :label="$t('enviroment.pH')"
                   /></v-col>
                   <v-col cols="12" md="6"
                     ><v-select
@@ -128,14 +138,16 @@ import TankNotesService from "@/services/endpoints/TankNotes";
 import { TankNoteDto } from "@/utils/DTOs/TankNote.dto";
 import { useRoute } from "vue-router";
 import { EnviromentalData } from "@/types/EnviromentalData";
+import { useTankStore } from "@/stores/TankStore";
 const { params } = useRoute();
+const { addNoteToTank } = useTankStore();
 const showDialog = ref<boolean>(false);
 const props = defineProps<{
   annotation: TankNote;
 }>();
 
 const showEnviromentalData = ref(false);
-const enviromentalDataForm = ref<HTMLFormElement | null>(null);
+const noteDataForm = ref<HTMLFormElement | null>(null);
 const enviromentalData = reactive(enviromentalDataFactory());
 
 const annotationCopy = computed(() => props.annotation);
@@ -154,14 +166,13 @@ function setEnviromentalData(enviromentData: EnviromentalData) {
   );
 }
 async function addNote() {
-  if (
-    enviromentalDataForm.value &&
-    !(await enviromentalDataForm.value.validate()).valid
-  )
+  if (noteDataForm.value && !(await noteDataForm.value.validate()).valid)
     return;
   const payload = { ...annotationCopy.value };
   if (showEnviromentalData.value) payload.enviromentalData = enviromentalData;
+
   let result;
+
   if (payload.id) {
     result = await TankNotesService.update(
       params.id as string,
@@ -173,8 +184,12 @@ async function addNote() {
       params.id as string
     );
   }
-
-  if (result.success) toggleDialog();
+  if (!result.success) return;
+  if (result.data?.id) {
+    payload.id = result.data.id;
+    addNoteToTank(payload as Required<TankNote>);
+  }
+  toggleDialog();
 }
 defineExpose({
   toggleDialog,
@@ -182,29 +197,8 @@ defineExpose({
   setEnviromentalData,
 });
 </script>
-<style lang="scss">
-//dialog is currently broken
-.editor-dialog {
-  .v-overlay__content {
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    overflow-y: auto;
-    max-height: initial !important;
-    min-width: initial !important;
-    max-width: initial !important;
-  }
-}
-
-@media (min-width: 960px) {
-  .editor-dialog {
-    .v-overlay__content {
-      position: absolute;
-
-      left: calc(50% + 120px) !important;
-      transform: translate(-50%, -50%);
-      height: initial !important;
-    }
-  }
+<style lang="scss" scoped>
+.noteDataForm__important-checkbox:deep(.v-label) {
+  font-size: 1.5rem;
 }
 </style>

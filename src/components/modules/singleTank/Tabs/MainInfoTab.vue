@@ -6,6 +6,7 @@
           class="text-h4 my-4 text-center"
           v-text="$t('tank.tankDescriptors')"
         ></h4>
+
         <main-tank-information-display
           :main-tank-information="tank.mainTankInformation"
           :single-information-attrs="{
@@ -34,6 +35,14 @@
           :annotation-number="tank.annotations.length"
         />
       </v-col>
+      <v-col cols="12" class="d-flex align-center justify-end"
+        ><confirmation-dialog
+          :message="$t('tankCard.deleteConfirmation')"
+          :onAccept="deleteTankAction"
+          class="f-15 delete-button text-white"
+          v-text="$t('tankCard.deleteTank')"
+        />
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -42,8 +51,18 @@ import MainTankInformationDisplay from "@/components/common/Tank/MainTankInforma
 import LivestockWeightDisplay from "@/components/common/Tank/TankBasicInfoDisplays/LivestockWeightDisplay.vue";
 import MainSpecieDisplay from "@/components/common/Tank/TankBasicInfoDisplays/MainSpecieDisplay.vue";
 import AnnotationsDisplay from "@/components/common/Tank/TankBasicInfoDisplays/AnnotationsDisplay.vue";
+import ConfirmationDialog from "@/components/common/ConfirmationDialog.vue";
+import TankService from "@/services/endpoints/Tank";
 import { Tank } from "@/types/Tank";
-defineProps<{
-  tank: Tank;
+import { useRouter } from "vue-router";
+import { RoutesNames } from "@/constants/routesNames/RoutesNames";
+const props = defineProps<{
+  tank: Required<Tank>;
 }>();
+const { push } = useRouter();
+async function deleteTankAction() {
+  const result = await TankService.delete(props.tank._id);
+  if (result.success) return !!push({ name: RoutesNames.USER_TANKS });
+  return false;
+}
 </script>

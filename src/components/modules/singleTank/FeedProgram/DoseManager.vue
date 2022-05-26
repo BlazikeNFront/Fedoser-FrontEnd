@@ -48,7 +48,7 @@
           <v-col cols="12">
             <p
               v-show="!isUsingPropsedFeedDose && proposedFeedDose"
-              class="mb-2"
+              class="mb-2 f-15"
               v-text="
                 $t('feedInformation.proposedDose', { dose: proposedFeedDose })
               "

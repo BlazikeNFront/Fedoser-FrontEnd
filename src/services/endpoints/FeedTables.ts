@@ -1,5 +1,5 @@
 import ReadonlyApiService from "@/services/base/ReadOnlyService";
-import BaseApiService from "@/services/base/BaseService";
+
 import { FeedTablesForSpecieDTO } from "@/utils/DTOs/FeedTablesForSpecie.dto";
 
 class FeedTablesDataService extends ReadonlyApiService<FeedTablesForSpecieDTO> {

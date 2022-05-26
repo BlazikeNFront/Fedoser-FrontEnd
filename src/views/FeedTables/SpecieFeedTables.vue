@@ -7,7 +7,7 @@
     <h2 class="text-h2 my-2 text-center">
       {{ $t("feedTables.tableForSpecie") }}
     </h2>
-    <h3 class="text-h3">{{ specieEnumValue }}</h3>
+    <h3 class="text-h3">{{ $t(`species.${specieEnumValue}`) }}</h3>
     <v-img
       v-if="specieImageSrc"
       :src="specieImageSrc"
@@ -40,7 +40,7 @@
                   max-width="400"
                 >
                   <p class="d-flex align-center f-15 font-weight-bold">
-                    {{ $t("feedInformation.feedQuality") }}
+                    {{ $t("global.efficiency") }}
                     <span class="ml-2"
                       ><feed-quality-display :quality="+table.quality"
                     /></span>
@@ -124,9 +124,11 @@ const isDownloadingTablePdf = ref(false);
 const feedsTables = ref<FeedTablesForSpecie<
   SingleFeedTableForSpecieWithFeedDetails[]
 > | null>(null);
-const specieEnumValue = computed(() =>
-  String(Species[changeRouteParamToEnumValue() as keyof typeof Species])
-);
+const specieEnumValue = computed(() => {
+  const { specie } = params;
+  if (Array.isArray(specie)) return camelizeString(specie[0]);
+  else return camelizeString(specie);
+});
 const specieImageSrc = computed(() =>
   require(`@/assets/species/${camelizeString(params.specie as string)}.jpg`)
 );
@@ -134,6 +136,7 @@ async function getFeedTablesDetails(feedsId: string[]): Promise<Feed[]> {
   let requests: Promise<ApiError | GetResponse<FeedDTO>>[] = [];
   feedsId.forEach((feedId) => requests.push(FeedService.get(feedId)));
   const feedDetailsResponses = await Promise.all(requests);
+
   return feedDetailsResponses
     .filter(
       (singleResponse): singleResponse is GetResponse<FeedDTO> =>
@@ -144,6 +147,7 @@ async function getFeedTablesDetails(feedsId: string[]): Promise<Feed[]> {
 async function getFeedsForSpecie() {
   isLoading.value = true;
   const response = await FeedTablesService.get(specieEnumValue.value);
+
   if (response.success) {
     const feedDetails = await getFeedTablesDetails(
       response.data.feedTables.map(
@@ -163,12 +167,7 @@ async function getFeedsForSpecie() {
 
   isLoading.value = false;
 }
-function changeRouteParamToEnumValue() {
-  const { specie } = params;
-  if (Array.isArray(specie))
-    return specie[0].replaceAll(" ", "_").toUpperCase();
-  else return specie.replaceAll(" ", "_").toUpperCase();
-}
+
 async function fetchTable(fileName: string, typeOfPdfAction: PdfActions) {
   isDownloadingTablePdf.value = true;
   const response = await FeedTablesPdfService.get(

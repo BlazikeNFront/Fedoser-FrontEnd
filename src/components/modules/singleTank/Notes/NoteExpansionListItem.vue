@@ -1,6 +1,6 @@
 <template>
   <v-expansion-panel bg-color="violet" style="border-radius: 10px !important">
-    <v-expansion-panel-title class="text-h4 text-center">
+    <v-expansion-panel-title class="text-h4 text-center w-100">
       <v-progress-linear
         class="note__loader"
         :active="loader"
@@ -8,7 +8,12 @@
         color="yellow"
         height="5"
       />
+
       <h4 v-text="note.title" />
+      <date-display
+        :date="note.date"
+        class="shadow-bg ml-4 f-15 text-white pa-2 radius-4"
+      />
     </v-expansion-panel-title>
     <v-expansion-panel-text tag="article" class="d-flex flex-column">
       <note-display :note="note">
@@ -39,6 +44,7 @@
 import { ref } from "vue";
 import { TankNote } from "@/types/Tank";
 import NoteDisplay from "@/components/modules/singleTank/Notes/NoteDisplay.vue";
+import DateDisplay from "@/components/common/Tank/TankBasicInfoDisplays/DateDisplay.vue";
 import TankNotes from "@/services/endpoints/TankNotes";
 import { useTankStore } from "@/stores/TankStore";
 const props = defineProps<{

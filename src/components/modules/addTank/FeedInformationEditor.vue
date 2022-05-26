@@ -7,7 +7,7 @@
     <v-form>
       <v-container @click="showValidationError = false">
         <v-row
-          ><v-col cols="12">
+          ><v-col cols="12" md="6" offset-md="3">
             <v-sheet :loading="loadingFeeds" color="transparent">
               <feed-select
                 v-if="feeds.length"

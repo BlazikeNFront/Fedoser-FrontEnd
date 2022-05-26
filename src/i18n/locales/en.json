@@ -5,6 +5,7 @@
      "clickHere":"Click here",
      "email":"Email",
      "confirm":"Confirm",
+     "reject":"Cancel",
      "show":"Show",
      "hide":"Hide",
      "appName":"Fedoser",
@@ -41,7 +42,9 @@
     "number":"Number",
     "close":"Close",
      "title":"Title",
-     "efficiency":"Efficiency"
+     "efficiency":"Efficiency",
+     "lack":"Brak",
+     "baseDeleteConfirmation":"Are you sure you want to delete"
   },
    "species":{
     "rainbowTrout":"Rainbow Trout"
@@ -90,7 +93,9 @@
     "annotations":"@:global.annotations@:global.:{annotations}",
     "mainSpecie":"@:global.specie@:global.:{mainSpecie}",
     "feedName":"@:global.feed@:global.:{feedName}",
-     "volume":"@:global.volume@:global.:{volume}"
+     "volume":"@:global.volume@:global.:{volume}",
+     "deleteTank":"@:global.delete zbiornik",
+     "deleteConfirmation":"@:global.baseDeleteConfirmation this tank?"
   },
   "addTank":{
   "mainTankInformation":"Main tank information",
@@ -130,7 +135,9 @@
       "feedQualityLegend":"Determination of the efficiency and quality of feeds",
       "feedQuality":"Feed quality",
       "diffrentDosesAlert":"Dose differs from proposed",
-      "proposedDose":"Proposed dose: {dose}"
+      "proposedDose":"Proposed dose: {dose}",
+      "terminated":"Terminated",
+      "typeDoseAmount":"Type amount"
     },
     "tank":{
       "noLivestockIsSet":"The tank  doesn't have livestock. {button} to add livestock",
@@ -149,11 +156,14 @@
       "weather":"Weather"
     },
     "notes":{
+      "note":"Note",
       "addNote":"@:global.add note",
       "editNote":"@:global.edit note",
       "deleteNote":"@:global.delete note",
+      "noNotes":"Notes have not yet been added",
       "date":"Date: {date}",
       "name":"Title: {name}",
+      "markAsimportant":"Mark as important",
       "isImportant":"Important: {icon}",
        "temperature":"@:enviroment.temperature : {temperature}",
       "ammonia":"@:enviroment.ammonia : {ammonia}",

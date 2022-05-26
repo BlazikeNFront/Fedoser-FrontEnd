@@ -15,7 +15,7 @@
               ><v-col cols="12">
                 <v-select
                   v-model="formInputs.specieSelect"
-                  :items="[...Object.values(Species), $t('global.other')]"
+                  :items="Object.values(Species)"
                   :label="$t('global.specie')"
                 /> </v-col
               ><v-col cols="12">

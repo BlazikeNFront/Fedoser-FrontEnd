@@ -6,13 +6,15 @@
       class="f-2 text-center"
     ></p>
     <div v-else>
-      <v-table :class="tableClass">
-        <thead class="livestocklist__thead f-15">
-          <th v-text="$t('global.specie')"></th>
-          <th v-text="$t('livestockInformation.weight')"></th>
-          <th v-text="$t('livestockInformation.meanWeight')"></th>
-          <th v-text="$t('livestockInformation.numberOfIndividuals')"></th>
-          <th v-if="deleteOption"></th>
+      <v-table class="default__table">
+        <thead class="f-15 text-center">
+          <tr>
+            <th v-text="$t('global.specie')"></th>
+            <th v-text="$t('livestockInformation.weight')"></th>
+            <th v-text="$t('livestockInformation.meanWeight')"></th>
+            <th v-text="$t('livestockInformation.numberOfIndividuals')"></th>
+            <th v-if="deleteOption"></th>
+          </tr>
         </thead>
         <tbody class="livestocklist__tbody text-center">
           <tr
@@ -64,15 +66,3 @@ defineEmits<{
   (e: "delete-request", specieName: SpeciesValues): void;
 }>();
 </script>
-<style lang="scss">
-.livestocklist__thead {
-  th {
-    padding: 12px 0;
-  }
-}
-.livestocklist__tbody {
-  td {
-    font-size: 1.5rem !important;
-  }
-}
-</style>
