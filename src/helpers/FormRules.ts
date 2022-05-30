@@ -5,7 +5,10 @@ export class FormRules {
   static required = (value: string) => !!value || t("rules.fieldRequired");
   static maxLength = (number: number) => (value: string) =>
     value.length < number ||
-    t("rules.tooMachCharacters", { maxLength: number });
+    t("rules.tooMuchCharacters", { maxLength: number });
+  static minLength = (number: number) => (value: string) =>
+    value.length > number ||
+    t("rules.notEnoughCharacters", { minLength: number });
   static isEmail = (value: string) =>
     EMAIL_REGEXP.test(value) || t("rules.invalidEmail");
   static numberLowerThan = (number: number) => (value: number) =>

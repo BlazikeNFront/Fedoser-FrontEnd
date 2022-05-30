@@ -72,8 +72,8 @@ import TransitionExpand from "@/components/common/TransitionExpand.vue";
 const { loginAction } = useUserStore();
 const router = useRouter();
 const loginForm = reactive({
-  email: "testmail",
-  password: "testPassword",
+  email: "test@mail.com",
+  password: "password",
   loader: false,
   showUnauthorizedError: false,
 });

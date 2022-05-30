@@ -13,6 +13,7 @@
         autocomplete="on"
         :rules="[
           FormRules.required,
+          FormRules.minLength(5),
           FormRules.maxLength(30),
           FormRules.isEmail,
         ]"
@@ -32,6 +33,7 @@
         :label="$t('auth.confirmPassword')"
         :rules="[
           FormRules.required,
+          FormRules.minLength(5),
           FormRules.maxLength(30),
           checkPasswordsMatch,
         ]"
@@ -74,13 +76,14 @@ import { IdAttributes } from "@/constants/IdAttributes";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useErrorModal } from "@/stores/ErrorModalStore";
+import { ApiErrorCodes } from "@/constants/enums/ApiErrorCodes";
 const router = useRouter();
 const { t } = useI18n();
 const { showErrorModal } = useErrorModal();
 const signUpFormData = reactive({
   email: "test@mail.com",
-  password: "testPassword1",
-  confirmedPassword: "testPassword1",
+  password: "password",
+  confirmedPassword: "password",
   loader: false,
 });
 
@@ -102,7 +105,12 @@ async function signUpRequest() {
   signUpFormData.loader = false;
 
   if (result.success) router.push({ name: RoutesNames.SIGN_IN });
-  else showErrorModal(t("errorMessages.accountAlreadyExist"));
+  else {
+    //should be global error handling
+    result.statusCode === ApiErrorCodes.CONFILCT
+      ? showErrorModal(t("errorMessages.accountAlreadyExist"))
+      : null;
+  }
 }
 </script>
 <style lang="scss" scoped>

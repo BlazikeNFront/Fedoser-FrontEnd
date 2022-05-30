@@ -54,7 +54,8 @@
   },
    "rules":{
     "fieldRequired":"Field required",
-    "tooMachCharacters":"Maximum length is {maxLength}",
+    "tooMuchCharacters":"Maximum length is {maxLength}",
+    "notEnoughCharacters":"Minimum length is {minLength}",
     "numberLowerThan":"Number must be lower than {number}",
     "numberHigherThan":"Number must be higher than {number}",
     "invalidEmail":"Invalid email adress"
