@@ -7,8 +7,8 @@ export class FeedDTO implements Feed {
   quality: FeedQuality;
   fileName: string;
   _id?: string | null;
-  constructor(feedEntity: Feed) {
-    const { _id, name, size, quality, fileName } = feedEntity;
+  constructor(Feed: Feed) {
+    const { _id, name, size, quality, fileName } = Feed;
     this._id = _id || null;
     this.name = name;
     this.size = size;

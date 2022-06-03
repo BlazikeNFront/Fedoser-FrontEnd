@@ -19,6 +19,7 @@
         color="violet"
         tag="ul"
         style="height: 40rem"
+        v-if="feedOptions"
       >
         <v-list-item class="text-center text-white shadow-bg"
           ><p class="f-15 w-50">{{ $t("global.feed") }}</p>
@@ -27,16 +28,21 @@
           </p></v-list-item
         >
         <v-list-item
-          v-for="(item, key) in feedsOptions"
+          v-for="(item, key) in feedOptions"
           :key="key"
           tag="li"
           class="text-center"
           @click="onFeedSelect(item)"
         >
           <p class="my-3 f-15 w-50">
-            {{ `${item?.name} ${item?.size}mm` }}
+            {{ `${item.name} ${item.size}mm` }}
           </p>
-          <feed-quality-display class="mx-auto w-50" :quality="item?.quality" />
+          <v-icon
+            :icon="
+              isProposedFeed(item._id) ? Icons.CHECKMARK_CIRCLE : Icons.EXIT
+            "
+          />
+          <feed-quality-display class="mx-auto w-50" :quality="item.quality" />
         </v-list-item>
       </v-list>
     </v-menu>
@@ -45,6 +51,8 @@
 <script setup lang="ts">
 import FeedQualityDisplay from "@/components/common/Feed/FeedQuality/FeedQualityDisplay.vue";
 import { Feed } from "@/types/Feed";
+import { FeedSelectOptions } from "@/types/FeedSelectOptions";
+import { Icons } from "@/constants/icons/MdiIcons";
 
 import {
   ref,
@@ -58,7 +66,7 @@ const props = withDefaults(
   defineProps<{
     modelValue: Feed | null;
     label?: string;
-    feedsOptions: Feed[];
+    feedsOptions: FeedSelectOptions;
   }>(),
   {
     //label is for v-select component
@@ -70,9 +78,29 @@ const emit = defineEmits<{
   (e: "update:modelValue", feed: Feed): void;
 }>();
 const showMenu = ref(false);
+const feedOptions = computed(() => {
+  const mergedFeedOptions = [
+    ...props.feedsOptions.proposedFeeds,
+    ...props.feedsOptions.allFeeds,
+  ];
+  return mergedFeedOptions.reduce<Required<Feed>[]>((acc, currentFeed) => {
+    if (!acc.find((feed) => feed._id === currentFeed._id))
+      return acc.concat([currentFeed]);
+    else return acc;
+  }, []);
+});
+
+const isProposedFeed = computed(
+  () => (feedId: Feed["_id"]) =>
+    props.feedsOptions.proposedFeeds.some((feed) => feed._id === feedId)
+);
 const modelValueCopy: WritableComputedRef<Feed> = computed({
   get(): Feed {
-    return props.modelValue || props.feedsOptions[0];
+    return (
+      props.modelValue ||
+      props.feedsOptions.proposedFeeds[0] ||
+      props.feedsOptions.allFeeds[0]
+    );
   },
   set(newFeed: Feed) {
     emit("update:modelValue", newFeed);
@@ -84,6 +112,10 @@ function onFeedSelect(feed: Feed) {
   showMenu.value = false;
 }
 onBeforeMount(() => {
-  if (!props.modelValue) emit("update:modelValue", props.feedsOptions[0]);
+  if (!props.modelValue)
+    emit(
+      "update:modelValue",
+      props.feedsOptions.allFeeds[0] || props.feedsOptions.allFeeds[0]
+    );
 });
 </script>

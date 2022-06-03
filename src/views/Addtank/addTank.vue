@@ -67,6 +67,9 @@
         <feed-information-editor
           v-model="feedInformation"
           :livestock-weight="livestockInformation.initialLivestockWeight"
+          :main-specie="
+            findMainSpecieInLivestock(livestockInformation.livestock)
+          "
         >
           <template #default="{ validateFeedInformation }">
             <div
@@ -140,7 +143,7 @@ import { TankDTO } from "@/utils/DTOs/Tank.dto";
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 import TankService from "@/services/endpoints/Tank";
-
+import { findMainSpecieInLivestock } from "@/helpers/findMainSpecieInLivestock";
 const router = useRouter();
 
 const mainTankInformationEditor = ref<InstanceType<

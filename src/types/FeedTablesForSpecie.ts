@@ -6,17 +6,13 @@ export interface FeedTableSpecie {
 }
 
 export interface SingleFeedTableForSpecie {
-  feedId: string;
+  feed: Feed;
   fcrForSizes: Record<string, number>;
   temperatureFeedDoses: Record<string, number>;
 }
 
-export interface SingleFeedTableForSpecieWithFeedDetails
-  extends SingleFeedTableForSpecie,
-    Feed {}
-
-export interface FeedTablesForSpecie<T = SingleFeedTableForSpecie[]> {
+export interface FeedTablesForSpecie {
   _id: string;
   specie: SpeciesValues;
-  feedTables: T;
+  feedTables: SingleFeedTableForSpecie[];
 }

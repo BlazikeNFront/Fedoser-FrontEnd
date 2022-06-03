@@ -8,8 +8,7 @@ export class FeedTablesForSpecieDTO implements FeedTablesForSpecie {
   _id: string;
   specie: SpeciesValues;
   feedTables: SingleFeedTableForSpecie[];
-  constructor(feedEntity: FeedTablesForSpecie) {
-    const { _id, specie, feedTables } = feedEntity;
+  constructor({ _id, specie, feedTables }: FeedTablesForSpecie) {
     this._id = _id;
     this.specie = specie;
     this.feedTables = feedTables;

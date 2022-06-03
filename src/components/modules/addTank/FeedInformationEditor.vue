@@ -8,11 +8,11 @@
       <v-container @click="showValidationError = false">
         <v-row
           ><v-col cols="12" md="6" offset-md="3">
-            <v-sheet :loading="loadingFeeds" color="transparent">
+            <v-sheet :loading="loader" color="transparent">
               <feed-select
-                v-if="feeds.length"
+                v-if="feedsForSpecie"
                 v-model="copyOfModelValue.currentFeed"
-                :feeds-options="feeds"
+                :feeds-options="feedOptions"
               />
             </v-sheet>
           </v-col>
@@ -45,11 +45,14 @@ import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
 import { TypesOfFeedProgram } from "@/constants/enums/Feed";
 import { useFeedStore } from "@/stores/FeedStore";
 import { storeToRefs } from "pinia";
-
+import { useFeedForSpecie } from "@/stores/FeedsForSpecie";
+import { SingleLivestockSpecie } from "@/types/Livestock";
+import { FeedSelectOptions } from "@/types/FeedSelectOptions";
 const props = withDefaults(
   defineProps<{
     modelValue: TankFeedInformation;
     livestockWeight: number;
+    mainSpecie: SingleLivestockSpecie;
   }>(),
   {
     modelValue: () => new FeedInformationDTO({}),
@@ -59,7 +62,9 @@ const emit = defineEmits<{
   (e: "update:modelValue", feedInformation: TankFeedInformation): void;
 }>();
 
-const { feeds, loadingFeeds } = storeToRefs(useFeedStore());
+const { feedsForSpecie, loader } = storeToRefs(useFeedForSpecie());
+const { feeds } = storeToRefs(useFeedStore());
+const { getFeedsForSpecie } = useFeedForSpecie();
 const { getFeeds } = useFeedStore();
 
 const doseUpdater = ref<InstanceType<typeof DoseUpdater> | null>(null);
@@ -67,7 +72,21 @@ const doseUpdater = ref<InstanceType<typeof DoseUpdater> | null>(null);
 const showValidationError = ref(false);
 
 const copyOfModelValue = computed(() => props.modelValue);
+const feedOptions = computed((): FeedSelectOptions => {
+  const proposedFeeds =
+    feedsForSpecie.value?.weightBreakpoints.find(
+      (breakpoint) => breakpoint.size > props.mainSpecie.meanWeight
+    )?.feeds || [];
 
+  return {
+    proposedFeeds,
+    allFeeds: feeds.value,
+  };
+});
+async function getPropsedFeedsForSpecie() {
+  if (feedsForSpecie.value?.specie === props.mainSpecie.specie) return;
+  await getFeedsForSpecie(props.mainSpecie.specie);
+}
 async function validateFeedInformation(): Promise<boolean> {
   if (doseUpdater.value && !(await doseUpdater.value.validateDoseUpdate())) {
     showValidationError.value = true;
@@ -83,7 +102,10 @@ async function validateFeedInformation(): Promise<boolean> {
   );
   return true;
 }
-onBeforeMount(() => {
-  if (!feeds.value.length) getFeeds();
+onBeforeMount(async () => {
+  const requests = [getPropsedFeedsForSpecie()];
+  if (!feeds.length) requests.push(getFeeds());
+  console.log("hello");
+  await Promise.all(requests);
 });
 </script>

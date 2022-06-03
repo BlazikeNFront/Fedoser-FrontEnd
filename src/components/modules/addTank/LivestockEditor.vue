@@ -96,6 +96,7 @@ import { Species } from "@/constants/enums/Species";
 import { VForm } from "vuetify/lib/components";
 import { SpeciesValues } from "@/types/Livestock";
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
+
 const props = defineProps<{
   livestockInformation: LivestockInformation;
 }>();
