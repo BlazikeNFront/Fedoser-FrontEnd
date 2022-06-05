@@ -86,7 +86,7 @@ function addAdditionInformation(
   if (tank.feedInformation?.currentFeed) {
     basicInformationConfig.push({
       component: CurrentFeedDisplay,
-      attrs: { feed: tank.feedInformation.currentFeed },
+      attrs: { feed: tank.feedInformation.currentFeed.feed },
     });
   }
   if (tank.livestockInformation?.livestock.length) {

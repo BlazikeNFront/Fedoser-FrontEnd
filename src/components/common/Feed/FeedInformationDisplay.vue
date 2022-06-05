@@ -9,7 +9,7 @@
           />
         </v-col>
         <v-col v-if="feedInformation.currentFeed" cols="12" class="my-2"
-          ><current-feed-display :feed="feedInformation.currentFeed" />
+          ><current-feed-display :feed="feedInformation.currentFeed.feed" />
         </v-col>
         <v-col v-if="feedInformation.doseUpdateFrequency" cols="12"
           ><dose-update-frequency-display

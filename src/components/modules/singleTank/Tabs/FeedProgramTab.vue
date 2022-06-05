@@ -17,8 +17,7 @@
         :terminated-dose-list="tank.feedInformation.feedProgram"
       />
       <dose-manager
-        :feed-program="tank?.feedInformation.feedProgram"
-        :type-of-program="tank.feedInformation.typeOfProgram"
+        :feed-information="tank.feedInformation"
         @dose-omitted="terminateDose"
         @dose-terminated="terminateDose"
       />

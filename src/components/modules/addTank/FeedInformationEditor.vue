@@ -7,8 +7,13 @@
     <v-form>
       <v-container @click="showValidationError = false">
         <v-row
-          ><v-col cols="12" md="6" offset-md="3">
-            <v-sheet :loading="loader" color="transparent">
+          ><v-col
+            cols="12"
+            offset-lg="4"
+            lg="4"
+            class="d-flex align-center justify-center"
+          >
+            <v-sheet :loading="loader" color="transparent" width="40rem">
               <feed-select
                 v-if="feedsForSpecie"
                 v-model="copyOfModelValue.currentFeed"
@@ -16,6 +21,9 @@
               />
             </v-sheet>
           </v-col>
+          <v-col cols="12" lg="4" class="d-flex align-end justify-center mb-4"
+            ><feed-quality-legend
+          /></v-col>
           <v-col cols="12"
             ><dose-updater
               ref="doseUpdater"
@@ -43,11 +51,13 @@ import { ref, computed, withDefaults, onBeforeMount } from "vue";
 import { TankFeedInformation } from "@/types/Tank";
 import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
 import { TypesOfFeedProgram } from "@/constants/enums/Feed";
-import { useFeedStore } from "@/stores/FeedStore";
+import { useFeedTypesStore } from "@/stores/FeedTypesStore";
 import { storeToRefs } from "pinia";
 import { useFeedForSpecie } from "@/stores/FeedsForSpecie";
 import { SingleLivestockSpecie } from "@/types/Livestock";
 import { FeedSelectOptions } from "@/types/FeedSelectOptions";
+import FeedQualityLegend from "@/components/common/Feed/FeedQuality/FeedQualityLegend.vue";
+
 const props = withDefaults(
   defineProps<{
     modelValue: TankFeedInformation;
@@ -63,9 +73,9 @@ const emit = defineEmits<{
 }>();
 
 const { feedsForSpecie, loader } = storeToRefs(useFeedForSpecie());
-const { feeds } = storeToRefs(useFeedStore());
+const { feeds } = storeToRefs(useFeedTypesStore());
 const { getFeedsForSpecie } = useFeedForSpecie();
-const { getFeeds } = useFeedStore();
+const { getFeedTypes } = useFeedTypesStore();
 
 const doseUpdater = ref<InstanceType<typeof DoseUpdater> | null>(null);
 
@@ -104,8 +114,8 @@ async function validateFeedInformation(): Promise<boolean> {
 }
 onBeforeMount(async () => {
   const requests = [getPropsedFeedsForSpecie()];
-  if (!feeds.length) requests.push(getFeeds());
-  console.log("hello");
+  if (!feeds.value.length) requests.push(getFeedTypes());
+
   await Promise.all(requests);
 });
 </script>

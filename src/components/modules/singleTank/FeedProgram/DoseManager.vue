@@ -18,7 +18,11 @@
               type="date"
               :label="$t('global.date')"
           /></v-col>
-          <v-col cols="12" class="d-flex align-center justify-center">
+          <v-col
+            v-if="feedInformation.currentFeed?.isProposed"
+            cols="12"
+            class="d-flex align-center justify-center"
+          >
             <v-btn
               @click="handleDoseProposeRequest"
               :disabled="!feeds.length"
@@ -84,38 +88,40 @@
 <script setup lang="ts">
 import { ref, computed, reactive, onBeforeMount } from "vue";
 import { getCurrentDate } from "@/helpers/date";
-import { TypesOfFeedProgram } from "@/constants/enums/Feed";
 import { FeedDose } from "@/types/Feed";
 import { FeedDoseDTO } from "@/utils/DTOs/FeedDose.dto";
 import { DoseTermination } from "@/constants/enums/DoseTermination";
 import { Icons } from "@/constants/icons/MdiIcons";
-import { useFeedStore } from "@/stores/FeedStore";
+import { useFeedTypesStore } from "@/stores/FeedTypesStore";
 import { storeToRefs } from "pinia";
-
+import { TankFeedInformation } from "@/types/Tank";
+import { FeedTablesService } from "@/services/endpoints/FeedTables";
+import { SingleLivestockSpecie } from "@/types/Livestock";
 const props = defineProps<{
-  feedProgram: FeedDose[];
-  typeOfProgram: TypesOfFeedProgram;
+  feedInformation: Required<TankFeedInformation>;
+  mainSpecie: SingleLivestockSpecie;
 }>();
 
 const emit = defineEmits<{
   (e: "dose-terminated", dose: FeedDose): void;
   (e: "dose-omitted", dose: FeedDose): void;
 }>();
-const { feeds, loadingFeeds } = storeToRefs(useFeedStore());
-const { getFeeds } = useFeedStore();
+
+const { feeds, loadingFeeds } = storeToRefs(useFeedTypesStore());
+const { getFeedTypes } = useFeedTypesStore();
 
 const currentDoseDate = ref(getCurrentDate());
 const currentDose = computed(
   () =>
     new FeedDoseDTO({
-      ...(props.feedProgram[indexOfCurrentDose.value] || {
-        number: props.feedProgram.length + 1,
+      ...(props.feedInformation.feedProgram[indexOfCurrentDose.value] || {
+        number: props.feedInformation.feedProgram.length + 1,
         date: getCurrentDate(),
       }),
     })
 );
 const indexOfCurrentDose = computed(() =>
-  props.feedProgram.findIndex((dose) => dose.terminated === 0)
+  props.feedInformation.feedProgram.findIndex((dose) => dose.terminated === 0)
 );
 const temperatureInput = ref(14);
 const feedDose = ref(currentDose.value.amount);
@@ -131,7 +137,7 @@ const temperatureFormError = reactive({
 });
 async function fetchFeeds() {
   if (!feeds.value.length) {
-    await getFeeds();
+    await getFeedTypes();
   }
 }
 
@@ -141,11 +147,21 @@ function handleDoseProposeRequest() {
     temperatureFormError.text = "Please provide temperature higher than 2*C";
     return;
   }
-  proposedFeedDose.value = 2.5;
-  feedDose.value = 2.5;
+  proposedFeedDose.value = feedDose.value = 2.5;
+
   weightGainedAfterFeed.value = proposedFeedDose.value * 1; //FCR;
 }
-
+async function getCurrentDose() {
+  if (!props.feedInformation.currentFeed) return;
+  const response = await FeedTablesService.get(
+    props.feedInformation.currentFeed.feed._id,
+    "",
+    `species/${props.mainSpecie.specie}`
+  );
+  if (response.success) {
+    console.log(response.data);
+  }
+}
 function setDefaultValuesInForm() {
   temperatureInput.value = 14;
   feedDose.value = currentDose.value.amount;
@@ -176,7 +192,10 @@ function setDoseAsOmitted() {
   emit("dose-omitted", terminatedFeedDose);
   setDefaultValuesInForm();
 }
-onBeforeMount(() => fetchFeeds());
+onBeforeMount(() => {
+  fetchFeeds();
+  getCurrentDose();
+});
 </script>
 <style scoped>
 .list-element {

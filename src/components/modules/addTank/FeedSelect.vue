@@ -1,70 +1,97 @@
 <template>
-  <div>
+  <div class="d-flex flex-column align-center justify-center">
     <p class="f-2 text-center" v-text="$t('global.feed')"></p>
-    <v-menu top offset-y transition="slide-y-transition" v-model="showMenu">
-      <template #activator="{ props }">
-        <v-card
-          v-bind="props"
-          flat
-          class="d-flex align-center justify-center"
-          color="red"
+    <div class="pl-6 d-flex pos-relative" style="width: 35rem">
+      <v-menu top offset-y transition="slide-y-transition" v-model="showMenu">
+        <template #activator="{ props }">
+          <v-card
+            v-bind="props"
+            flat
+            class="d-flex align-center justify-center px-3"
+            color="red"
+            width="100%"
+            max-width="30rem"
+          >
+            <p class="py-2 f-15 w-100">
+              {{ `${modelValue?.feed.name} ${modelValue?.feed.size}mm` }}
+            </p></v-card
+          >
+        </template>
+        <v-list
+          class="rounded-t-0 radius-4"
+          color="violet"
+          tag="ul"
+          style="height: 40rem"
+          v-if="
+            feedsOptions.allFeeds.length || feedsOptions.proposedFeeds.length
+          "
         >
-          <p class="py-2 f-15">
-            {{ `${modelValueCopy?.name} ${modelValueCopy?.size}mm` }}
-          </p></v-card
-        >
-      </template>
-      <v-list
-        class="rounded-t-0 radius-4"
-        color="violet"
-        tag="ul"
-        style="height: 40rem"
-        v-if="feedOptions"
-      >
-        <v-list-item class="text-center text-white shadow-bg"
-          ><p class="f-15 w-50">{{ $t("global.feed") }}</p>
-          <p class="f-15 w-50">
-            {{ $t("global.efficiency") }}
-          </p></v-list-item
-        >
-        <v-list-item
-          v-for="(item, key) in feedOptions"
-          :key="key"
-          tag="li"
-          class="text-center"
-          @click="onFeedSelect(item)"
-        >
-          <p class="my-3 f-15 w-50">
-            {{ `${item.name} ${item.size}mm` }}
-          </p>
-          <v-icon
-            :icon="
-              isProposedFeed(item._id) ? Icons.CHECKMARK_CIRCLE : Icons.EXIT
-            "
+          <v-list-item class="text-center text-white shadow-bg">
+            <p class="text-center f-15 w-100">Polecane pasze</p>
+          </v-list-item>
+          <v-list-item class="text-center text-white shadow-bg"
+            ><p class="f-15 w-50">{{ $t("global.feed") }}</p>
+            <p class="f-15 w-50">
+              {{ $t("global.efficiency") }}
+            </p></v-list-item
+          >
+          <feed-select-list-item
+            v-for="(item, key) in feedsOptions.proposedFeeds"
+            :key="key"
+            :feed="item"
+            @click="onFeedSelect(item)"
           />
-          <feed-quality-display class="mx-auto w-50" :quality="item.quality" />
-        </v-list-item>
-      </v-list>
-    </v-menu>
+
+          <v-list-item class="text-center text-white shadow-bg">
+            <p class="text-center f-15 w-100">Pozostale pasze</p>
+          </v-list-item>
+          <v-list-item class="text-center text-white shadow-bg"
+            ><p class="f-15 w-50">{{ $t("global.feed") }}</p>
+            <p class="f-15 w-50">
+              {{ $t("global.efficiency") }}
+            </p></v-list-item
+          >
+          <feed-select-list-item
+            v-for="(item, key) in allFeedWithoutProsoedFeeds"
+            :key="key"
+            :feed="item"
+            @click="onFeedSelect(item)"
+          />
+        </v-list>
+      </v-menu>
+      <v-tooltip anchor="top" v-if="isFeedProposed">
+        <template #activator="{ props }">
+          <v-icon
+            v-bind="props"
+            :icon="Icons.ALERT"
+            :size="smAndUp ? '35' : '30'"
+            class="ml-1"
+            color="yellow"
+            style="position: absolute; right: -3rem"
+          />
+        </template>
+
+        <p class="f-15 text-white" style="max-width: 40rem">
+          Wybrana pasza nie jest jedna z proponowanych, w takim przypadku nie
+          bedzie mozlowosc korzystania z automatycznego wyliczania dawek
+          pokarmowych i bedziesz musial wprawadzac dane recznie
+        </p>
+      </v-tooltip>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
-import FeedQualityDisplay from "@/components/common/Feed/FeedQuality/FeedQualityDisplay.vue";
-import { Feed } from "@/types/Feed";
+import { Feed, CurrentTankFeed } from "@/types/Feed";
 import { FeedSelectOptions } from "@/types/FeedSelectOptions";
+import FeedSelectListItem from "@/components/modules/addTank/FeedSelectListItem.vue";
 import { Icons } from "@/constants/icons/MdiIcons";
-
-import {
-  ref,
-  computed,
-  withDefaults,
-  WritableComputedRef,
-  onBeforeMount,
-} from "vue";
+import { useDisplay } from "vuetify/lib/framework";
+import { CurrentTankFeedDto } from "@/utils/DTOs/CurrentTankFeed.dto";
+import { ref, computed, withDefaults, onBeforeMount } from "vue";
 
 const props = withDefaults(
   defineProps<{
-    modelValue: Feed | null;
+    modelValue: CurrentTankFeed | null;
     label?: string;
     feedsOptions: FeedSelectOptions;
   }>(),
@@ -75,47 +102,55 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (e: "update:modelValue", feed: Feed): void;
+  (e: "update:modelValue", feed: CurrentTankFeed): void;
 }>();
+const { smAndUp } = useDisplay();
 const showMenu = ref(false);
-const feedOptions = computed(() => {
-  const mergedFeedOptions = [
-    ...props.feedsOptions.proposedFeeds,
-    ...props.feedsOptions.allFeeds,
-  ];
-  return mergedFeedOptions.reduce<Required<Feed>[]>((acc, currentFeed) => {
-    if (!acc.find((feed) => feed._id === currentFeed._id))
-      return acc.concat([currentFeed]);
-    else return acc;
-  }, []);
+
+const allFeedWithoutProsoedFeeds = computed(() => {
+  return props.feedsOptions.allFeeds.reduce<Required<Feed>[]>(
+    (acc, currentFeed) => {
+      if (
+        !props.feedsOptions.proposedFeeds.find(
+          (feed) => feed._id === currentFeed._id
+        )
+      )
+        return acc.concat([currentFeed]);
+      else return acc;
+    },
+    []
+  );
 });
 
-const isProposedFeed = computed(
-  () => (feedId: Feed["_id"]) =>
-    props.feedsOptions.proposedFeeds.some((feed) => feed._id === feedId)
-);
-const modelValueCopy: WritableComputedRef<Feed> = computed({
-  get(): Feed {
-    return (
-      props.modelValue ||
-      props.feedsOptions.proposedFeeds[0] ||
-      props.feedsOptions.allFeeds[0]
-    );
-  },
-  set(newFeed: Feed) {
-    emit("update:modelValue", newFeed);
-  },
+const isFeedProposed = computed(() => {
+  if (
+    !props.feedsOptions.proposedFeeds.some(
+      (feed) => feed._id === props.modelValue?.feed._id
+    )
+  )
+    return true;
+  return false;
 });
-
 function onFeedSelect(feed: Feed) {
-  modelValueCopy.value = feed;
+  emit(
+    "update:modelValue",
+    new CurrentTankFeedDto({
+      feed,
+      isProposed: isFeedProposed.value,
+    })
+  );
+
   showMenu.value = false;
 }
 onBeforeMount(() => {
   if (!props.modelValue)
     emit(
       "update:modelValue",
-      props.feedsOptions.allFeeds[0] || props.feedsOptions.allFeeds[0]
+      new CurrentTankFeedDto({
+        feed:
+          props.feedsOptions.proposedFeeds[0] || props.feedsOptions.allFeeds[0],
+        isProposed: isFeedProposed.value,
+      })
     );
 });
 </script>

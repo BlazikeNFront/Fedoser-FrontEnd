@@ -63,13 +63,11 @@
         </v-col> </v-row
     ></v-container>
     <v-card color="violet" class="d-flex flex-column" v-if="step === 3">
-      <v-col cols="12">
+      <v-col cols="12" v-if="mainLivestockSpecie">
         <feed-information-editor
           v-model="feedInformation"
           :livestock-weight="livestockInformation.initialLivestockWeight"
-          :main-specie="
-            findMainSpecieInLivestock(livestockInformation.livestock)
-          "
+          :main-specie="mainLivestockSpecie"
         >
           <template #default="{ validateFeedInformation }">
             <div
@@ -140,7 +138,7 @@ import { LivestockInformationDTO } from "@/utils/DTOs/LivestockInformation.dto";
 import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { TankDTO } from "@/utils/DTOs/Tank.dto";
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import { useRouter } from "vue-router";
 import TankService from "@/services/endpoints/Tank";
 import { findMainSpecieInLivestock } from "@/helpers/findMainSpecieInLivestock";
@@ -161,7 +159,9 @@ const feedInformation = ref(new FeedInformationDTO({}));
 const livestockInformation = ref<LivestockInformation>(
   new LivestockInformationDTO({})
 );
-
+const mainLivestockSpecie = computed(() =>
+  findMainSpecieInLivestock(livestockInformation.value.livestock)
+);
 function omitLivestockStep() {
   livestockInformation.value = new LivestockInformationDTO({});
   step.value++;

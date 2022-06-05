@@ -1,4 +1,4 @@
-import { Feed } from "./Feed";
+import { FeedType } from "./Feed";
 import { SpeciesValues } from "@/types/Livestock";
 export interface FeedTableSpecie {
   specie: string;
@@ -6,7 +6,7 @@ export interface FeedTableSpecie {
 }
 
 export interface SingleFeedTableForSpecie {
-  feed: Feed;
+  feed: Required<FeedType>;
   fcrForSizes: Record<string, number>;
   temperatureFeedDoses: Record<string, number>;
 }

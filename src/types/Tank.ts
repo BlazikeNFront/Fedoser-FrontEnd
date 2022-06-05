@@ -2,7 +2,7 @@ import {
   FeedProgramUpdateFrequency,
   TypesOfFeedProgram,
 } from "@/constants/enums/Feed";
-import { FeedDose, Feed } from "@/types/Feed";
+import { FeedDose, CurrentTankFeed } from "@/types/Feed";
 import { EnviromentalData } from "@/types/EnviromentalData";
 import { SingleLivestockSpecie } from "@/types/Livestock";
 
@@ -12,7 +12,7 @@ export interface MainTankInformation {
   description?: string;
 }
 export interface TankFeedInformation {
-  currentFeed: Feed | null;
+  currentFeed: CurrentTankFeed | null;
   usedFeedTotalWeight: number;
   feedProgram: FeedDose[];
   typeOfProgram: TypesOfFeedProgram;

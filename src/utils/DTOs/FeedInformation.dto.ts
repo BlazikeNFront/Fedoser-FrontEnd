@@ -1,4 +1,4 @@
-import { Feed, FeedDose } from "@/types/Feed";
+import { FeedDose, CurrentTankFeed } from "@/types/Feed";
 import { TankFeedInformation } from "@/types/Tank";
 import {
   TypesOfFeedProgram,
@@ -6,21 +6,20 @@ import {
 } from "@/constants/enums/Feed";
 
 export class FeedInformationDTO implements TankFeedInformation {
-  currentFeed: Feed | null;
+  currentFeed: CurrentTankFeed | null;
   usedFeedTotalWeight: number;
   feedProgram: FeedDose[];
   typeOfProgram: TypesOfFeedProgram;
   doseUpdateFrequency: FeedProgramUpdateFrequency | null;
   currentLivestockWeight: number | null;
-  constructor(feedInformation: Partial<TankFeedInformation>) {
-    const {
-      currentFeed,
-      usedFeedTotalWeight,
-      feedProgram,
-      typeOfProgram,
-      doseUpdateFrequency,
-      currentLivestockWeight,
-    } = feedInformation;
+  constructor({
+    currentFeed,
+    usedFeedTotalWeight,
+    feedProgram,
+    typeOfProgram,
+    doseUpdateFrequency,
+    currentLivestockWeight,
+  }: Partial<TankFeedInformation>) {
     this.currentFeed = currentFeed || null;
     this.usedFeedTotalWeight = usedFeedTotalWeight || 0;
     this.feedProgram = feedProgram || [];

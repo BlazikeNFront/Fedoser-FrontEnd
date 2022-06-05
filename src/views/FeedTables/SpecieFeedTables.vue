@@ -27,10 +27,10 @@
             <v-expansion-panel class="feedTables__table-list-item">
               <v-expansion-panel-title class="f-2 text-center">
                 <p class="text-center w-100">
-                  {{ table.name }}
+                  {{ table.feed.name }}
                   <span
                     class="mt-1 d-block font-weight-bold"
-                    v-text="`${table.size}mm`"
+                    v-text="`${table.feed.size}mm`"
                   /></p
               ></v-expansion-panel-title>
               <v-expansion-panel-text>
@@ -42,7 +42,7 @@
                   <p class="d-flex align-center f-15 font-weight-bold">
                     {{ $t("global.efficiency") }}
                     <span class="ml-2"
-                      ><feed-quality-display :quality="+table.quality"
+                      ><feed-quality-display :quality="+table.feed.quality"
                     /></span>
                   </p>
                   <v-tooltip anchor="bottom"
@@ -57,7 +57,7 @@
                           :icon="Icons.MAGNIFY_GLASS"
                           @click="
                             fetchTable(
-                              table.fileName,
+                              table.feed.fileName,
                               PdfActions.OPEN_IN_NEW_WINDOW
                             )
                           "
@@ -77,7 +77,7 @@
                           size="small"
                           :icon="Icons.DOWNLOAD"
                           @click="
-                            fetchTable(table.fileName, PdfActions.DOWNLOAD)
+                            fetchTable(table.feed.fileName, PdfActions.DOWNLOAD)
                           "
                         />
                       </div>
@@ -101,29 +101,18 @@ import {
   FeedTablesService,
   FeedTablesPdfService,
 } from "@/services/endpoints/FeedTables";
-import { Species } from "@/constants/enums/Species";
-import {
-  FeedTablesForSpecie,
-  SingleFeedTableForSpecie,
-} from "@/types/FeedTablesForSpecie";
-import FeedService from "@/services/endpoints/Feeds";
+import { FeedTablesForSpecie } from "@/types/FeedTablesForSpecie";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { camelizeString } from "@/helpers/stringOperations";
 import { PdfActions } from "@/constants/enums/PdfActions";
-import { Feed } from "@/types/Feed";
-import { FeedDTO } from "@/utils/DTOs/Feed.dto";
 import useOnPdfResponse from "@/hooks/useOnPdfResponse";
-import { GetResponse, ApiError } from "@/types/ApiResponses";
-import { SingleFeedTableForSpecieWithFeedDetails } from "@/types/FeedTablesForSpecie";
 
 const { params } = useRoute();
 const { downloadPdf, openPdfInNewWindow } = useOnPdfResponse();
 
 const isLoading = ref(false);
 const isDownloadingTablePdf = ref(false);
-const feedsTables = ref<FeedTablesForSpecie<
-  SingleFeedTableForSpecieWithFeedDetails[]
-> | null>(null);
+const feedsTables = ref<FeedTablesForSpecie | null>(null);
 const specieEnumValue = computed(() => {
   const { specie } = params;
   if (Array.isArray(specie)) return camelizeString(specie[0]);
@@ -132,38 +121,15 @@ const specieEnumValue = computed(() => {
 const specieImageSrc = computed(() =>
   require(`@/assets/species/${camelizeString(params.specie as string)}.jpg`)
 );
-async function getFeedTablesDetails(feedsId: string[]): Promise<Feed[]> {
-  let requests: Promise<ApiError | GetResponse<FeedDTO>>[] = [];
-  feedsId.forEach((feedId) => requests.push(FeedService.get(feedId)));
-  const feedDetailsResponses = await Promise.all(requests);
 
-  return feedDetailsResponses
-    .filter(
-      (singleResponse): singleResponse is GetResponse<FeedDTO> =>
-        singleResponse.success
-    )
-    .map((getResponssesData) => getResponssesData.data);
-}
 async function getFeedsForSpecie() {
   isLoading.value = true;
-  const response = await FeedTablesService.get(specieEnumValue.value);
-
-  if (response.success) {
-    const feedDetails = await getFeedTablesDetails(
-      response.data.feedTables.map(
-        (feedTable: SingleFeedTableForSpecie) => feedTable.feedId
-      )
-    );
-    response.data.feedTables = response.data.feedTables.map(
-      (feedTable: SingleFeedTableForSpecie, index: number) => ({
-        ...feedTable,
-        ...feedDetails[index],
-      })
-    );
-    feedsTables.value = response.data as FeedTablesForSpecie<
-      SingleFeedTableForSpecieWithFeedDetails[]
-    >;
-  }
+  const response = await FeedTablesService.get(
+    specieEnumValue.value,
+    "",
+    "species"
+  );
+  if (response.success) feedsTables.value = response.data;
 
   isLoading.value = false;
 }
