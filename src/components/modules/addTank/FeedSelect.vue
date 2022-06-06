@@ -13,7 +13,9 @@
             max-width="30rem"
           >
             <p class="py-2 f-15 w-100">
-              {{ `${modelValue?.feed.name} ${modelValue?.feed.size}mm` }}
+              {{
+                `${modelValue?.feed.feedType.name} ${modelValue?.feed.size}mm`
+              }}
             </p></v-card
           >
         </template>
@@ -108,6 +110,7 @@ const { smAndUp } = useDisplay();
 const showMenu = ref(false);
 
 const allFeedWithoutProsoedFeeds = computed(() => {
+  console.log(props.feedsOptions);
   return props.feedsOptions.allFeeds.reduce<Required<Feed>[]>(
     (acc, currentFeed) => {
       if (
@@ -136,6 +139,7 @@ function onFeedSelect(feed: Feed) {
     "update:modelValue",
     new CurrentTankFeedDto({
       feed,
+      size: feed.size,
       isProposed: isFeedProposed.value,
     })
   );
@@ -143,14 +147,18 @@ function onFeedSelect(feed: Feed) {
   showMenu.value = false;
 }
 onBeforeMount(() => {
-  if (!props.modelValue)
+  if (!props.modelValue) {
+    const defaultFeed =
+      props.feedsOptions.proposedFeeds[0] || props.feedsOptions.allFeeds[0];
     emit(
       "update:modelValue",
       new CurrentTankFeedDto({
-        feed:
-          props.feedsOptions.proposedFeeds[0] || props.feedsOptions.allFeeds[0],
+        feed: defaultFeed,
+        size: defaultFeed.size,
         isProposed: isFeedProposed.value,
       })
     );
+  }
+  allFeedWithoutProsoedFeeds.value;
 });
 </script>

@@ -3,7 +3,7 @@ import { FeedTypeDTO } from "@/utils/DTOs/FeedType.dto";
 
 class FeedTypeService extends ReadonlyApiService<FeedTypeDTO> {
   constructor() {
-    super("feedTypes", true);
+    super("feeds-type");
   }
 }
 

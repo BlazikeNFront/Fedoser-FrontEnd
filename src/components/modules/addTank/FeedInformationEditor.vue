@@ -51,7 +51,7 @@ import { ref, computed, withDefaults, onBeforeMount } from "vue";
 import { TankFeedInformation } from "@/types/Tank";
 import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
 import { TypesOfFeedProgram } from "@/constants/enums/Feed";
-import { useFeedTypesStore } from "@/stores/FeedTypesStore";
+import { useFeedsStore } from "@/stores/FeedsStore";
 import { storeToRefs } from "pinia";
 import { useFeedForSpecie } from "@/stores/FeedsForSpecie";
 import { SingleLivestockSpecie } from "@/types/Livestock";
@@ -73,9 +73,9 @@ const emit = defineEmits<{
 }>();
 
 const { feedsForSpecie, loader } = storeToRefs(useFeedForSpecie());
-const { feeds } = storeToRefs(useFeedTypesStore());
+const { feeds } = storeToRefs(useFeedsStore());
+const { getFeeds } = useFeedsStore();
 const { getFeedsForSpecie } = useFeedForSpecie();
-const { getFeedTypes } = useFeedTypesStore();
 
 const doseUpdater = ref<InstanceType<typeof DoseUpdater> | null>(null);
 
@@ -90,7 +90,7 @@ const feedOptions = computed((): FeedSelectOptions => {
 
   return {
     proposedFeeds,
-    allFeeds: feeds.value,
+    allFeeds: feeds.value || [],
   };
 });
 async function getPropsedFeedsForSpecie() {
@@ -114,8 +114,7 @@ async function validateFeedInformation(): Promise<boolean> {
 }
 onBeforeMount(async () => {
   const requests = [getPropsedFeedsForSpecie()];
-  if (!feeds.value.length) requests.push(getFeedTypes());
-
+  if (!feeds.value?.length) requests.push(getFeeds());
   await Promise.all(requests);
 });
 </script>

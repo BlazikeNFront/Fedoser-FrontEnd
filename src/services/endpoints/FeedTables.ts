@@ -4,7 +4,7 @@ import { FeedTablesForSpecieDTO } from "@/utils/DTOs/FeedTablesForSpecie.dto";
 
 class FeedTablesDataService extends ReadonlyApiService<FeedTablesForSpecieDTO> {
   constructor() {
-    super("feedTables", true);
+    super("feedTables");
   }
 }
 class FeedTablesPdfDataService extends ReadonlyApiService<Blob> {

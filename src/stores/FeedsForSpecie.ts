@@ -7,6 +7,7 @@ export const useFeedForSpecie = defineStore("FeedsForSpecieStore", {
   actions: {
     async getFeedsForSpecie(specie: SpeciesValues) {
       const response = await FeedsForSpecieService.get(specie);
+
       if (response.success) this.$state.feedsForSpecie = response.data;
     },
   },
