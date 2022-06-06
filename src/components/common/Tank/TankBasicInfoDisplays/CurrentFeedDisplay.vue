@@ -11,8 +11,8 @@
   </i18n-t>
 </template>
 <script setup lang="ts">
-import { Feed } from "@/types/Feed";
+import { FeedType } from "@/types/Feed";
 defineProps<{
-  feed: Feed;
+  feed: FeedType;
 }>();
 </script>

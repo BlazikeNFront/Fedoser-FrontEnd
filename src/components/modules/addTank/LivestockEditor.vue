@@ -192,6 +192,7 @@ function addWeightToSpecie(speciesName: SpeciesValues) {
     formInputs.specieWeight
   );
   adjustSpecieMeanWeight(specieIndex);
+  addQuantityToSpecie(specieIndex);
 }
 
 function adjustSpecieMeanWeight(specieIndex: number) {
@@ -202,14 +203,11 @@ function adjustSpecieMeanWeight(specieIndex: number) {
         2
     ).toFixed(2)
   );
-  livestockInformationModel.value.livestock[specieIndex].quantity = Number(
-    parseInt(
-      formInputs.fishQuantity +
-        props.livestockInformation.livestock[specieIndex].quantity
-    )
-  );
 }
-
+function addQuantityToSpecie(specieIndex: number) {
+  livestockInformationModel.value.livestock[specieIndex].quantity +=
+    +formInputs.fishQuantity;
+}
 async function addStockToList() {
   if (!(await validateLivestockInformationForm())) return;
   //if specie is selected as other get value from input
