@@ -51,7 +51,6 @@ import { ref, computed, withDefaults, onBeforeMount } from "vue";
 import { TankFeedInformation } from "@/types/Tank";
 import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
 import { TypesOfFeedProgram } from "@/constants/enums/Feed";
-import { useFeedsStore } from "@/stores/FeedsStore";
 import { storeToRefs } from "pinia";
 import { useFeedForSpecie } from "@/stores/FeedsForSpecie";
 import { SingleLivestockSpecie } from "@/types/Livestock";
@@ -72,9 +71,8 @@ const emit = defineEmits<{
   (e: "update:modelValue", feedInformation: TankFeedInformation): void;
 }>();
 
-const { feedsForSpecie, loader } = storeToRefs(useFeedForSpecie());
-const { feeds } = storeToRefs(useFeedsStore());
-const { getFeeds } = useFeedsStore();
+const { feedsForSpecie, loader, specie } = storeToRefs(useFeedForSpecie());
+
 const { getFeedsForSpecie } = useFeedForSpecie();
 
 const doseUpdater = ref<InstanceType<typeof DoseUpdater> | null>(null);
@@ -83,18 +81,26 @@ const showValidationError = ref(false);
 
 const copyOfModelValue = computed(() => props.modelValue);
 const feedOptions = computed((): FeedSelectOptions => {
-  const proposedFeeds =
-    feedsForSpecie.value?.weightBreakpoints.find(
-      (breakpoint) => breakpoint.size > props.mainSpecie.meanWeight
-    )?.feeds || [];
-
-  return {
-    proposedFeeds,
-    allFeeds: feeds.value || [],
+  const feedSelectOption: FeedSelectOptions = {
+    proposedFeeds: [],
+    allFeeds: [],
   };
+  if (!feedsForSpecie.value) return feedSelectOption;
+  const { meanWeight } = props.mainSpecie;
+  const proposedFeeds = feedsForSpecie.value.filter((specieFeed) => {
+    if (specieFeed.maxSize === null) return specieFeed.minSize < meanWeight;
+    return specieFeed.minSize < meanWeight && specieFeed.maxSize > meanWeight;
+  });
+
+  feedSelectOption.proposedFeeds = proposedFeeds;
+
+  console.log(feedSelectOption.proposedFeeds);
+  feedSelectOption.allFeeds = feedsForSpecie.value;
+
+  return feedSelectOption;
 });
 async function getPropsedFeedsForSpecie() {
-  if (feedsForSpecie.value?.specie === props.mainSpecie.specie) return;
+  if (specie.value === props.mainSpecie.specie) return;
   await getFeedsForSpecie(props.mainSpecie.specie);
 }
 async function validateFeedInformation(): Promise<boolean> {
@@ -113,8 +119,6 @@ async function validateFeedInformation(): Promise<boolean> {
   return true;
 }
 onBeforeMount(async () => {
-  const requests = [getPropsedFeedsForSpecie()];
-  if (!feeds.value?.length) requests.push(getFeeds());
-  await Promise.all(requests);
+  await getPropsedFeedsForSpecie();
 });
 </script>

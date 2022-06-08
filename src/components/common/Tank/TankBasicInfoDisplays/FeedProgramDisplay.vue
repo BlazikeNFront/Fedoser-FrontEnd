@@ -1,16 +1,12 @@
 <template>
-  <i18n-t keypath="tankCard.feedProgram" tag="p" scope="global" class="f-15">
-    <template #feedProgram>
-      <v-icon
-        class="ml-2 f-2"
-        :icon="isFeedProgramSet ? Icons.CHECKMARK_CIRCLE : Icons.EXIT"
-        :color="isFeedProgramSet ? 'success' : 'error'"
-      />
-    </template>
-  </i18n-t>
+  <icon-display
+    keypath="tankCard.feedProgram"
+    :boolean="isFeedProgramSet"
+    template-name="feedProgram"
+  />
 </template>
 <script setup lang="ts">
-import { Icons } from "@/constants/icons/MdiIcons";
+import IconDisplay from "@/components/common/Tank/TankBasicInfoDisplays/base/IconDisplay.vue";
 defineProps<{
   isFeedProgramSet: boolean;
 }>();

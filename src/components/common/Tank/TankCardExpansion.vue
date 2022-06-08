@@ -84,9 +84,13 @@ function addAdditionInformation(
   tank: Tank
 ): TankCardExpansionConfig[] {
   if (tank.feedInformation?.currentFeed) {
+    const { size, feed } = tank.feedInformation.currentFeed.feedForSpecie;
     basicInformationConfig.push({
       component: CurrentFeedDisplay,
-      attrs: { feed: tank.feedInformation.currentFeed.feed.feedType },
+      attrs: {
+        feed,
+        size,
+      },
     });
   }
   if (tank.livestockInformation?.livestock.length) {

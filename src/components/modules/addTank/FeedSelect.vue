@@ -14,7 +14,7 @@
           >
             <p class="py-2 f-15 w-100">
               {{
-                `${modelValue?.feed.feedType.name} ${modelValue?.feed.size}mm`
+                `${modelValue?.feedForSpecie.feed.name} ${modelValue?.feedForSpecie.size}mm`
               }}
             </p></v-card
           >
@@ -40,7 +40,7 @@
           <feed-select-list-item
             v-for="(item, key) in feedsOptions.proposedFeeds"
             :key="key"
-            :feed="item"
+            :feed-for-specie="item"
             @click="onFeedSelect(item)"
           />
 
@@ -56,7 +56,7 @@
           <feed-select-list-item
             v-for="(item, key) in allFeedWithoutProsoedFeeds"
             :key="key"
-            :feed="item"
+            :feed-for-specie="item"
             @click="onFeedSelect(item)"
           />
         </v-list>
@@ -83,7 +83,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { Feed, CurrentTankFeed } from "@/types/Feed";
+import { CurrentTankFeed, FeedForSpecie } from "@/types/Feed";
 import { FeedSelectOptions } from "@/types/FeedSelectOptions";
 import FeedSelectListItem from "@/components/modules/addTank/FeedSelectListItem.vue";
 import { Icons } from "@/constants/icons/MdiIcons";
@@ -110,8 +110,7 @@ const { smAndUp } = useDisplay();
 const showMenu = ref(false);
 
 const allFeedWithoutProsoedFeeds = computed(() => {
-  console.log(props.feedsOptions);
-  return props.feedsOptions.allFeeds.reduce<Required<Feed>[]>(
+  return props.feedsOptions.allFeeds.reduce<Required<FeedForSpecie>[]>(
     (acc, currentFeed) => {
       if (
         !props.feedsOptions.proposedFeeds.find(
@@ -128,18 +127,17 @@ const allFeedWithoutProsoedFeeds = computed(() => {
 const isFeedProposed = computed(() => {
   if (
     !props.feedsOptions.proposedFeeds.some(
-      (feed) => feed._id === props.modelValue?.feed._id
+      (feed) => feed._id === props.modelValue?.feedForSpecie._id
     )
   )
     return true;
   return false;
 });
-function onFeedSelect(feed: Feed) {
+function onFeedSelect(feedForSpecie: FeedForSpecie) {
   emit(
     "update:modelValue",
     new CurrentTankFeedDto({
-      feed,
-      size: feed.size,
+      feedForSpecie,
       isProposed: isFeedProposed.value,
     })
   );
@@ -153,8 +151,7 @@ onBeforeMount(() => {
     emit(
       "update:modelValue",
       new CurrentTankFeedDto({
-        feed: defaultFeed,
-        size: defaultFeed.size,
+        feedForSpecie: defaultFeed,
         isProposed: isFeedProposed.value,
       })
     );

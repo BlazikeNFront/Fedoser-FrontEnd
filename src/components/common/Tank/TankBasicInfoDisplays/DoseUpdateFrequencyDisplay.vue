@@ -1,16 +1,12 @@
 <template>
-  <i18n-t
+  <base-display
     keypath="feedInformation.doseUpdateFrequencyDisplay"
-    tag="p"
-    scope="global"
-    class="f-15"
-  >
-    <template #updateFrequency>
-      <span class="f-2" v-text="updateFrequency"></span>
-    </template>
-  </i18n-t>
+    :span-value="updateFrequency.toString()"
+    template-name="updateFrequency"
+  />
 </template>
 <script setup lang="ts">
+import BaseDisplay from "@/components/common/Tank/TankBasicInfoDisplays/base/BaseDisplay.vue";
 defineProps<{
   updateFrequency: number;
 }>();

@@ -1,12 +1,10 @@
-import { CurrentTankFeed, Feed } from "@/types/Feed";
+import { CurrentTankFeed, FeedForSpecie } from "@/types/Feed";
 
 export class CurrentTankFeedDto implements CurrentTankFeed {
-  feed: Feed;
-  size: string;
+  feedForSpecie: FeedForSpecie;
   isProposed: boolean;
-  constructor({ feed, size, isProposed }: CurrentTankFeed) {
-    this.feed = feed;
-    this.size = size;
+  constructor({ feedForSpecie, isProposed }: CurrentTankFeed) {
+    this.feedForSpecie = feedForSpecie;
     this.isProposed = isProposed;
   }
 }

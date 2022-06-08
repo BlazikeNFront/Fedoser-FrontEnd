@@ -1,14 +1,13 @@
 <template>
-  <i18n-t keypath="tankCard.annotations" tag="p" scope="global" class="f-15">
-    <template #annotations>
-      <span v-bind="textAttrs" v-text="annotationNumber"> </span>
-    </template>
-  </i18n-t>
+  <base-display
+    keypath="tankCard.annotations"
+    :span-value="annotationNumber.toString()"
+    template-name="annotations"
+  />
 </template>
 <script setup lang="ts">
-import { Attrs } from "@/types/Attrs";
+import BaseDisplay from "@/components/common/Tank/TankBasicInfoDisplays/base/BaseDisplay.vue";
 defineProps<{
   annotationNumber: number;
-  textAttrs?: Attrs;
 }>();
 </script>

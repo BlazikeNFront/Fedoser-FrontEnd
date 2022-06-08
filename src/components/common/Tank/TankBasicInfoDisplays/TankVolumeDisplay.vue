@@ -1,12 +1,12 @@
 <template>
-  <i18n-t keypath="tankCard.volume" tag="p" scope="global" class="f-15">
-    <template #volume>
-      <!--  &#13221; is unicode for cubic meters -->
-      <span class="ml-2 f-2" v-text="`${volume} &#13221;`"></span>
-    </template>
-  </i18n-t>
+  <base-display
+    keypath="tankCard.volume"
+    :span-value="`${volume} &#13221;`"
+    template-name="volume"
+  />
 </template>
 <script setup lang="ts">
+import BaseDisplay from "@/components/common/Tank/TankBasicInfoDisplays/base/BaseDisplay.vue";
 defineProps<{
   volume: number;
 }>();

@@ -1,8 +1,8 @@
 import ReadonlyApiService from "@/services/base/ReadOnlyService";
-import { FeedsForSpecieDto } from "@/utils/DTOs/FeedsForSpecie.dto";
-class FeedsForSpecie extends ReadonlyApiService<FeedsForSpecieDto> {
+import { FeedForSpecie } from "@/types/Feed";
+class FeedsForSpecie extends ReadonlyApiService<FeedForSpecie> {
   constructor() {
-    super("feeds-for-specie");
+    super("feeds-for-species");
   }
 }
 

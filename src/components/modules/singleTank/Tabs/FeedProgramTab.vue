@@ -18,6 +18,9 @@
       />
       <dose-manager
         :feed-information="tank.feedInformation"
+        :main-specie="
+          findMainSpecieInLivestock(tank.livestockInformation.livestock)
+        "
         @dose-omitted="terminateDose"
         @dose-terminated="terminateDose"
       />
@@ -36,6 +39,7 @@ import DoseManager from "@/components/modules/singleTank/FeedProgram/DoseManager
 import FeedInformationDisplay from "@/components/common/Feed/FeedInformationDisplay.vue";
 import TerminatedDoseList from "@/components/modules/singleTank/FeedProgram/TerminatedDoseList.vue";
 import { FeedInformationDoseService } from "@/services/endpoints/TankFeedInformation";
+import { findMainSpecieInLivestock } from "@/helpers/findMainSpecieInLivestock";
 import { FeedDose } from "@/types/Feed";
 import { TerminatedFeedDoseDTO } from "@/utils/DTOs/TerminatedFeedDose.dto";
 const { tank } = storeToRefs(useTankStore());

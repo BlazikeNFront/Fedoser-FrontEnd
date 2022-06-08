@@ -1,18 +1,16 @@
 <template>
-  <i18n-t
+  <base-display
     keypath="tankCard.feedName"
-    tag="p"
-    class="d-flex align-center justify-center f-15"
-    scope="global"
-  >
-    <template #feedName>
-      <span class="ml-2 f-2" v-text="`${feed.name} ${feed.size}mm`"> </span>
-    </template>
-  </i18n-t>
+    :span-value="`${feed.name} ${size}mm`"
+    template-name="feedName"
+  />
 </template>
 <script setup lang="ts">
-import { FeedType } from "@/types/Feed";
+import { Feed } from "@/types/Feed";
+import BaseDisplay from "@/components/common/Tank/TankBasicInfoDisplays/base/BaseDisplay.vue";
+
 defineProps<{
-  feed: FeedType;
+  feed: Feed;
+  size: string;
 }>();
 </script>

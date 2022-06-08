@@ -1,22 +1,27 @@
 import { FeedQuality } from "@/constants/enums/Feed";
-
+import { SpeciesValues } from "./Livestock";
 import { DoseTermination } from "@/constants/enums/DoseTermination";
 
-export interface FeedType {
-  name: string;
-  size: string;
-  quality: FeedQuality;
-  fileName: string;
-  _id?: string | null;
-}
 export interface Feed {
   _id: string;
-  feedType: Required<FeedType>;
-  size: string;
-  minWeight: number | null;
-  maxWeight: number | null;
-  fcr: number;
+  name: string;
+  sizes: string[];
+  speciesWithFeedTables: SpeciesValues[];
+  quality: FeedQuality;
+  fileName: string;
 }
+
+export interface FeedForSpecie {
+  _id: string;
+  feed: Feed;
+  specie: SpeciesValues;
+  minSize: number;
+  maxSize: null | number;
+  fcr: number;
+  size: string;
+  weightBreakpoints: Record<string, number> | null;
+}
+
 export interface FeedDose {
   number: number;
   amount: number;
@@ -35,7 +40,6 @@ export interface TerminatedFeedDose {
   weightsData: WeightsData;
 }
 export interface CurrentTankFeed {
-  feed: Feed;
-  size: string;
+  feedForSpecie: FeedForSpecie;
   isProposed: boolean;
 }

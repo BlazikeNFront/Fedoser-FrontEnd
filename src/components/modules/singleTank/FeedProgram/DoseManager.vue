@@ -1,8 +1,8 @@
 <template>
   <v-card class="w-90 my-4" color="transparent" elevation="20">
     <v-progress-linear
-      :active="loadingFeeds"
-      :indeterminate="loadingFeeds"
+      :active="loader"
+      :indeterminate="loader"
       color="blue"
       height="5"
     />
@@ -23,25 +23,38 @@
             cols="12"
             class="d-flex align-center justify-center"
           >
-            <v-btn
-              @click="handleDoseProposeRequest"
-              :disabled="!feeds.length"
-              class="app-button f-15"
-              v-text="$t('feedInformation.calculateFeedDose')" />
-            <v-tooltip v-if="!isUsingPropsedFeedDose" anchor="top"
-              ><template #activator="{ props }">
-                <v-icon
-                  v-bind="props"
-                  color="yellow"
-                  class="ml-2"
-                  size="30"
-                  :icon="Icons.ALERT"
-                />
-              </template>
-              <span
-                class="f-15"
-                v-text="$t('feedInformation.diffrentDosesAlert')"
-              ></span></v-tooltip
+            <p
+              v-if="
+                feedInformation.currentFeed?.feedForSpecie.weightBreakpoints ===
+                null
+              "
+            >
+              {{ $t("feedInformation.adLibitumFeedDose") }}
+            </p>
+            <div v-else>
+              <v-btn
+                @click="handleDoseProposeRequest"
+                :disabled="!feedsForSpecie?.length"
+                class="app-button f-15"
+                v-text="$t('feedInformation.calculateFeedDose')"
+              />
+              <v-tooltip
+                v-if="!isUsingPropsedFeedDose && proposedFeedDose"
+                anchor="top"
+                ><template #activator="{ props }">
+                  <v-icon
+                    v-bind="props"
+                    color="yellow"
+                    class="ml-2"
+                    size="30"
+                    :icon="Icons.ALERT"
+                  />
+                </template>
+                <span
+                  class="f-15"
+                  v-text="$t('feedInformation.diffrentDosesAlert')"
+                ></span
+              ></v-tooltip></div
           ></v-col>
           <v-col cols="12">
             <v-text-field
@@ -58,7 +71,7 @@
               "
             ></p>
             <v-text-field
-              v-model="feedDose"
+              v-model="feedDoseInput"
               type="number"
               :label="$t('feedInformation.dose')"
           /></v-col>
@@ -88,18 +101,17 @@
 <script setup lang="ts">
 import { ref, computed, reactive, onBeforeMount } from "vue";
 import { getCurrentDate } from "@/helpers/date";
-import { FeedDose } from "@/types/Feed";
+import { CurrentTankFeed, FeedDose, FeedForSpecie } from "@/types/Feed";
 import { FeedDoseDTO } from "@/utils/DTOs/FeedDose.dto";
 import { DoseTermination } from "@/constants/enums/DoseTermination";
 import { Icons } from "@/constants/icons/MdiIcons";
-import { useFeedTypesStore } from "@/stores/FeedTypesStore";
-import { storeToRefs } from "pinia";
 import { TankFeedInformation } from "@/types/Tank";
-import { FeedTablesService } from "@/services/endpoints/FeedTables";
 import { SingleLivestockSpecie } from "@/types/Livestock";
+import { useFeedForSpecie } from "@/stores/FeedsForSpecie";
+import { storeToRefs } from "pinia";
 const props = defineProps<{
   feedInformation: Required<TankFeedInformation>;
-  mainSpecie: SingleLivestockSpecie;
+  mainSpecie: SingleLivestockSpecie | null;
 }>();
 
 const emit = defineEmits<{
@@ -107,9 +119,8 @@ const emit = defineEmits<{
   (e: "dose-omitted", dose: FeedDose): void;
 }>();
 
-const { feeds, loadingFeeds } = storeToRefs(useFeedTypesStore());
-const { getFeedTypes } = useFeedTypesStore();
-
+const { feedsForSpecie, loader } = storeToRefs(useFeedForSpecie());
+const { getFeedsForSpecie } = useFeedForSpecie();
 const currentDoseDate = ref(getCurrentDate());
 const currentDose = computed(
   () =>
@@ -124,55 +135,85 @@ const indexOfCurrentDose = computed(() =>
   props.feedInformation.feedProgram.findIndex((dose) => dose.terminated === 0)
 );
 const temperatureInput = ref(14);
-const feedDose = ref(currentDose.value.amount);
+const feedDoseInput = ref(currentDose.value.amount);
 const proposedFeedDose = ref<number | null>(null);
 const weightGainedAfterFeed = ref(currentDose.value.weightGainAfterDose);
 const isUsingPropsedFeedDose = computed(
-  () => feedDose.value !== null && proposedFeedDose.value === feedDose.value
+  () =>
+    feedDoseInput.value !== null &&
+    proposedFeedDose.value === feedDoseInput.value
 );
 
 const temperatureFormError = reactive({
   isVisible: false,
   text: "",
 });
-async function fetchFeeds() {
-  if (!feeds.value.length) {
-    await getFeedTypes();
+async function fetchSpecieFeeds() {
+  if (!feedsForSpecie.value?.length && props.mainSpecie) {
+    await getFeedsForSpecie(props.mainSpecie.specie);
   }
 }
 
 function handleDoseProposeRequest() {
+  console.log("hello");
+  const { currentLivestockWeight, currentFeed } = props.feedInformation;
+  if (!currentFeed?.feedForSpecie.weightBreakpoints || !currentLivestockWeight)
+    return;
   if (!temperatureInput.value) {
     temperatureFormError.isVisible = true;
     temperatureFormError.text = "Please provide temperature higher than 2*C";
     return;
   }
-  proposedFeedDose.value = feedDose.value = 2.5;
-
-  weightGainedAfterFeed.value = proposedFeedDose.value * 1; //FCR;
-}
-async function getCurrentDose() {
-  if (!props.feedInformation.currentFeed) return;
-  const response = await FeedTablesService.get(
-    props.feedInformation.currentFeed.feed._id,
-    "",
-    `species/${props.mainSpecie.specie}`
+  const availableTemperatureRange = Object.keys(
+    currentFeed.feedForSpecie.weightBreakpoints
   );
-  if (response.success) {
-    console.log(response.data);
-  }
+  const doseMulitplier: number = availableTemperatureRange.includes(
+    temperatureInput.value.toString()
+  )
+    ? currentFeed.feedForSpecie.weightBreakpoints[
+        temperatureInput.value.toString() as keyof typeof currentFeed.feedForSpecie.weightBreakpoints
+      ]
+    : getCorrectDoseMulitplier(
+        availableTemperatureRange,
+        currentFeed.feedForSpecie as Omit<
+          FeedForSpecie,
+          "weightBreakpoints"
+        > & { weightBreakpoints: Record<string, number> }
+      );
+  proposedFeedDose.value = feedDoseInput.value = +(
+    (currentLivestockWeight / 100) *
+    doseMulitplier
+  ).toFixed(2);
+
+  weightGainedAfterFeed.value = +(
+    proposedFeedDose.value * currentFeed.feedForSpecie.fcr
+  ).toFixed(2);
 }
+function getCorrectDoseMulitplier(
+  availableTemperatureRange: string[],
+  feedsForSpecie: Omit<FeedForSpecie, "weightBreakpoints"> & {
+    weightBreakpoints: Record<string, number>;
+  }
+): number {
+  return feedsForSpecie.weightBreakpoints[
+    availableTemperatureRange.find(
+      (temperature) => +temperature > temperatureInput.value
+    ) || availableTemperatureRange[availableTemperatureRange.length - 1]
+  ];
+}
+
 function setDefaultValuesInForm() {
   temperatureInput.value = 14;
-  feedDose.value = currentDose.value.amount;
+  feedDoseInput.value = currentDose.value.amount;
   weightGainedAfterFeed.value = currentDose.value.weightGainAfterDose;
+  proposedFeedDose.value = null;
 }
 
 function setDoseAsTerminated() {
   const terminatedFeedDose = new FeedDoseDTO({
     number: currentDose.value.number,
     date: currentDoseDate.value,
-    amount: feedDose.value,
+    amount: feedDoseInput.value,
     weightGainAfterDose: weightGainedAfterFeed.value,
     temperature: temperatureInput.value,
     terminated: DoseTermination.DONE,
@@ -184,7 +225,7 @@ function setDoseAsOmitted() {
   const terminatedFeedDose = new FeedDoseDTO({
     number: currentDose.value.number,
     date: currentDoseDate.value,
-    amount: feedDose.value,
+    amount: feedDoseInput.value,
     weightGainAfterDose: weightGainedAfterFeed.value,
     temperature: temperatureInput.value,
     terminated: DoseTermination.OMITTED,
@@ -193,8 +234,7 @@ function setDoseAsOmitted() {
   setDefaultValuesInForm();
 }
 onBeforeMount(() => {
-  fetchFeeds();
-  getCurrentDose();
+  fetchSpecieFeeds();
 });
 </script>
 <style scoped>
