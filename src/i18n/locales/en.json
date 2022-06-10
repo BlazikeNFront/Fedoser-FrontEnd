@@ -43,11 +43,15 @@
     "close":"Close",
      "title":"Title",
      "efficiency":"Efficiency",
-     "lack":"Brak",
+     "lack":"Lack",
      "baseDeleteConfirmation":"Are you sure you want to delete"
   },
    "species":{
-    "rainbowTrout":"Rainbow Trout"
+    "rainbowTrout":"Rainbow Trout",
+    "salmon":"Salmon",
+    "brookTrout":"Brook trout",
+    "brownTrout":"Brown Trout",
+    "whitefish":"Whitefish"
   },
   "errorMessages":{
     "accountAlreadyExist":"Account with provided e-mail address already exists"
@@ -95,7 +99,7 @@
     "mainSpecie":"@:global.specie@:global.:{mainSpecie}",
     "feedName":"@:global.feed@:global.:{feedName}",
      "volume":"@:global.volume@:global.:{volume}",
-     "deleteTank":"@:global.delete zbiornik",
+     "deleteTank":"@:global.delete tank",
      "deleteConfirmation":"@:global.baseDeleteConfirmation this tank?"
   },
   "addTank":{
@@ -138,13 +142,14 @@
       "diffrentDosesAlert":"Dose differs from proposed",
       "proposedDose":"Proposed dose: {dose}",
       "terminated":"Terminated",
-      "typeDoseAmount":"Type amount"
+      "typeDoseAmount":"Type amount",
+      "changeFeed":"Change feed"
     },
     "tank":{
       "noLivestockIsSet":"The tank  doesn't have livestock. {button} to add livestock",
       "tankDescriptors":"Description",
-      "currentLivestockState":"Aktualny stan obsady",
-      "initialLivestockState":"Poczatkowy stan obsady"
+      "currentLivestockState":"Current livestock state",
+      "initialLivestockState":"Initial livestock state"
 
     },
     "userTanks":{
@@ -176,6 +181,7 @@
     "feedTables":{
       "downloadFeedTable":"Download table",
       "openFeedTable":"Open in new window",
-      "tableForSpecie":"Feed tables"
+      "tableForSpecie":"Feed tables",
+      "notSupportedSpecie":"Feed tables for this species have not yet been added"
     }
 }

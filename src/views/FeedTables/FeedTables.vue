@@ -11,7 +11,7 @@
     <v-container
       ><v-row
         ><v-col
-          v-for="(specie, index) in speciesList"
+          v-for="(specie, index) in createSpecieList()"
           :key="index"
           cols="12"
           lg="6"
@@ -33,29 +33,25 @@
 import { ref } from "vue";
 import FeedTableSpecieCard from "@/components/modules/feedTables/FeedTableSpecieCard.vue";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
+import { Species } from "@/constants/enums/Species";
+import { FeedTableSpecie } from "@/types/FeedTablesForSpecie";
+import { SpeciesValues } from "@/types/Livestock";
 const isLoading = ref(false);
-const speciesList = [
-  {
-    specie: "Rainbow Trout",
-    imageUrl: require("@/assets/species/rainbowTrout.jpg"),
-  },
-  {
-    specie: "Salmon",
-    imageUrl: require("@/assets/species/salmon.jpg"),
-  },
-  {
-    specie: "Whitefish",
-    imageUrl: require("@/assets/species/whitefish.jpg"),
-  },
-  {
-    specie: "Brook Trout / Arctic char",
-    imageUrl: require("@/assets/species/brookTrout.jpg"),
-  },
-  {
-    specie: "Brown Trout",
-    imageUrl: require("@/assets/species/brownTrout.jpg"),
-  },
-];
+
+function createSpecieList(): FeedTableSpecie[] {
+  return [
+    Species.RAINBOW_TROUT,
+    "salmon",
+    "brookTrout",
+    "whitefish",
+    "brownTrout",
+  ].map((specie) => ({
+    specie,
+    specieTranslation: `species.${specie}`,
+    imageUrl: require(`@/assets/species/${specie}.jpg`),
+    isSupported: Object.values(Species).includes(specie as SpeciesValues),
+  }));
+}
 </script>
 
 <style></style>

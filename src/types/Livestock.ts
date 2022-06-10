@@ -4,7 +4,6 @@ export interface SingleLivestockSpecie {
   weight: number;
   meanWeight: number;
   quantity: number;
-  customSpecie?: string;
 }
 
 export type SpeciesKeys = keyof typeof Species;

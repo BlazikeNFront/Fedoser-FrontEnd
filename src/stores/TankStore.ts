@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 import { TankStore } from "@/types/store/TankStore";
 import { TankNote } from "@/types/Tank";
 import { Tank } from "@/types/Tank";
+import { CurrentTankFeed } from "@/types/Feed";
+import { TankCurrentFeeService } from "@/services/endpoints/TankFeedInformation";
 export const useTankStore = defineStore("TankStore", {
   state: () =>
     ({
@@ -19,6 +21,16 @@ export const useTankStore = defineStore("TankStore", {
     },
     addNoteToTank(note: Required<TankNote>) {
       if (this.tank) this.tank.annotations.push(note);
+    },
+    async changeCurrentTankFeed(newCurrentTankFeed: CurrentTankFeed) {
+      if (!this.tank) return;
+      console.log(newCurrentTankFeed);
+      const { success } = await TankCurrentFeeService.update(
+        this.tank._id,
+        newCurrentTankFeed,
+        "current-tank-feed"
+      );
+      if (success) this.tank.feedInformation.currentFeed = newCurrentTankFeed;
     },
   },
 });

@@ -97,6 +97,7 @@ const NAV_OPTIONS: NavOptions = [
     icon: Icons.CLIPBOARD,
     name: RoutesNames.FEED_TABLES,
     text: "navBar.feedTables",
+    childrens: [RoutesNames.SPECIE_FEED_TABLES],
   },
   {
     icon: Icons.ACCOUNT_SETTINGS,

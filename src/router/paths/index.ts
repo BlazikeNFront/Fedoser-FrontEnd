@@ -9,6 +9,7 @@ import SignIn from "@/views/Home/SignIn.vue";
 import SignUp from "@/views/Home/SignUp.vue";
 import Index from "@/views/Home/index.vue";
 import SpecieFeedTables from "@/views/FeedTables/SpecieFeedTables.vue";
+import NotFoundPage from "@/views/NotFoundPage.vue";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { RouteRecordRaw } from "vue-router";
 import { PortalRoles } from "@/constants/enums/PortalRoles";
@@ -66,9 +67,9 @@ const routes: Array<RouteRecordRaw> = [
     meta: { roles: [PortalRoles.USER] },
   },
   {
-    name: RoutesNames.FALLBACK,
+    name: RoutesNames.NOT_FOUND,
     path: "/:catchAll(.*)",
-    component: AppHome,
+    component: NotFoundPage,
     meta: { roles: [PortalRoles.USER] },
   },
 ];

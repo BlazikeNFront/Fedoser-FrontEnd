@@ -99,9 +99,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive, onBeforeMount } from "vue";
+import { ref, computed, watch, reactive, onBeforeMount } from "vue";
 import { getCurrentDate } from "@/helpers/date";
-import { CurrentTankFeed, FeedDose, FeedForSpecie } from "@/types/Feed";
+import { FeedDose, FeedForSpecie } from "@/types/Feed";
 import { FeedDoseDTO } from "@/utils/DTOs/FeedDose.dto";
 import { DoseTermination } from "@/constants/enums/DoseTermination";
 import { Icons } from "@/constants/icons/MdiIcons";
@@ -122,6 +122,10 @@ const emit = defineEmits<{
 const { feedsForSpecie, loader } = storeToRefs(useFeedForSpecie());
 const { getFeedsForSpecie } = useFeedForSpecie();
 const currentDoseDate = ref(getCurrentDate());
+const temperatureFormError = reactive({
+  isVisible: false,
+  text: "",
+});
 const currentDose = computed(
   () =>
     new FeedDoseDTO({
@@ -143,11 +147,7 @@ const isUsingPropsedFeedDose = computed(
     feedDoseInput.value !== null &&
     proposedFeedDose.value === feedDoseInput.value
 );
-
-const temperatureFormError = reactive({
-  isVisible: false,
-  text: "",
-});
+watch(temperatureInput, () => clearDoseRelatedInputs());
 async function fetchSpecieFeeds() {
   if (!feedsForSpecie.value?.length && props.mainSpecie) {
     await getFeedsForSpecie(props.mainSpecie.specie);
@@ -155,7 +155,6 @@ async function fetchSpecieFeeds() {
 }
 
 function handleDoseProposeRequest() {
-  console.log("hello");
   const { currentLivestockWeight, currentFeed } = props.feedInformation;
   if (!currentFeed?.feedForSpecie.weightBreakpoints || !currentLivestockWeight)
     return;
@@ -201,12 +200,14 @@ function getCorrectDoseMulitplier(
     ) || availableTemperatureRange[availableTemperatureRange.length - 1]
   ];
 }
-
-function setDefaultValuesInForm() {
-  temperatureInput.value = 14;
+function clearDoseRelatedInputs() {
   feedDoseInput.value = currentDose.value.amount;
   weightGainedAfterFeed.value = currentDose.value.weightGainAfterDose;
   proposedFeedDose.value = null;
+}
+function clearForm() {
+  temperatureInput.value = 14;
+  clearDoseRelatedInputs();
 }
 
 function setDoseAsTerminated() {
@@ -219,7 +220,7 @@ function setDoseAsTerminated() {
     terminated: DoseTermination.DONE,
   });
   emit("dose-terminated", terminatedFeedDose);
-  setDefaultValuesInForm();
+  clearForm();
 }
 function setDoseAsOmitted() {
   const terminatedFeedDose = new FeedDoseDTO({
@@ -231,7 +232,7 @@ function setDoseAsOmitted() {
     terminated: DoseTermination.OMITTED,
   });
   emit("dose-omitted", terminatedFeedDose);
-  setDefaultValuesInForm();
+  clearForm();
 }
 onBeforeMount(() => {
   fetchSpecieFeeds();

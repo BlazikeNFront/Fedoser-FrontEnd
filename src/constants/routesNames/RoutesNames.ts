@@ -11,7 +11,7 @@ export enum RoutesNames {
   FEED_TABLES = "feedTables",
   SPECIE_FEED_TABLES = "specieFeedTables",
   USER_SETTINGS = "userSettings",
-  FALLBACK = "fallback",
+  NOT_FOUND = "notFound",
 }
 
 export const HomeLayoutPages: RouteRecordName[] = [

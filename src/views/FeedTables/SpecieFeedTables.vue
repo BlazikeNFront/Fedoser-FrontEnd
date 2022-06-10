@@ -15,11 +15,12 @@
       style="width: clamp(300px, 100%, 600px)"
     />
     <feed-quality-legend />
-    <v-expansion-panels v-if="feedsTables">
+    <default-loader v-if="loader" />
+    <v-expansion-panels v-else-if="uniqueTables">
       <v-container
         ><v-row
           ><v-col
-            v-for="(table, index) in feedsTables.feedTables"
+            v-for="(feed, index) in uniqueTables"
             :key="index"
             cols="12"
             sm="6"
@@ -27,10 +28,10 @@
             <v-expansion-panel class="feedTables__table-list-item">
               <v-expansion-panel-title class="f-2 text-center">
                 <p class="text-center w-100">
-                  {{ table.feed.name }}
+                  {{ feed.feed.name }}
                   <span
                     class="mt-1 d-block font-weight-bold"
-                    v-text="`${table.feed.size}mm`"
+                    v-text="`${feed.size}mm`"
                   /></p
               ></v-expansion-panel-title>
               <v-expansion-panel-text>
@@ -42,7 +43,7 @@
                   <p class="d-flex align-center f-15 font-weight-bold">
                     {{ $t("global.efficiency") }}
                     <span class="ml-2"
-                      ><feed-quality-display :quality="+table.feed.quality"
+                      ><feed-quality-display :quality="feed.feed.quality"
                     /></span>
                   </p>
                   <v-tooltip anchor="bottom"
@@ -57,7 +58,7 @@
                           :icon="Icons.MAGNIFY_GLASS"
                           @click="
                             fetchTable(
-                              table.feed.fileName,
+                              feed.feed.filename,
                               PdfActions.OPEN_IN_NEW_WINDOW
                             )
                           "
@@ -77,7 +78,7 @@
                           size="small"
                           :icon="Icons.DOWNLOAD"
                           @click="
-                            fetchTable(table.feed.fileName, PdfActions.DOWNLOAD)
+                            fetchTable(feed.feed.filename, PdfActions.DOWNLOAD)
                           "
                         />
                       </div>
@@ -97,43 +98,56 @@ import FeedQualityLegend from "@/components/common/Feed/FeedQuality/FeedQualityL
 import FeedQualityDisplay from "@/components/common/Feed/FeedQuality/FeedQualityDisplay.vue";
 import { ref, computed, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
-import {
-  FeedTablesService,
-  FeedTablesPdfService,
-} from "@/services/endpoints/FeedTables";
-import { FeedTablesForSpecie } from "@/types/FeedTablesForSpecie";
+import { useRouter } from "vue-router";
+import { FeedTablesPdfService } from "@/services/endpoints/FeedTables";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { camelizeString } from "@/helpers/stringOperations";
 import { PdfActions } from "@/constants/enums/PdfActions";
 import useOnPdfResponse from "@/hooks/useOnPdfResponse";
-
+import { useFeedForSpecie } from "@/stores/FeedsForSpecie";
+import { storeToRefs } from "pinia";
+import { FeedForSpecie } from "@/types/Feed";
+import { SpeciesValues } from "@/types/Livestock";
+import { Species } from "@/constants/enums/Species";
+import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 const { params } = useRoute();
-const { downloadPdf, openPdfInNewWindow } = useOnPdfResponse();
 
-const isLoading = ref(false);
+const { downloadPdf, openPdfInNewWindow } = useOnPdfResponse();
+const { feedsForSpecie } = storeToRefs(useFeedForSpecie());
+const { getFeedsForSpecie, loader } = useFeedForSpecie();
+
 const isDownloadingTablePdf = ref(false);
-const feedsTables = ref<FeedTablesForSpecie | null>(null);
-const specieEnumValue = computed(() => {
+
+const specieEnumValue = computed((): string => {
   const { specie } = params;
-  if (Array.isArray(specie)) return camelizeString(specie[0]);
-  else return camelizeString(specie);
+  return Array.isArray(specie)
+    ? camelizeString(specie[0])
+    : camelizeString(specie);
 });
+const isProvidedSpecieParamAllowed = computed(() =>
+  Object.values(Species).includes(specieEnumValue.value as SpeciesValues)
+    ? true
+    : false
+);
+
 const specieImageSrc = computed(() =>
   require(`@/assets/species/${camelizeString(params.specie as string)}.jpg`)
 );
-
-async function getFeedsForSpecie() {
-  isLoading.value = true;
-  const response = await FeedTablesService.get(
-    specieEnumValue.value,
-    "",
-    "species"
-  );
-  if (response.success) feedsTables.value = response.data;
-
-  isLoading.value = false;
-}
-
+const uniqueTables = computed(() =>
+  feedsForSpecie.value?.reduce<Required<FeedForSpecie>[]>(
+    (acc, currentFeedForSpecie) => {
+      if (
+        !acc.find(
+          (feedForSpecie: FeedForSpecie) =>
+            feedForSpecie.feed._id === currentFeedForSpecie.feed._id
+        )
+      )
+        return acc.concat([currentFeedForSpecie]);
+      else return acc;
+    },
+    []
+  )
+);
 async function fetchTable(fileName: string, typeOfPdfAction: PdfActions) {
   isDownloadingTablePdf.value = true;
   const response = await FeedTablesPdfService.get(
@@ -148,7 +162,10 @@ async function fetchTable(fileName: string, typeOfPdfAction: PdfActions) {
   isDownloadingTablePdf.value = false;
 }
 
-onBeforeMount(() => getFeedsForSpecie());
+onBeforeMount(() => {
+  if (!isProvidedSpecieParamAllowed.value) return;
+  getFeedsForSpecie(specieEnumValue.value as SpeciesValues);
+});
 </script>
 
 <style lang="scss" scoped>

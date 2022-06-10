@@ -17,7 +17,7 @@
               <feed-select
                 v-if="feedsForSpecie"
                 v-model="copyOfModelValue.currentFeed"
-                :feeds-options="feedOptions"
+                :feeds-options="feedOptions(mainSpecie)"
               />
             </v-sheet>
           </v-col>
@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import FeedSelect from "@/components/modules/addTank/FeedSelect.vue";
+import FeedSelect from "@/components/common/Feed/FeedSelect.vue";
 import DoseUpdater from "@/components/modules/addTank/DoseUpdater.vue";
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
 import { ref, computed, withDefaults, onBeforeMount } from "vue";
@@ -80,25 +80,27 @@ const doseUpdater = ref<InstanceType<typeof DoseUpdater> | null>(null);
 const showValidationError = ref(false);
 
 const copyOfModelValue = computed(() => props.modelValue);
-const feedOptions = computed((): FeedSelectOptions => {
-  const feedSelectOption: FeedSelectOptions = {
-    proposedFeeds: [],
-    allFeeds: [],
-  };
-  if (!feedsForSpecie.value) return feedSelectOption;
-  const { meanWeight } = props.mainSpecie;
-  const proposedFeeds = feedsForSpecie.value.filter((specieFeed) => {
-    if (specieFeed.maxSize === null) return specieFeed.minSize < meanWeight;
-    return specieFeed.minSize < meanWeight && specieFeed.maxSize > meanWeight;
-  });
+const feedOptions = computed(
+  () =>
+    (specie: SingleLivestockSpecie): FeedSelectOptions => {
+      const feedSelectOption: FeedSelectOptions = {
+        proposedFeeds: [],
+        allFeeds: [],
+      };
+      if (!feedsForSpecie.value) return feedSelectOption;
+      const { meanWeight } = specie;
+      const proposedFeeds = feedsForSpecie.value.filter((specieFeed) => {
+        if (specieFeed.maxSize === null) return specieFeed.minSize < meanWeight;
+        return (
+          specieFeed.minSize < meanWeight && specieFeed.maxSize > meanWeight
+        );
+      });
+      feedSelectOption.proposedFeeds = proposedFeeds;
+      feedSelectOption.allFeeds = feedsForSpecie.value;
 
-  feedSelectOption.proposedFeeds = proposedFeeds;
-
-  console.log(feedSelectOption.proposedFeeds);
-  feedSelectOption.allFeeds = feedsForSpecie.value;
-
-  return feedSelectOption;
-});
+      return feedSelectOption;
+    }
+);
 async function getPropsedFeedsForSpecie() {
   if (specie.value === props.mainSpecie.specie) return;
   await getFeedsForSpecie(props.mainSpecie.specie);

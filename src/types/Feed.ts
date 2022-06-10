@@ -8,7 +8,7 @@ export interface Feed {
   sizes: string[];
   speciesWithFeedTables: SpeciesValues[];
   quality: FeedQuality;
-  fileName: string;
+  filename: string;
 }
 
 export interface FeedForSpecie {

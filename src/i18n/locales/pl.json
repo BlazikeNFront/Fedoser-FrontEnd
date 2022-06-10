@@ -45,10 +45,17 @@
     "title":"Tytul",
     "efficiency":"Wydajnosc",
     "lack":"Brak",
-    "baseDeleteConfirmation":"Czy jestes pewien ze chcesz usunac"
+    "baseDeleteConfirmation":"Czy jestes pewien ze chcesz usunac",
+    "feedTables":"Tabele paszowe",
+    "image":"Zdjęcie"
   },
+
   "species":{
-    "rainbowTrout":"Pstrag teczowy"
+    "rainbowTrout":"Pstrąg tęczowy", 
+     "salmon":"Łosoś",
+    "brookTrout":"Pstrąg źródlany",
+    "brownTrout":"Pstrąg potokowy",
+    "whitefish":"Sieja"
   },
     "errorMessages":{
     "accountAlreadyExist":"Konto z podanym adresem email juz istnieje"
@@ -85,7 +92,7 @@
     "home":"Strona glowna",
     "tanks":"Zbiorniki",
     "addTank":"@:global.add zbiornik",
-    "feedTables":"Tabele paszowe",
+    "feedTables":"@:global.feedTables",
     "settings":"@:global.settings"
   },
     "tankCard":{
@@ -136,7 +143,8 @@
       "diffrentDosesAlert":"Dawka rozni sie od proponowanej",
       "proposedDose":"Proponowana dawka: {dose}",
       "terminated":"Wykonano",
-      "typeDoseAmount":"Podaj liczbe "
+      "typeDoseAmount":"Podaj liczbe",
+      "changeFeed":"Zmień pasze"
     
     },
     "mainTankInformationDisplay":{
@@ -179,7 +187,8 @@
     "feedTables":{
       "downloadFeedTable":"Pobierz tabele",
       "openFeedTable":"Otworz tabele w nowym oknie",
-      "tableForSpecie":"Tabele paszowe"
+      "tableForSpecie":"Tabele paszowe",
+      "notSupportedSpecie":"Tabele paszowe dla tego gatunku jeszcze nie zostały wprowadzone do systemu"
     }
 
 }
