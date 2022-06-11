@@ -4,8 +4,8 @@ import { FALLBACK_LOCALE } from "@/i18n/i18n";
 const AxiosInstance = axios.create({
   baseURL:
     process.env.NODE_ENV !== "development"
-      ? process.env.VUE_APP_PRODUCTION_URL
-      : process.env.VUE_APP_DEVELOPMENT_URL,
+      ? process.env.BACKEND_PRODUCTION_URL
+      : process.env.BACKEND_DEVELOPMENT_URL,
   timeout: 7000,
   maxBodyLength: 5000,
   maxContentLength: 5000,
