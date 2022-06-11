@@ -1,7 +1,8 @@
 <template>
   <div class="my-4">
+    <default-loader v-if="!tank" />
     <div
-      v-if="!tank.livestockInformation.livestock.length"
+      v-else-if="!tank.livestockInformation.livestock.length"
       class="d-flex align-center justify-center"
     >
       <i18n-t
@@ -31,7 +32,9 @@
               v-text="$t('tank.currentLivestockState')"
             ></h4>
             <livestock-list
-              :livestock-information="currentLivestockInformations"
+              :livestock-information="
+                currentLivestockInformations || tank.livestockInformation
+              "
               table-class="shadow-bg text-white tank__livestock-table"
             />
           </v-col>
@@ -51,40 +54,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed } from "vue";
-import { Tank } from "@/types/Tank";
 import LivestockList from "@/components/common/Livestock/LivestockList.vue";
-import { Weight } from "@/constants/global";
-const props = defineProps<{
-  tank: Tank;
-}>();
-const currentLivestockInformations = computed(() => {
-  const { currentLivestockWeight } = props.tank.feedInformation;
-  if (!currentLivestockWeight) return props.tank.livestockInformation;
-  const { initialLivestockWeight } = props.tank.livestockInformation;
-  const gainedWeight = currentLivestockWeight - initialLivestockWeight;
+import { storeToRefs } from "pinia";
+import { useTankStore } from "@/stores/TankStore";
+const { tank, currentLivestockInformations } = storeToRefs(useTankStore());
 
-  return {
-    initialLivestockWeight: currentLivestockWeight,
-    livestock: [...props.tank.livestockInformation.livestock].map((specie) => {
-      const specieCopy = { ...specie };
-      const specieShareInOverallLivestockWeight =
-        specieCopy.weight / initialLivestockWeight;
-
-      specieCopy.weight =
-        specie.weight + gainedWeight * specieShareInOverallLivestockWeight;
-
-      specieCopy.meanWeight =
-        Math.round(
-          ((specieCopy.weight / specie.quantity) * Weight.GRAMS_IN_KILOGRAMS +
-            Number.EPSILON) *
-            100
-        ) / 100;
-
-      return specieCopy;
-    }),
-  };
-});
 function onEditLivestockButton() {
   console.log("editLivestockRequest");
 }

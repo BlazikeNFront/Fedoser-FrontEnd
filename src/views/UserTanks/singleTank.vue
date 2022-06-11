@@ -33,7 +33,6 @@ import MainInfoTab from "@/components/modules/singleTank/Tabs/MainInfoTab.vue";
 import LivestockTab from "@/components/modules/singleTank/Tabs/LivestockTab.vue";
 import NotesTab from "@/components/modules/singleTank/Tabs/NotesTab.vue";
 import TankService from "@/services/endpoints/Tank";
-import { API_DATA_KEY } from "@/constants/global";
 import { useTankStore } from "@/stores/TankStore";
 import { storeToRefs } from "pinia";
 import FeedProgramTab from "@/components/modules/singleTank/Tabs/FeedProgramTab.vue";
@@ -54,7 +53,7 @@ const currentTab = ref<number>(0);
 
 onBeforeMount(async () => {
   const request = await TankService.get(tankId);
-  if (API_DATA_KEY in request) {
+  if (request.success) {
     const { setTank } = tankStore;
     setTank(request.data);
   }

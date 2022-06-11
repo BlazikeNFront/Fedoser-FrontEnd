@@ -6,7 +6,7 @@
       color="blue"
       height="5"
     />
-    <v-form>
+    <v-form ref="doseManagerForm">
       <v-container
         ><v-row
           ><v-col cols="12">
@@ -16,10 +16,11 @@
             <v-text-field
               v-model="currentDoseDate"
               type="date"
+              :rules="[FormRules.required]"
               :label="$t('global.date')"
           /></v-col>
           <v-col
-            v-if="feedInformation.currentFeed?.isProposed"
+            v-if="feedsForSpecie?.length"
             cols="12"
             class="d-flex align-center justify-center"
           >
@@ -31,11 +32,34 @@
             >
               {{ $t("feedInformation.adLibitumFeedDose") }}
             </p>
-            <div v-else>
+            <div v-else class="d-flex align-center">
+              <v-tooltip
+                v-if="!feedInformation.currentFeed?.isProposed"
+                anchor="top"
+              >
+                <template #activator="{ props }">
+                  <div v-bind="props">
+                    <v-btn
+                      disabled
+                      class="f-15 disabled-button"
+                      v-text="$t('feedInformation.calculateFeedDose')"
+                    />
+                  </div>
+                </template>
+                <span class="f-15">{{
+                  $t("feedInformation.feedIsNotProposedTooltip")
+                }}</span>
+              </v-tooltip>
               <v-btn
+                v-else
                 @click="handleDoseProposeRequest"
-                :disabled="!feedsForSpecie?.length"
-                class="app-button f-15"
+                :disabled="!feedInformation.currentFeed?.isProposed"
+                class="f-15"
+                :class="[
+                  feedInformation.currentFeed?.isProposed
+                    ? 'app-button'
+                    : 'disabled-button',
+                ]"
                 v-text="$t('feedInformation.calculateFeedDose')"
               />
               <v-tooltip
@@ -61,6 +85,11 @@
               v-model="temperatureInput"
               type="number"
               :label="$t('global.temperature')"
+              :rules="[
+                FormRules.required,
+                FormRules.numberHigherThan(0),
+                FormRules.numberLowerThan(50),
+              ]"
           /></v-col>
           <v-col cols="12">
             <p
@@ -74,11 +103,13 @@
               v-model="feedDoseInput"
               type="number"
               :label="$t('feedInformation.dose')"
+              :rules="[FormRules.required, FormRules.numberHigherThan(0)]"
           /></v-col>
           <v-col cols="12">
             <v-text-field
               v-model="weightGainedAfterFeed"
               type="number"
+              :rules="[FormRules.required, FormRules.numberHigherThan(0)]"
               :label="$t('feedInformation.weightGainedAfterDose')"
           /></v-col>
           <v-col cols="12" class="d-flex align-center justify-center">
@@ -109,6 +140,9 @@ import { TankFeedInformation } from "@/types/Tank";
 import { SingleLivestockSpecie } from "@/types/Livestock";
 import { useFeedForSpecie } from "@/stores/FeedsForSpecie";
 import { storeToRefs } from "pinia";
+import { VForm } from "vuetify/lib/components";
+import { FormRules } from "@/helpers/FormRules";
+import { SpeciesValues } from "@/types/Livestock";
 const props = defineProps<{
   feedInformation: Required<TankFeedInformation>;
   mainSpecie: SingleLivestockSpecie | null;
@@ -122,10 +156,12 @@ const emit = defineEmits<{
 const { feedsForSpecie, loader } = storeToRefs(useFeedForSpecie());
 const { getFeedsForSpecie } = useFeedForSpecie();
 const currentDoseDate = ref(getCurrentDate());
+const doseManagerForm = ref<InstanceType<typeof VForm> | null>(null);
 const temperatureFormError = reactive({
   isVisible: false,
   text: "",
 });
+
 const currentDose = computed(
   () =>
     new FeedDoseDTO({
@@ -138,6 +174,7 @@ const currentDose = computed(
 const indexOfCurrentDose = computed(() =>
   props.feedInformation.feedProgram.findIndex((dose) => dose.terminated === 0)
 );
+
 const temperatureInput = ref(14);
 const feedDoseInput = ref(currentDose.value.amount);
 const proposedFeedDose = ref<number | null>(null);
@@ -210,7 +247,9 @@ function clearForm() {
   clearDoseRelatedInputs();
 }
 
-function setDoseAsTerminated() {
+async function setDoseAsTerminated() {
+  if (!(await doseManagerForm.value.validate()).valid || !props.mainSpecie)
+    return;
   const terminatedFeedDose = new FeedDoseDTO({
     number: currentDose.value.number,
     date: currentDoseDate.value,
@@ -223,14 +262,13 @@ function setDoseAsTerminated() {
   clearForm();
 }
 function setDoseAsOmitted() {
+  if (!props.mainSpecie) return;
   const terminatedFeedDose = new FeedDoseDTO({
     number: currentDose.value.number,
     date: currentDoseDate.value,
-    amount: feedDoseInput.value,
-    weightGainAfterDose: weightGainedAfterFeed.value,
-    temperature: temperatureInput.value,
     terminated: DoseTermination.OMITTED,
   });
+  doseManagerForm.value.resetValidation();
   emit("dose-omitted", terminatedFeedDose);
   clearForm();
 }

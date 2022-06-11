@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row v-if="tank">
       <v-col cols="12" lg="6">
         <h4
           class="text-h4 my-4 text-center"
@@ -53,16 +53,19 @@ import MainSpecieDisplay from "@/components/common/Tank/TankBasicInfoDisplays/Ma
 import AnnotationsDisplay from "@/components/common/Tank/TankBasicInfoDisplays/AnnotationsDisplay.vue";
 import ConfirmationDialog from "@/components/common/ConfirmationDialog.vue";
 import TankService from "@/services/endpoints/Tank";
-import { Tank } from "@/types/Tank";
+import { useTankStore } from "@/stores/TankStore";
 import { useRouter } from "vue-router";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
-const props = defineProps<{
-  tank: Required<Tank>;
-}>();
+import { storeToRefs } from "pinia";
 const { push } = useRouter();
-async function deleteTankAction() {
-  const result = await TankService.delete(props.tank._id);
-  if (result.success) return !!push({ name: RoutesNames.USER_TANKS });
+const { tank } = storeToRefs(useTankStore());
+async function deleteTankAction(): Promise<boolean> {
+  if (!tank.value) return false;
+  const result = await TankService.delete(tank.value._id);
+  if (result.success) {
+    await push({ name: RoutesNames.USER_TANKS });
+    return true;
+  }
   return false;
 }
 </script>

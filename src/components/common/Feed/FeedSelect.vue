@@ -61,7 +61,10 @@
           />
         </v-list>
       </v-menu>
-      <v-tooltip anchor="top" v-if="isFeedProposed">
+      <v-tooltip
+        anchor="top"
+        v-if="modelValue && !isFeedProposed(modelValue.feedForSpecie._id)"
+      >
         <template #activator="{ props }">
           <v-icon
             v-bind="props"
@@ -124,12 +127,8 @@ const allFeedWithoutProsoedFeeds = computed(() => {
   );
 });
 
-const isFeedProposed = computed(() => {
-  if (
-    !props.feedsOptions.proposedFeeds.some(
-      (feed) => feed._id === props.modelValue?.feedForSpecie._id
-    )
-  )
+const isFeedProposed = computed(() => (feedId: string) => {
+  if (props.feedsOptions.proposedFeeds.some((feed) => feed._id === feedId))
     return true;
   return false;
 });
@@ -138,12 +137,13 @@ function onFeedSelect(feedForSpecie: FeedForSpecie) {
     "update:modelValue",
     new CurrentTankFeedDto({
       feedForSpecie,
-      isProposed: isFeedProposed.value,
+      isProposed: isFeedProposed.value(feedForSpecie._id),
     })
   );
 
   showMenu.value = false;
 }
+
 onBeforeMount(() => {
   if (!props.modelValue) {
     const defaultFeed =
@@ -152,7 +152,7 @@ onBeforeMount(() => {
       "update:modelValue",
       new CurrentTankFeedDto({
         feedForSpecie: defaultFeed,
-        isProposed: isFeedProposed.value,
+        isProposed: isFeedProposed.value(defaultFeed._id),
       })
     );
   }

@@ -13,7 +13,7 @@
           /> </v-col
         ><v-col cols="12" lg="2" class="mt-lg-16 d-flex flex-column">
           <v-dialog
-            v-if="mainSpecie"
+            v-if="mainSpecie && !loadingFeedsForSpecie"
             class="editor-dialog"
             v-model="showFeedSelectDialog"
           >
@@ -33,7 +33,11 @@
                 v-if="feedsForSpecie"
                 :model-value="tank.feedInformation.currentFeed"
                 @update:model-value="onFeedSelectChange($event)"
-                :feeds-options="feedOptions(mainSpecie)"
+                :feeds-options="
+                  feedOptions(
+                    currentLivestockInformations?.livestock[0] || mainSpecie
+                  )
+                "
               />
             </v-card>
           </v-dialog> </v-col></v-row
@@ -43,6 +47,7 @@
       v-if="tank?.feedInformation"
       class="d-flex flex-column align-center justify-center"
     >
+      <feed-size-info-card v-if="shouldChangeFeedSize" />
       <terminated-dose-list
         v-if="tank.feedInformation.feedProgram.length"
         :terminated-dose-list="tank.feedInformation.feedProgram"
@@ -80,16 +85,36 @@ import { FeedSelectOptions } from "@/types/FeedSelectOptions";
 import { computed, ref } from "vue";
 import { SingleLivestockSpecie } from "@/types/Livestock";
 import { CurrentTankFeed } from "@/types/Feed";
-const { tank } = storeToRefs(useTankStore());
-const { changeCurrentTankFeed } = useTankStore();
+import { onBeforeMount } from "vue";
+import FeedSizeInfoCard from "@/components/modules/singleTank/FeedProgram/FeedSizeInfoCard.vue";
+
+const { tank, currentLivestockInformations } = storeToRefs(useTankStore());
+const { changeCurrentTankFeed, terminateTankFeedProgramDose } = useTankStore();
 const showFeedSelectDialog = ref(false);
-const { feedsForSpecie, loader, specie } = storeToRefs(useFeedForSpecie());
+const {
+  feedsForSpecie,
+  loader: loadingFeedsForSpecie,
+  specie: feedsStoreSpecie,
+} = storeToRefs(useFeedForSpecie());
 const mainSpecie = computed(() => {
   if (!tank.value || !tank.value.livestockInformation.livestock.length)
     return null;
   return findMainSpecieInLivestock(tank.value.livestockInformation.livestock);
 });
 const { getFeedsForSpecie } = useFeedForSpecie();
+const shouldChangeFeedSize = computed(() => {
+  if (
+    !tank.value?.feedInformation.currentFeed?.feedForSpecie.maxSize ||
+    !currentLivestockInformations.value
+  )
+    return false;
+  if (
+    tank.value.feedInformation.currentFeed.feedForSpecie.maxSize <
+    currentLivestockInformations.value.livestock[0].meanWeight
+  )
+    return true;
+  return false;
+});
 
 const feedOptions = computed(
   () =>
@@ -114,21 +139,20 @@ const feedOptions = computed(
 );
 async function terminateDose(dose: FeedDose) {
   if (!tank.value || !tank.value.feedInformation.currentLivestockWeight) return;
+  const { currentLivestockWeight, usedFeedTotalWeight } =
+    tank.value.feedInformation;
   const weightsData = {
-    currentLivestockWeight: tank.value.feedInformation.currentLivestockWeight,
-    usedFeedTotalWeight: tank.value.feedInformation.usedFeedTotalWeight,
+    currentLivestockWeight,
+    usedFeedTotalWeight,
   };
   const result = await FeedInformationDoseService.create(
     new TerminatedFeedDoseDTO(dose, weightsData),
     `${tank.value._id}/add-feed-dose`
   );
-  if (result.success) {
-    tank.value.feedInformation.feedProgram.push(dose);
-  }
+  if (result.success) terminateTankFeedProgramDose(dose);
 }
 
 async function onFeedSelectChange(selectedFeed: CurrentTankFeed) {
-  console.log(selectedFeed);
   if (
     !tank.value ||
     selectedFeed.feedForSpecie._id ===
@@ -138,4 +162,8 @@ async function onFeedSelectChange(selectedFeed: CurrentTankFeed) {
   await changeCurrentTankFeed(selectedFeed);
   showFeedSelectDialog.value = false;
 }
+onBeforeMount(async () => {
+  if (mainSpecie.value && feedsStoreSpecie.value !== mainSpecie.value?.specie)
+    await getFeedsForSpecie(mainSpecie.value.specie);
+});
 </script>

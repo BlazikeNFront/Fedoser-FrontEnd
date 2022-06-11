@@ -42,6 +42,7 @@ background-color: $shadow-color !important;
 .app-button {
 	background-color: rgb(var(--v-theme-red));
 }
+
 .save-button {
 		background-color: rgb(var(--v-theme-success));
 }
@@ -51,7 +52,9 @@ background-color: $shadow-color !important;
 .delete-button {
 	background-color: rgb(var(--v-theme-error));
 }
-
+.disabled-button {
+  background-color: rgb(var(--v-theme-grey));
+}
 @for $i from 1 through 10 {
 	.h-#{$i} {
 		font-size:4-($i*0.5) *1rem;

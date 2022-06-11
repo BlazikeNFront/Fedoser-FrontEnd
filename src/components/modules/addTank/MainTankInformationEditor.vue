@@ -38,7 +38,7 @@
 </template>
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { MainTankInformation } from "@/types/MainTankInformation";
+import { MainTankInformation } from "@/types/Tank";
 import { FormRules } from "@/helpers/FormRules";
 import { VForm } from "vuetify/lib/components";
 
