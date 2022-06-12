@@ -18,10 +18,12 @@
         >
           <feed-table-specie-card
             @click="
-              $router.push({
-                name: RoutesNames.SPECIE_FEED_TABLES,
-                params: { specie: specie.specie },
-              })
+              specie.isSupported
+                ? $router.push({
+                    name: RoutesNames.SPECIE_FEED_TABLES,
+                    params: { specie: specie.specie },
+                  })
+                : null
             "
             :feed-table-specie="specie"
           /> </v-col></v-row

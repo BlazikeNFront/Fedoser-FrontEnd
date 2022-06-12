@@ -6,7 +6,7 @@
         ><v-col cols="12" lg="6">
           <h4
             class="h-4 text-center"
-            v-text="$t('mainTankInformation.mainTankInformation')"
+            v-text="$t('addTank.mainTankInformation')"
           ></h4>
           <main-tank-information-display
             :main-tank-information="mainTankInformation"

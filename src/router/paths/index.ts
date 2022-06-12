@@ -21,7 +21,7 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       { name: RoutesNames.HOME, path: "/", component: Index },
       { name: RoutesNames.SIGN_IN, path: "/signIn", component: SignIn },
-      { name: RoutesNames.SIGN_UP, path: "/signUp", component: SignUp },
+      { name: RoutesNames.SIGN_UP, path: "/signUp", component: SignIn },
     ],
   },
   {

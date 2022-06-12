@@ -125,7 +125,7 @@
     },
     "feedInformation":{
       "currentfeedProgram":"Aktualny program zywieniowy",
-      "feedInformation":"Feed information",
+      "feedInformation":"Żywienie",
       "selectFeed":"Wybierz pasze",
       "updateFrequency":"Aktualizacja dawki pokarmowej",
       "doseUpdateFrequencyDisplay":"@:feedInformation.updateFrequency@:global.: {updateFrequency}",
@@ -189,6 +189,9 @@
       "openFeedTable":"Otworz tabele w nowym oknie",
       "tableForSpecie":"Tabele paszowe",
       "notSupportedSpecie":"Tabele paszowe dla tego gatunku jeszcze nie zostały wprowadzone do systemu"
+    },
+     "alphaInfo":{
+      "signUpDisabled":"Aplikacja aktualnie znajduje sie w zamkniętej alphie. Jeśli chcesz otrzymać osobiste konto napisz email na adres damstachurski{'@'}gmail.com. W przypadku gdy chcesz sprawdzić co oferuje aktualna wersja aplikacji możesz użyć globalnego konta ( login:'test{'@'}mail.com', hasło:'password')"
     }
 
 }

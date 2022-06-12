@@ -1,6 +1,8 @@
 <template>
-  <v-snackbar :model-value="!!errorModalMessage" multi-line bottom :timeout="0">
-    <p class="f-15 text-center">{{ errorModalMessage }}</p>
+  <v-snackbar :model-value="!!errorModalMessage" multi-line top :timeout="0">
+    <p class="f-15 text-center" style="line-height: 3rem">
+      {{ errorModalMessage }}
+    </p>
 
     <template #actions>
       <v-btn

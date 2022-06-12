@@ -17,7 +17,8 @@
       v-text="$t(feedTableSpecie.specieTranslation)"
     ></h3>
     <p
-      class="specie-feed-table-card__not-supported-specie"
+      v-if="!feedTableSpecie.isSupported"
+      class="specie-feed-table-card__not-supported-text text-yellow f-2"
       v-text="$t('feedTables.notSupportedSpecie')"
     ></p>
   </v-card>
@@ -56,6 +57,17 @@ defineProps<{
     letter-spacing: 0.3rem !important;
     transition: all 0.5s ease;
   }
+  .specie-feed-table-card__not-supported-text {
+    @extend .w-90;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4000;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
   &:hover {
     .specie-feed-table-card__text-overlay {
       max-height: 0;
@@ -72,22 +84,14 @@ defineProps<{
       font-weight: 700;
       color: rgb(var(--v-theme-yellow));
     }
+    .specie-feed-table-card__not-supported-text {
+      opacity: 1;
+    }
   }
 }
 .specie-feed-table-card--not-supported {
-  img {
-    transition: none;
-  }
+  cursor: not-allowed;
 
-  h3 {
-    position: absolute;
-    width: 100%;
-    height: 4rem;
-    max-height: 4rem;
-    bottom: 0.4rem;
-    letter-spacing: 0.3rem !important;
-    transition: none;
-  }
   &:hover {
     .specie-feed-table-card__text-overlay {
       max-height: 4.5rem;

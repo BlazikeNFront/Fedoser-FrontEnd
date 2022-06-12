@@ -48,7 +48,7 @@
     >
       <template #button>
         <v-btn
-          @click="$router.push({ name: RoutesNames.SIGN_UP })"
+          @click="showErrorModal($t('alphaInfo.signUpDisabled'), false)"
           color="blue"
           class="mx-2 my-2 f-15"
           v-t="'global.clickHere'"
@@ -68,8 +68,11 @@ import { FormRules } from "@/helpers/FormRules";
 import { InputTypes } from "@/constants/global";
 import HomeFormCard from "@/components/modules/home/HomeFormCard.vue";
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
+import { useErrorModal } from "@/stores/ErrorModalStore";
 
 const { loginAction } = useUserStore();
+
+const { showErrorModal } = useErrorModal();
 const router = useRouter();
 const loginForm = reactive({
   email: "test@mail.com",
@@ -81,6 +84,7 @@ const passwordVisibility = reactive({
   icon: Icons.EYE_ICON,
   type: InputTypes.PASSWORD,
 });
+
 const signInForm = ref<ComponentPublicInstance<HTMLFormElement>>();
 function changePasswordVisibility() {
   if (passwordVisibility.type === InputTypes.PASSWORD) {

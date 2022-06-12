@@ -105,10 +105,13 @@ import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { IdAttributes } from "@/constants/IdAttributes";
 import { useRouter } from "vue-router";
 import AnimatedAppName from "./AnimatedAppName.vue";
-
+import { useErrorModal } from "@/stores/ErrorModalStore";
+import { useI18n } from "vue-i18n";
 const salmonPath =
   "M222.991 12.5873C208.484 2.73994 131.951 -3.16842 75.427 31.7896M75.427 31.7896C-22.6153 35.2362 23.9047 67.2401 24.9052 67.7325M75.427 31.7896C52.4172 50.4996 -68.1349 135.187 70.9251 244C77.4279 230.542 87.4322 200.672 75.427 188.855C105.44 169.16 106.441 139.571 101.438 142.572C48.9157 174.084 31.9085 141.588 28.4068 129.278C29.7408 130.305 33.9092 134.401 39.9118 142.572C47.4151 152.786 -4.10721 142.572 168.467 79.0569C176.471 90.8737 172.369 118.364 137.954 114.015M170.968 79.0569C180.527 74.4814 193.84 67.593 206.484 60.1027M206.484 60.1027C226.041 48.5173 244 35.4921 244 27.3584C237.33 34.999 220.49 52.2447 206.484 60.1027ZM206.484 60.1027L203.525 54.4386M203.525 54.4386L201.982 51.4844C186.475 56.5722 156.762 57.9836 161.965 22.9271C158.825 35.5645 162.741 59.5592 203.525 54.4386ZM203.525 54.4386C203.511 45.0836 205.683 24.995 214.487 19.4805";
 const router = useRouter();
+const { showErrorModal } = useErrorModal();
+const { t } = useI18n();
 const observer = new IntersectionObserver(
   (entries, observer) => {
     if (entries[0].isIntersecting) {
@@ -129,15 +132,19 @@ function drawSvgPath() {
 }
 
 async function redirectAndScrollToSignUpForm() {
-  await router.push({ name: RoutesNames.SIGN_UP });
-  //due to router transition signUpForm is not  rendered after immediate call and route change, so interval assure correct scrolling to signUp Form
-  const scrollInterval = setInterval(() => {
-    const signUpForm = document.getElementById(IdAttributes.SIGN_UP_FORM);
-    if (signUpForm) {
-      signUpForm.scrollIntoView({ behavior: "smooth" });
-      clearInterval(scrollInterval);
-    }
-  }, 550);
+  await router.push({ name: RoutesNames.SIGN_IN });
+  showErrorModal(t("alphaInfo.signUpDisabled"), false);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  // await router.push({ name: RoutesNames.SIGN_UP });
+  // //due to router transition signUpForm is not  rendered after immediate call and route change, so interval assure correct scrolling to signUp Form
+  // const scrollInterval = setInterval(() => {
+  //   const signUpForm = document.getElementById(IdAttributes.SIGN_UP_FORM);
+  //   if (signUpForm) {
+  //     signUpForm.scrollIntoView({ behavior: "smooth" });
+  //     clearInterval(scrollInterval);
+  //   }
+  // }, 550);
 }
 
 onMounted(() => {

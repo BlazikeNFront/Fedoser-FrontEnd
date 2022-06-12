@@ -183,5 +183,8 @@
       "openFeedTable":"Open in new window",
       "tableForSpecie":"Feed tables",
       "notSupportedSpecie":"Feed tables for this species have not yet been added"
+    },
+    "alphaInfo":{
+      "signUpDisabled":"Fedoser app is currently in closed alpha. If you want to get access to your own account, write email to damstachurski{'@'}gmail.com. If you want to see what current version offers - login with default credentials ( login{':'}'test{'@'}mail.com', password{':'}'password')"
     }
 }
