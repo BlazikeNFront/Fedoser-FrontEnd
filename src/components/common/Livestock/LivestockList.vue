@@ -13,7 +13,7 @@
             <th v-text="$t('livestockInformation.weight')"></th>
             <th v-text="$t('livestockInformation.meanWeight')"></th>
             <th v-text="$t('livestockInformation.numberOfIndividuals')"></th>
-            <th v-if="deleteOption"></th>
+            <slot name="header" />
           </tr>
         </thead>
         <tbody class="livestocklist__tbody text-center">
@@ -25,14 +25,7 @@
             <td v-text="specieInfo.weight"></td>
             <td v-text="specieInfo.meanWeight"></td>
             <td v-text="specieInfo.quantity"></td>
-            <td v-if="deleteOption">
-              <v-btn
-                @click="$emit('delete-request', specieInfo.specie)"
-                :icon="Icons.EXIT"
-                size="x-small"
-                color="error"
-              ></v-btn>
-            </td>
+            <slot name="action" :specie="specieInfo" :index="index" />
           </tr>
         </tbody>
       </v-table>
@@ -46,23 +39,12 @@
 </template>
 
 <script setup lang="ts">
-import { withDefaults } from "vue";
 import { LivestockInformation } from "@/types/Tank";
 import LivestockWeightDisplay from "@/components/common/Tank/TankBasicInfoDisplays/LivestockWeightDisplay.vue";
-import { Icons } from "@/constants/icons/MdiIcons";
-import { SpeciesValues } from "@/types/Livestock";
 
-withDefaults(
-  defineProps<{
-    livestockInformation: LivestockInformation;
-    deleteOption?: boolean;
-    tableClass?: string;
-  }>(),
-  {
-    deleteOption: false,
-  }
-);
-defineEmits<{
-  (e: "delete-request", specieName: SpeciesValues): void;
+const props = defineProps<{
+  livestockInformation: LivestockInformation;
+  tableClass?: string;
 }>();
+console.log(props);
 </script>

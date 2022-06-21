@@ -140,9 +140,9 @@ html {
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
-    overflow-y: auto;
+    overflow: auto;
     max-height: initial !important;
-    min-width: initial !important;
+    min-width: 250px !important;
     max-width: initial !important;
   }
 }
@@ -151,7 +151,6 @@ html {
   .editor-dialog {
     .v-overlay__content {
       position: absolute;
-
       left: calc(50% + 120px) !important;
       transform: translate(-50%, -50%);
       height: initial !important;

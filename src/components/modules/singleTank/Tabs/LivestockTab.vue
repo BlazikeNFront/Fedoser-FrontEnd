@@ -15,7 +15,6 @@
         <template #button>
           <br />
           <v-btn
-            @click="onEditLivestockButton"
             style="background-color: rgb(var(--v-theme-red))"
             class="f-15 mr-4"
             v-text="$t('global.clickHere')"
@@ -48,6 +47,9 @@
               table-class="shadow-bg text-white tank__livestock-table"
             />
           </v-col>
+          <v-col cols="12" class="d-flex align-center justify-center">
+            <livestock-weight-editor />
+          </v-col>
         </v-row>
       </v-container>
     </section>
@@ -55,13 +57,11 @@
 </template>
 <script setup lang="ts">
 import LivestockList from "@/components/common/Livestock/LivestockList.vue";
+import LivestockWeightEditor from "../Livestock/LivestockWeightEditor.vue";
 import { storeToRefs } from "pinia";
 import { useTankStore } from "@/stores/TankStore";
-const { tank, currentLivestockInformations } = storeToRefs(useTankStore());
 
-function onEditLivestockButton() {
-  console.log("editLivestockRequest");
-}
+const { tank, currentLivestockInformations } = storeToRefs(useTankStore());
 </script>
 <style lang="scss">
 .tank__livestock-table {
