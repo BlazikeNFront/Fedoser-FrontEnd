@@ -16,7 +16,7 @@
           <v-col cols="12">
             <livestock-list
               v-if="tank && livestockChange"
-              :livestock-information="tank.livestockInformation"
+              :livestock="tank.livestockInformation.current"
             >
               <template #header
                 ><th>{{ $t("global.edit") }}</th>
@@ -63,7 +63,7 @@ type Test = {
   specie: SpeciesValues;
   newWeight: number;
 };
-const { tank, currentLivestockInformations } = storeToRefs(useTankStore());
+const { tank } = storeToRefs(useTankStore());
 const livestockChange = ref<Test[] | null>(null);
 const livestockEditor = reactive({
   showLivestockEditor: false,
@@ -72,7 +72,7 @@ const livestockEditor = reactive({
 });
 onBeforeMount(() => {
   if (tank.value)
-    livestockChange.value = tank.value.livestockInformation.livestock.map(
+    livestockChange.value = tank.value.livestockInformation.current.map(
       (singleSpecie) => ({
         specie: singleSpecie.specie,
         newWeight: singleSpecie.weight,
@@ -84,7 +84,7 @@ function filterNotChangedWeights() {
   return livestockChange.value.filter(
     (element, index) =>
       element.newWeight !==
-      tank.value?.livestockInformation.livestock[index].weight
+      tank.value?.livestockInformation.current[index].weight
   );
 }
 async function onLivestockEditAccept() {

@@ -4,7 +4,7 @@ import routes from "./paths/index";
 import { RouteLocationNormalized } from "vue-router";
 import { useUserStore } from "@/stores/UserStore";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
-import { pinia } from "@/stores/store";
+import pinia from "@/stores/store";
 const userStore = useUserStore(pinia);
 const router = createRouter({
   history: createWebHistory(),
@@ -18,8 +18,7 @@ interface SingleRoute extends Omit<RouteLocationNormalized, "meta"> {
 }
 router.beforeEach((to: SingleRoute, _: SingleRoute, next) => {
   if (!userStore.isTokenProvided && to.meta.roles?.includes(PortalRoles.USER)) {
-    router.push({ name: RoutesNames.HOME });
-    return;
+    return router.push({ name: RoutesNames.HOME });
   }
   next();
 });

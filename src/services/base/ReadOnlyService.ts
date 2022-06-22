@@ -5,6 +5,7 @@ import { TimeInMiliseconds } from "@/constants/enums/Time";
 import { CachedResponse } from "@/types/CachedResponse";
 import localForage from "localforage";
 import { getCurrentDateInMs } from "@/helpers/date";
+
 export default class ReadonlyApiService<T> extends BaseService {
   constructor(resource: string, private useCache = false) {
     super(resource);
@@ -42,6 +43,7 @@ export default class ReadonlyApiService<T> extends BaseService {
       //catch accept only unknown or any type/ its possible to work with unknown with type casting but in my opinion doing it here its overkill
       if (error?.data as ApiError) {
         this.handleError(error.data as ApiError);
+
         return error.data as ApiError;
       }
       return { success: false, statusCode: null };

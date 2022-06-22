@@ -66,7 +66,6 @@
       <v-col cols="12" v-if="mainLivestockSpecie">
         <feed-information-editor
           v-model="feedInformation"
-          :livestock-weight="livestockInformation.initialLivestockWeight"
           :main-specie="mainLivestockSpecie"
         >
           <template #default="{ validateFeedInformation }">
@@ -160,7 +159,7 @@ const livestockInformation = ref<LivestockInformation>(
   new LivestockInformationDTO({})
 );
 const mainLivestockSpecie = computed(() =>
-  findMainSpecieInLivestock(livestockInformation.value.livestock)
+  findMainSpecieInLivestock(livestockInformation.value.initial)
 );
 function omitLivestockStep() {
   livestockInformation.value = new LivestockInformationDTO({});
@@ -171,11 +170,10 @@ function omitFeedInformationStep() {
   feedInformation.value = new FeedInformationDTO({});
   step.value++;
 }
-async function handleNextStepRequest(validationCallback: () => boolean) {
+async function handleNextStepRequest(
+  validationCallback: () => Promise<boolean>
+) {
   if (!(await validationCallback())) return false;
-  if (step.value === 2 && livestockInformation.value.initialLivestockWeight)
-    feedInformation.value.currentLivestockWeight =
-      livestockInformation.value.initialLivestockWeight;
   step.value++;
 }
 

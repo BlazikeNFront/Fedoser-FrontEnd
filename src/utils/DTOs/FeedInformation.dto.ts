@@ -11,20 +11,17 @@ export class FeedInformationDTO implements TankFeedInformation {
   feedProgram: FeedDose[];
   typeOfProgram: TypesOfFeedProgram;
   doseUpdateFrequency: FeedProgramUpdateFrequency | null;
-  currentLivestockWeight: number | null;
   constructor({
     currentFeed,
     usedFeedTotalWeight,
     feedProgram,
     typeOfProgram,
     doseUpdateFrequency,
-    currentLivestockWeight,
   }: Partial<TankFeedInformation>) {
     this.currentFeed = currentFeed || null;
     this.usedFeedTotalWeight = usedFeedTotalWeight || 0;
     this.feedProgram = feedProgram || [];
     this.typeOfProgram = typeOfProgram || 0;
     this.doseUpdateFrequency = doseUpdateFrequency || null;
-    this.currentLivestockWeight = currentLivestockWeight || null;
   }
 }

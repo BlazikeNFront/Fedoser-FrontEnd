@@ -60,7 +60,6 @@ import FeedQualityLegend from "@/components/common/Feed/FeedQuality/FeedQualityL
 const props = withDefaults(
   defineProps<{
     modelValue: TankFeedInformation;
-    livestockWeight: number;
     mainSpecie: SingleLivestockSpecie;
   }>(),
   {

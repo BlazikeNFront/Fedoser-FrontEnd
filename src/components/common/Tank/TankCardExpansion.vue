@@ -36,7 +36,7 @@ import CurrentFeedDisplay from "@/components/common/Tank/TankBasicInfoDisplays/C
 import TankVolumeDisplay from "@/components/common/Tank/TankBasicInfoDisplays/TankVolumeDisplay.vue";
 import AnnotationsDisplay from "@/components/common/Tank/TankBasicInfoDisplays/AnnotationsDisplay.vue";
 import { TankCardExpansionConfig } from "@/types/TankCardExpansionConfig";
-
+import { calcLivestockWeight } from "@/helpers/calcLivestockWeight";
 withDefaults(
   defineProps<{
     tank: Tank;
@@ -59,9 +59,7 @@ function createTankCardDisplays(tank: Tank): TankCardExpansionConfig[] {
       attrs: {
         livestockWeight:
           // current weight || initial weight || no livestock is set
-          tank.feedInformation?.currentLivestockWeight ||
-          tank.livestockInformation?.initialLivestockWeight ||
-          null,
+          calcLivestockWeight(tank.livestockInformation.current) || null,
       },
     },
     {
@@ -93,11 +91,11 @@ function addAdditionInformation(
       },
     });
   }
-  if (tank.livestockInformation?.livestock.length) {
+  if (tank.livestockInformation?.current.length) {
     basicInformationConfig.push({
       component: MainSpecieDisplay,
       attrs: {
-        livestock: tank.livestockInformation.livestock,
+        livestock: tank.livestockInformation.current,
       },
     });
   }

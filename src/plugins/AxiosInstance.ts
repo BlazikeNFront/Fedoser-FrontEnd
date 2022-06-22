@@ -1,6 +1,7 @@
 import axios from "axios";
 import { LocalStorageKeys } from "@/constants/LocalStorageKeys";
 import { FALLBACK_LOCALE } from "@/i18n/i18n";
+
 export const setBaseUrl = () => {
   if (process.env.NODE_ENV !== "development")
     return process.env.VUE_APP_BACKEND_PRODUCTION_URL;
@@ -28,12 +29,7 @@ AxiosInstance.interceptors.request.use((request) => {
 });
 
 AxiosInstance.interceptors.response.use(
-  (response) => {
-    if (response.headers["content-type"] === "application/pdf") {
-      return response;
-    }
-    return response;
-  },
+  (response) => response,
   (error) => {
     throw error.response;
   }

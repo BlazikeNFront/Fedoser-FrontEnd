@@ -22,7 +22,7 @@
           ></h4>
           <livestock-list
             class="livestock-table"
-            :livestock-information="livestockInformation"
+            :livestock="livestockInformation.initial"
           />
         </v-col>
         <v-col cols="12">

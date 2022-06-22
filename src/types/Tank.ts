@@ -17,12 +17,11 @@ export interface TankFeedInformation {
   feedProgram: FeedDose[];
   typeOfProgram: TypesOfFeedProgram;
   doseUpdateFrequency: FeedProgramUpdateFrequency | null;
-  currentLivestockWeight: number | null;
 }
 
 export interface LivestockInformation {
-  livestock: SingleLivestockSpecie[];
-  initialLivestockWeight: number;
+  initial: SingleLivestockSpecie[];
+  current: SingleLivestockSpecie[];
 }
 
 export interface TankNote {

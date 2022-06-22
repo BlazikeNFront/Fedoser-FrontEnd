@@ -66,7 +66,7 @@
             v-text="$t('livestockInformation.addedLivestock')"
           ></p>
           <livestock-list
-            :livestock-information="props.livestockInformation"
+            :livestock="props.livestockInformation.initial"
             :deleteOption="true"
             @delete-request="deleteSpecie"
           />
@@ -179,16 +179,16 @@ function clearInputs() {
 }
 
 function checkIfSpecieAlreadyWasAddedToList(speciesName: SpeciesValues) {
-  return props.livestockInformation.livestock.some(
+  return props.livestockInformation.initial.some(
     (specieData) => specieData.specie === speciesName
   );
 }
 
 function addWeightToSpecie(speciesName: SpeciesValues) {
-  const specieIndex = props.livestockInformation.livestock.findIndex(
+  const specieIndex = props.livestockInformation.initial.findIndex(
     (specieData) => specieData.specie === speciesName
   );
-  livestockInformationModel.value.livestock[specieIndex].weight += parseInt(
+  livestockInformationModel.value.initial[specieIndex].weight += parseInt(
     formInputs.specieWeight
   );
   adjustSpecieMeanWeight(specieIndex);
@@ -196,16 +196,16 @@ function addWeightToSpecie(speciesName: SpeciesValues) {
 }
 
 function adjustSpecieMeanWeight(specieIndex: number) {
-  livestockInformationModel.value.livestock[specieIndex].meanWeight = Number(
+  livestockInformationModel.value.initial[specieIndex].meanWeight = Number(
     Number(
       (Number(formInputs.specieMeanWeight) +
-        props.livestockInformation.livestock[specieIndex].meanWeight) /
+        props.livestockInformation.initial[specieIndex].meanWeight) /
         2
     ).toFixed(2)
   );
 }
 function addQuantityToSpecie(specieIndex: number) {
-  livestockInformationModel.value.livestock[specieIndex].quantity +=
+  livestockInformationModel.value.initial[specieIndex].quantity +=
     +formInputs.fishQuantity;
 }
 async function addStockToList() {
@@ -226,26 +226,16 @@ async function addStockToList() {
     quantity: parseInt(fishQuantity),
   };
   const copyOfLiveStockProp = { ...props.livestockInformation };
-  copyOfLiveStockProp.livestock.push(payload);
-  copyOfLiveStockProp.initialLivestockWeight = calcLivestockMass(
-    copyOfLiveStockProp.livestock
-  );
+  copyOfLiveStockProp.initial.push(payload);
   emit("update:livestockInformation", copyOfLiveStockProp);
   showNoLivestockError.value = false;
   clearInputs();
 }
 
-function calcLivestockMass(livestock: SingleLivestockSpecie[]) {
-  return livestock.reduce((acc, element) => acc + element.weight, 0);
-}
-
 function deleteSpecie(specieName: string) {
   const copyOfLiveStockProp = { ...props.livestockInformation };
-  copyOfLiveStockProp.livestock = copyOfLiveStockProp.livestock.filter(
+  copyOfLiveStockProp.initial = copyOfLiveStockProp.initial.filter(
     (specieData) => specieData.specie !== specieName
-  );
-  copyOfLiveStockProp.initialLivestockWeight = calcLivestockMass(
-    copyOfLiveStockProp.livestock
   );
   emit("update:livestockInformation", copyOfLiveStockProp);
 }
@@ -255,7 +245,7 @@ async function validateLivestockInformationForm() {
   return true;
 }
 async function isAtLeastOneSpieceAdded() {
-  if (!props.livestockInformation.livestock.length) {
+  if (!props.livestockInformation.initial.length) {
     livestockEditorForm.value.validate();
     showNoLivestockError.value = true;
     return false;
