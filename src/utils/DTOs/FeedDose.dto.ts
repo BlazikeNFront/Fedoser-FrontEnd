@@ -1,5 +1,6 @@
 import { DoseTermination } from "@/constants/enums/DoseTermination";
 import { FeedDose } from "@/types/Feed";
+import { SpeciesValues } from "@/types/Livestock";
 export class FeedDoseDTO implements FeedDose {
   number: number;
   amount: number;
@@ -7,7 +8,10 @@ export class FeedDoseDTO implements FeedDose {
   temperature: number;
   terminated: DoseTermination;
   weightGainAfterDose: number;
-  constructor(feedDose: Partial<FeedDose>) {
+  specie: SpeciesValues;
+  constructor(
+    feedDose: Omit<Partial<FeedDose>, "specie"> & { specie: SpeciesValues }
+  ) {
     const {
       number,
       amount,
@@ -15,6 +19,7 @@ export class FeedDoseDTO implements FeedDose {
       terminated,
       weightGainAfterDose,
       temperature,
+      specie,
     } = feedDose;
     this.number = number || 0;
     this.amount = amount || 0;
@@ -22,5 +27,6 @@ export class FeedDoseDTO implements FeedDose {
     this.date = date || null;
     this.terminated = terminated || 0;
     this.weightGainAfterDose = weightGainAfterDose || 0;
+    this.specie = specie;
   }
 }

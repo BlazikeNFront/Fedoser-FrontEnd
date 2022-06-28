@@ -12,7 +12,7 @@ $shadow-color-hover:rgba(0,0,0,0.3);
 //FONTS
 $primary-font: 'Montserrat', sans-serif;
 $secondary-font:'Anton', sans-serif;
-$main-font-color:#1b1c1c;
+$main-font-color:white;
 
 
 
@@ -55,6 +55,7 @@ background-color: $shadow-color !important;
 .disabled-button {
   background-color: rgb(var(--v-theme-grey));
 }
+
 @for $i from 1 through 10 {
 	.h-#{$i} {
 		font-size:4-($i*0.5) *1rem;
@@ -84,6 +85,9 @@ background-color: $shadow-color !important;
 .text-uppercase {
 	text-transform: uppercase !important;
 }
+.rotate-90 {
+	transform:rotate(90deg)
+}
 //GLOBALS
 body {
 	margin: 0;
@@ -106,7 +110,9 @@ body {
   font-size: 1.5rem !important;
 }
 
-
+.v-text-field__prefix, .v-text-field__suffix {
+	color:$main-font-color ; 
+}
 .v-field-label {
 	font-size: 1.3rem !important;
 }
@@ -134,6 +140,7 @@ html {
       background-color: rgba(var(--v-theme-yellow), 0.3) !important;
     }
   }
+ 
 }
 .editor-dialog {
   .v-overlay__content {

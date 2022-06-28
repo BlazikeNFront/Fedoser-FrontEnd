@@ -14,37 +14,11 @@
             <v-row
               ><v-col cols="12">
                 <v-select
-                  v-model="formInputs.specieSelect"
+                  v-model="specieSelect"
                   :items="Object.values(Species)"
                   :label="$t('global.specie')"
-                /> </v-col
-              ><v-col cols="12">
-                <v-text-field
-                  :label="$t('livestockInformation.weight')"
-                  v-model="formInputs.specieWeight"
-                  :rules="[FormRules.numberHigherThan(0)]"
-                  type="number"
-                  @input="onSpecieWeightInput"
-                />
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  :label="$t('livestockInformation.meanWeight')"
-                  type="number"
-                  :rules="[FormRules.numberHigherThan(0)]"
-                  v-model="formInputs.specieMeanWeight"
-                  @input="onMeanWeightInput"
-                />
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  :label="$t('livestockInformation.numberOfIndividuals')"
-                  type="number"
-                  :rules="[FormRules.numberHigherThan(0)]"
-                  v-model="formInputs.fishQuantity"
-                  @input="onFishAmountInput"
-                />
-              </v-col>
+              /></v-col>
+              <specie-editor v-model="specieEditor" />
               <v-col cols="12" class="d-flex align-center justify-center">
                 <v-btn
                   class="mx-auto f-15"
@@ -65,11 +39,20 @@
             class="my-3 f-3 text-center"
             v-text="$t('livestockInformation.addedLivestock')"
           ></p>
-          <livestock-list
-            :livestock="props.livestockInformation.initial"
-            :deleteOption="true"
-            @delete-request="deleteSpecie"
-          />
+          <livestock-list :livestock="props.livestockInformation.initial">
+            <template #action="{ specie }">
+              <td class="pa-0 pr-2">
+                <v-btn
+                  @click="deleteSpecie(specie.specie)"
+                  icon
+                  color="transparent"
+                  ><v-icon color="red" size="25">{{
+                    Icons.EXIT
+                  }}</v-icon></v-btn
+                >
+              </td>
+            </template>
+          </livestock-list>
         </v-col>
       </v-row>
     </v-container>
@@ -87,15 +70,15 @@
   </v-form>
 </template>
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
+import { ref, computed } from "vue";
 import LivestockList from "@/components/common/Livestock/LivestockList.vue";
 import { LivestockInformation } from "@/types/Tank";
-import { SingleLivestockSpecie } from "@/types/Livestock";
-import { FormRules } from "@/helpers/FormRules";
 import { Species } from "@/constants/enums/Species";
 import { VForm } from "vuetify/lib/components";
 import { SpeciesValues } from "@/types/Livestock";
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
+import { Icons } from "@/constants/icons/MdiIcons";
+import SpecieEditor from "@/components/common/Livestock/SpecieEditor.vue";
 
 const props = defineProps<{
   livestockInformation: LivestockInformation;
@@ -110,72 +93,20 @@ const emit = defineEmits<{
   ): void;
 }>();
 const livestockEditorForm = ref<InstanceType<typeof VForm> | null>(null);
-const formInputs = reactive({
-  specieSelect: Object.values(Species)[0],
-  specieWeight: "",
-  specieMeanWeight: "",
-  fishQuantity: "",
+const specieSelect = ref<SpeciesValues>(Object.values(Species)[0]);
+const specieEditor = ref({
+  weight: 0,
+  meanWeight: 0,
+  quantity: 0,
 });
 
 const showNoLivestockError = ref(false);
 
-function onSpecieWeightInput() {
-  if (
-    !formInputs.specieWeight ||
-    (!formInputs.specieMeanWeight && !formInputs.fishQuantity)
-  )
-    return;
-  if (formInputs.specieMeanWeight)
-    formInputs.fishQuantity = (
-      (+formInputs.specieWeight / +formInputs.specieMeanWeight) *
-      1000
-    ).toFixed(0);
-  else
-    formInputs.specieMeanWeight = (
-      (+formInputs.specieWeight / +formInputs.fishQuantity) *
-      1000
-    ).toFixed(0);
-}
-function onMeanWeightInput() {
-  if (
-    !formInputs.specieMeanWeight ||
-    (!formInputs.specieWeight && !formInputs.fishQuantity)
-  )
-    return;
-  if (formInputs.specieWeight)
-    formInputs.fishQuantity = (
-      (+formInputs.specieWeight / +formInputs.specieMeanWeight) *
-      1000
-    ).toFixed(0);
-  else
-    formInputs.specieWeight = (
-      (+formInputs.fishQuantity * +formInputs.specieMeanWeight) /
-      1000
-    ).toFixed(0);
-}
-function onFishAmountInput() {
-  if (
-    !formInputs.fishQuantity ||
-    (!formInputs.specieMeanWeight && !formInputs.specieWeight)
-  )
-    return;
-  if (formInputs.specieMeanWeight)
-    formInputs.specieWeight = (
-      (+formInputs.fishQuantity * +formInputs.specieMeanWeight) /
-      1000
-    ).toFixed(0);
-  else
-    formInputs.specieMeanWeight = (
-      (+formInputs.specieWeight / +formInputs.fishQuantity) *
-      100
-    ).toFixed(0);
-}
-
 function clearInputs() {
-  formInputs.specieWeight = "";
-  formInputs.specieMeanWeight = "";
-  formInputs.specieSelect = Object.values(Species)[0];
-  formInputs.fishQuantity = "";
+  specieSelect.value = Object.values(Species)[0];
+  specieEditor.value.weight = 0;
+  specieEditor.value.meanWeight = 0;
+  specieEditor.value.quantity = 0;
 }
 
 function checkIfSpecieAlreadyWasAddedToList(speciesName: SpeciesValues) {
@@ -189,7 +120,7 @@ function addWeightToSpecie(speciesName: SpeciesValues) {
     (specieData) => specieData.specie === speciesName
   );
   livestockInformationModel.value.initial[specieIndex].weight += parseInt(
-    formInputs.specieWeight
+    specieEditor.value.specieWeight
   );
   adjustSpecieMeanWeight(specieIndex);
   addQuantityToSpecie(specieIndex);
@@ -198,7 +129,7 @@ function addWeightToSpecie(speciesName: SpeciesValues) {
 function adjustSpecieMeanWeight(specieIndex: number) {
   livestockInformationModel.value.initial[specieIndex].meanWeight = Number(
     Number(
-      (Number(formInputs.specieMeanWeight) +
+      (Number(specieEditor.value.meanWeight) +
         props.livestockInformation.initial[specieIndex].meanWeight) /
         2
     ).toFixed(2)
@@ -206,27 +137,20 @@ function adjustSpecieMeanWeight(specieIndex: number) {
 }
 function addQuantityToSpecie(specieIndex: number) {
   livestockInformationModel.value.initial[specieIndex].quantity +=
-    +formInputs.fishQuantity;
+    +specieEditor.value.quantity;
 }
 async function addStockToList() {
   if (!(await validateLivestockInformationForm())) return;
-  //if specie is selected as other get value from input
-  const { specieSelect, specieWeight, specieMeanWeight, fishQuantity } =
-    formInputs;
-  // if specie already exist in livestock list just add weight
-  if (checkIfSpecieAlreadyWasAddedToList(specieSelect)) {
-    addWeightToSpecie(specieSelect);
+  if (checkIfSpecieAlreadyWasAddedToList(specieSelect.value)) {
+    addWeightToSpecie(specieSelect.value);
     return;
   }
 
-  const payload: SingleLivestockSpecie = {
-    specie: specieSelect,
-    weight: parseInt(specieWeight),
-    meanWeight: Number(specieMeanWeight),
-    quantity: parseInt(fishQuantity),
-  };
   const copyOfLiveStockProp = { ...props.livestockInformation };
-  copyOfLiveStockProp.initial.push(payload);
+  copyOfLiveStockProp.initial.push({
+    specie: specieSelect.value,
+    ...specieEditor.value,
+  });
   emit("update:livestockInformation", copyOfLiveStockProp);
   showNoLivestockError.value = false;
   clearInputs();

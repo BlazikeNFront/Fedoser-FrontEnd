@@ -142,15 +142,14 @@ import { useFeedForSpecie } from "@/stores/FeedsForSpecie";
 import { storeToRefs } from "pinia";
 import { VForm } from "vuetify/lib/components";
 import { FormRules } from "@/helpers/FormRules";
-import { SpeciesValues } from "@/types/Livestock";
 const props = defineProps<{
   feedInformation: Required<TankFeedInformation>;
-  mainSpecie: SingleLivestockSpecie | null;
+  mainSpecie: SingleLivestockSpecie;
+  livestockWeight: number;
 }>();
 
 const emit = defineEmits<{
   (e: "dose-terminated", dose: FeedDose): void;
-  (e: "dose-omitted", dose: FeedDose): void;
 }>();
 
 const { feedsForSpecie, loader } = storeToRefs(useFeedForSpecie());
@@ -192,8 +191,8 @@ async function fetchSpecieFeeds() {
 }
 
 function handleDoseProposeRequest() {
-  const { currentLivestockWeight, currentFeed } = props.feedInformation;
-  if (!currentFeed?.feedForSpecie.weightBreakpoints || !currentLivestockWeight)
+  const { currentFeed } = props.feedInformation;
+  if (!currentFeed?.feedForSpecie.weightBreakpoints || !props.livestockWeight)
     return;
   if (!temperatureInput.value) {
     temperatureFormError.isVisible = true;
@@ -217,12 +216,14 @@ function handleDoseProposeRequest() {
         > & { weightBreakpoints: Record<string, number> }
       );
   proposedFeedDose.value = feedDoseInput.value = +(
-    (currentLivestockWeight / 100) *
+    props.livestockWeight *
+    10 *
     doseMulitplier
   ).toFixed(2);
 
   weightGainedAfterFeed.value = +(
-    proposedFeedDose.value * currentFeed.feedForSpecie.fcr
+    (proposedFeedDose.value * currentFeed.feedForSpecie.fcr) /
+    1000
   ).toFixed(2);
 }
 function getCorrectDoseMulitplier(
@@ -257,6 +258,7 @@ async function setDoseAsTerminated() {
     weightGainAfterDose: weightGainedAfterFeed.value,
     temperature: temperatureInput.value,
     terminated: DoseTermination.DONE,
+    specie: props.mainSpecie.specie,
   });
   emit("dose-terminated", terminatedFeedDose);
   clearForm();
@@ -267,14 +269,13 @@ function setDoseAsOmitted() {
     number: currentDose.value.number,
     date: currentDoseDate.value,
     terminated: DoseTermination.OMITTED,
+    specie: props.mainSpecie.specie,
   });
   doseManagerForm.value.resetValidation();
-  emit("dose-omitted", terminatedFeedDose);
+  emit("dose-terminated", terminatedFeedDose);
   clearForm();
 }
-onBeforeMount(() => {
-  fetchSpecieFeeds();
-});
+onBeforeMount(() => fetchSpecieFeeds());
 </script>
 <style scoped>
 .list-element {

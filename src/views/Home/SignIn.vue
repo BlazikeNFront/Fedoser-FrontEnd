@@ -1,61 +1,71 @@
 <template>
-  <home-form-card :loader="loginForm.loader" :header-text="$t('auth.signIn')">
-    <v-form ref="signInForm" class="mx-3 my-4">
-      <v-text-field
-        class="font-weight-bold home-form-card__textfield"
-        v-model.trim="loginForm.email"
-        type="username"
-        :label="$t('global.email')"
-        :rules="[FormRules.required, FormRules.maxLength(30)]"
-        @input="loginForm.showUnauthorizedError = false"
-      />
-      <v-text-field
-        class="font-weight-bold home-form-card__textfield"
-        v-model.trim="loginForm.password"
-        :type="passwordVisibility.type"
-        :label="$t('auth.password')"
-        :rules="[FormRules.required, FormRules.maxLength(30)]"
-        @input="loginForm.showUnauthorizedError = false"
-        ><template #appendInner>
-          <v-icon
-            @click="changePasswordVisibility"
-            :icon="passwordVisibility.icon"
-            class="pointer"
-          ></v-icon>
-        </template>
-      </v-text-field>
-      <v-btn
-        @click="loginRequest"
-        class="f-15"
-        width="200"
-        color="blue"
-        :disabled="loginForm.loader"
-        v-t="'auth.signIn'"
-      />
-    </v-form>
-    <transition-expand>
-      <p
-        v-if="loginForm.showUnauthorizedError"
-        v-t="'auth.unauthorized'"
-        class="text-error f-15"
-      ></p>
-    </transition-expand>
-    <i18n-t
-      class="mx-4 mt-7 f-15"
-      keypath="auth.notHaveAccount"
-      tag="p"
-      scope="global"
-    >
-      <template #button>
-        <v-btn
-          @click="showErrorModal($t('alphaInfo.signUpDisabled'), false)"
-          color="blue"
-          class="mx-2 my-2 f-15"
-          v-t="'global.clickHere'"
+  <div class="d-flex flex-column align-center justify-center">
+    <home-form-card :loader="loginForm.loader" :header-text="$t('auth.signIn')">
+      <v-form ref="signInForm" class="mx-3 my-4">
+        <v-text-field
+          class="font-weight-bold home-form-card__textfield"
+          v-model.trim="loginForm.email"
+          type="username"
+          :label="$t('global.email')"
+          :rules="[FormRules.required, FormRules.maxLength(30)]"
+          @input="loginForm.showUnauthorizedError = false"
         />
-      </template>
-    </i18n-t>
-  </home-form-card>
+        <v-text-field
+          class="font-weight-bold home-form-card__textfield"
+          v-model.trim="loginForm.password"
+          :type="passwordVisibility.type"
+          :label="$t('auth.password')"
+          :rules="[FormRules.required, FormRules.maxLength(30)]"
+          @input="loginForm.showUnauthorizedError = false"
+          ><template #appendInner>
+            <v-icon
+              @click="changePasswordVisibility"
+              :icon="passwordVisibility.icon"
+              class="pointer"
+            ></v-icon>
+          </template>
+        </v-text-field>
+        <v-btn
+          @click="loginRequest"
+          class="f-15"
+          width="200"
+          color="blue"
+          :disabled="loginForm.loader"
+          v-t="'auth.signIn'"
+        />
+      </v-form>
+      <transition-expand>
+        <p
+          v-if="loginForm.showUnauthorizedError"
+          v-t="'auth.unauthorized'"
+          class="text-error f-15"
+        ></p>
+      </transition-expand>
+      <i18n-t
+        class="mx-4 mt-7 f-15"
+        keypath="auth.notHaveAccount"
+        tag="p"
+        scope="global"
+      >
+        <template #button>
+          <v-btn
+            @click="showErrorModal($t('alphaInfo.signUpDisabled'), false)"
+            color="blue"
+            class="mx-2 my-2 f-15"
+            v-t="'global.clickHere'"
+          />
+        </template>
+      </i18n-t>
+    </home-form-card>
+    <v-card
+      color="dark-grey"
+      class="pa-3 mt-4 d-flex flex-column align-center justify-center"
+      style="width: clamp(30rem, 100%, 60rem)"
+    >
+      <v-icon size="35" color="yellow">{{ Icons.ALERT }}</v-icon>
+      <p class="f-15 text-center">{{ $t("auth.serverResponseInfo") }}</p>
+    </v-card>
+  </div>
 </template>
 
 <script setup lang="ts">

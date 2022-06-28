@@ -1,13 +1,14 @@
 import CrudService from "@/services/base/CrudService";
 import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
-import { TerminatedFeedDoseDTO } from "@/utils/DTOs/TerminatedFeedDose.dto";
+
 import { CurrentTankFeedDto } from "@/utils/DTOs/CurrentTankFeed.dto";
+import { FeedDoseDTO } from "@/utils/DTOs/FeedDose.dto";
 class TankFeedInformation extends CrudService<FeedInformationDTO> {
   constructor() {
     super("tank-feed-information");
   }
 }
-class FeedInformationDose extends CrudService<TerminatedFeedDoseDTO> {
+class FeedInformationDose extends CrudService<FeedDoseDTO> {
   constructor() {
     super("tank-feed-information");
   }

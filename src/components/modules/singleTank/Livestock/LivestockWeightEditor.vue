@@ -1,11 +1,10 @@
 <template>
-  <v-dialog v-model="livestockEditor.showLivestockEditor" width="100%">
-    <template #activator="{ props }">
-      <v-btn v-bind="{ ...props }" class="edit-button">{{
-        $t("livestockInformation.editWeight")
-      }}</v-btn>
-    </template>
-    <v-card color="violet" tag="dialog">
+  <v-dialog :model-value="!!modelValue" class="editor-dialog">
+    <v-card
+      color="violet"
+      tag="dialog"
+      style="max-height: 90vh; overflow: auto"
+    >
       <v-container
         ><v-row
           ><v-col cols="12">
@@ -14,36 +13,37 @@
             </p>
           </v-col>
           <v-col cols="12">
-            <livestock-list
-              v-if="tank && livestockChange"
-              :livestock="tank.livestockInformation.current"
-            >
-              <template #header
-                ><th>{{ $t("global.edit") }}</th>
-              </template>
-              <template #action="{ index }">
-                <v-text-field
-                  v-model="livestockChange[index as  number].newWeight"
-                ></v-text-field>
-                <!-- <v-btn icon color="yellow">
-                  <v-icon>{{ Icons.EDIT }}</v-icon>
-                </v-btn> -->
-              </template>
-            </livestock-list>
+            <livestock-list :livestock="[{ ...modelValue }]" />
           </v-col>
-          <v-col cols="12" class="d-flex align-center justify-space-around">
-            <v-btn
-              class="f-15 app-button text-white"
-              :disabled="livestockEditor.requestPending"
-              @click="livestockEditor.showLivestockEditor = false"
-              >{{ $t("global.reject") }}</v-btn
-            >
-            <v-btn
-              class="f-15 save-button text-white"
-              :loading="livestockEditor.requestPending"
-              @click="onLivestockEditAccept"
-              >{{ $t("global.confirm") }}</v-btn
-            >
+          <v-col cols="12">
+            <v-form ref="specieEditorForm">
+              <v-container
+                ><v-row>
+                  <specie-editor v-model="changeWeightForm.specieEdtiors" />
+                  <v-textarea
+                    v-model="changeWeightForm.reason"
+                    :label="$t('livestockInformation.reason')"
+                    :rules="[
+                      FormRules.required,
+                      FormRules.minLength(5),
+                      FormRules.maxLength(100),
+                    ]"
+                  /> </v-row
+              ></v-container>
+
+              <v-btn
+                @click="$emit('update:modelValue', null)"
+                :disabled="changeWeightForm.isLoading"
+                class="f-15 app-button text-white"
+                >{{ $t("global.reject") }}</v-btn
+              >
+              <v-btn
+                class="f-15 save-button text-white"
+                :loading="changeWeightForm.isLoading"
+                @click="onChangeWeightRequest"
+                >{{ $t("global.confirm") }}</v-btn
+              >
+            </v-form>
           </v-col>
         </v-row></v-container
       >
@@ -52,42 +52,62 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onBeforeMount } from "vue";
-import { storeToRefs } from "pinia";
-import { useTankStore } from "../../../../stores/TankStore";
-
+import { ref, reactive } from "vue";
+import { SingleLivestockSpecie } from "@/types/Livestock";
 import LivestockList from "@/components/common/Livestock/LivestockList.vue";
-
-import { SpeciesValues } from "@/types/Livestock";
-type Test = {
-  specie: SpeciesValues;
-  newWeight: number;
-};
+import { FormRules } from "@/helpers/FormRules";
+import SpecieEditor from "@/components/common/Livestock/SpecieEditor.vue";
+import { storeToRefs } from "pinia";
+import { useTankStore } from "@/stores/TankStore";
+import { ChangeSpecieWeightDto } from "@/utils/DTOs/ChangeSpecieWeight.dto";
+import { VForm } from "vuetify/lib/components";
+import { getCurrentDate } from "@/helpers/date";
+const props = defineProps<{
+  modelValue: SingleLivestockSpecie;
+}>();
+const emits = defineEmits<{
+  (e: "update:modelValue", modelValue: SingleLivestockSpecie | null): void;
+}>();
+const specieEditorForm = ref<InstanceType<typeof VForm> | null>(null);
 const { tank } = storeToRefs(useTankStore());
-const livestockChange = ref<Test[] | null>(null);
-const livestockEditor = reactive({
-  showLivestockEditor: false,
-  requestPending: false,
-  error: false,
+const { updateCurrentLivestock } = useTankStore();
+const changeWeightForm = reactive({
+  isLoading: false,
+  specieEdtiors: {
+    weight: props.modelValue.weight,
+    meanWeight: props.modelValue.meanWeight,
+    quantity: props.modelValue.quantity,
+  },
+  reason: "",
 });
-onBeforeMount(() => {
-  if (tank.value)
-    livestockChange.value = tank.value.livestockInformation.current.map(
-      (singleSpecie) => ({
-        specie: singleSpecie.specie,
-        newWeight: singleSpecie.weight,
-      })
-    );
-});
-function filterNotChangedWeights() {
-  if (!livestockChange.value) return;
-  return livestockChange.value.filter(
-    (element, index) =>
-      element.newWeight !==
-      tank.value?.livestockInformation.current[index].weight
+function isSpecieDataDiffers() {
+  return Object.keys(changeWeightForm.specieEdtiors).some(
+    (key) =>
+      props.modelValue[key as keyof typeof props.modelValue] !==
+      changeWeightForm.specieEdtiors[
+        key as keyof typeof changeWeightForm.specieEdtiors
+      ]
   );
 }
-async function onLivestockEditAccept() {
-  console.log(filterNotChangedWeights());
+async function onChangeWeightRequest() {
+  if (
+    !tank.value?._id ||
+    !isSpecieDataDiffers() ||
+    !(await specieEditorForm.value?.validate()).valid
+  )
+    return;
+  changeWeightForm.isLoading = true;
+  const { specieEdtiors, reason } = changeWeightForm;
+  if (
+    await updateCurrentLivestock(
+      new ChangeSpecieWeightDto({
+        before: { ...props.modelValue },
+        after: { ...props.modelValue, ...specieEdtiors },
+        reason,
+        date: getCurrentDate(),
+      })
+    )
+  )
+    emits("update:modelValue", null);
 }
 </script>

@@ -97,12 +97,14 @@ import { ref, computed, withDefaults, onBeforeMount } from "vue";
 const props = withDefaults(
   defineProps<{
     modelValue: CurrentTankFeed | null;
-    label?: string;
     feedsOptions: FeedSelectOptions;
+    label?: string;
+    forceEval?: boolean;
   }>(),
   {
     //label is for v-select component
     label: "feedInformation.selectFeed",
+    forceEval: false,
   }
 );
 
@@ -145,7 +147,8 @@ function onFeedSelect(feedForSpecie: FeedForSpecie) {
 }
 
 onBeforeMount(() => {
-  if (!props.modelValue) {
+  if (!props.modelValue || props.forceEval) {
+    console.log("hello");
     const defaultFeed =
       props.feedsOptions.proposedFeeds[0] || props.feedsOptions.allFeeds[0];
     emit(
@@ -156,6 +159,5 @@ onBeforeMount(() => {
       })
     );
   }
-  allFeedWithoutProsoedFeeds.value;
 });
 </script>

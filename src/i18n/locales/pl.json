@@ -47,7 +47,12 @@
     "lack":"Brak",
     "baseDeleteConfirmation":"Czy jestes pewien ze chcesz usunac",
     "feedTables":"Tabele paszowe",
-    "image":"Zdjęcie"
+    "image":"Zdjęcie",
+    "reason":"Powód",
+      "meanWeight":"Średnia masa",
+     "quantity":"Ilość",
+    "before":"Przed",
+     "after":"Po"
   },
 
   "species":{
@@ -78,7 +83,8 @@
     "clickHereToSignUp":"{button} zeby sie zalozyc konto",
     "unauthorized":"Nieprawidlowy email lub haslo",
     "passwordsDoNotMatchMessage":"Hasla nie sa identyczne",
-    "logout":"Wyloguj"
+    "logout":"Wyloguj",
+    "serverResponseInfo":"W przypadku długiego czasu oczekiwania podczas pierwszej próby logowania lub przeniesiania na strone główną, ponów próbę logowania"
   },
     "appHome":{
     "news":"Aktualnosci",
@@ -121,7 +127,9 @@
       "addSpecieToLivestock":"Dodaj do obsady",
       "noLivestock":"Brak obsady",
       "typeSpecie":"@:global.type @:global.specie",
-      "addLivestockOrOmitStep":"Dodaj obsade lub kliknij przycisk pomin"
+      "addLivestockOrOmitStep":"Dodaj obsade lub kliknij przycisk pomin",
+      "changesHistory":"Historia zmian"
+    
     },
     "feedInformation":{
       "currentfeedProgram":"Aktualny program zywieniowy",

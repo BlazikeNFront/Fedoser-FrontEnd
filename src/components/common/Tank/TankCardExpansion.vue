@@ -1,31 +1,33 @@
 <template>
-  <v-expansion-panel bg-color="violet" style="border-radius: 10px !important">
-    <v-expansion-panel-title :class="tankCardTitleClasses">
-      <component
-        :is="tankCardTitleTag"
-        v-text="tank.mainTankInformation.name"
-      />
-    </v-expansion-panel-title>
-    <v-expansion-panel-text tag="article" class="d-flex flex-column">
-      <v-container>
-        <v-row>
-          <v-col
-            cols="12"
-            lg="6"
-            v-for="(componentConfig, index) in createTankCardDisplays(tank)"
-            :key="index"
-          >
-            <component
-              class="radius-4 pa-2 d-flex align-center justify-center shadow-bg"
-              :is="componentConfig.component"
-              v-bind="componentConfig.attrs"
-            ></component>
-          </v-col>
-        </v-row>
-        <slot />
-      </v-container>
-    </v-expansion-panel-text>
-  </v-expansion-panel>
+  <v-expansion-panels>
+    <v-expansion-panel bg-color="violet" style="border-radius: 10px !important">
+      <v-expansion-panel-title :class="tankCardTitleClasses">
+        <component
+          :is="tankCardTitleTag"
+          v-text="tank.mainTankInformation.name"
+        />
+      </v-expansion-panel-title>
+      <v-expansion-panel-text tag="article" class="d-flex flex-column">
+        <v-container>
+          <v-row>
+            <v-col
+              cols="12"
+              lg="6"
+              v-for="(componentConfig, index) in createTankCardDisplays(tank)"
+              :key="index"
+            >
+              <component
+                class="radius-4 pa-2 d-flex align-center justify-center shadow-bg"
+                :is="componentConfig.component"
+                v-bind="componentConfig.attrs"
+              ></component>
+            </v-col>
+          </v-row>
+          <slot />
+        </v-container>
+      </v-expansion-panel-text>
+    </v-expansion-panel>
+  </v-expansion-panels>
 </template>
 <script setup lang="ts">
 import { Tank } from "@/types/Tank";

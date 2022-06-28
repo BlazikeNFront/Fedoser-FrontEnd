@@ -11,7 +11,12 @@
 
     <v-form
       ref="noteDataForm"
-      style="background-color: white; overflow-y: auto; max-height: 100vh"
+      style="
+        background-color: white;
+        overflow-y: auto;
+        max-height: 100vh;
+        min-width: 300px;
+      "
     >
       <v-container
         ><v-row>

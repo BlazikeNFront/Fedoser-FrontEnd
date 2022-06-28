@@ -18,6 +18,7 @@
                 v-if="feedsForSpecie"
                 v-model="copyOfModelValue.currentFeed"
                 :feeds-options="feedOptions(mainSpecie)"
+                force-eval
               />
             </v-sheet>
           </v-col>
@@ -91,7 +92,7 @@ const feedOptions = computed(
       const proposedFeeds = feedsForSpecie.value.filter((specieFeed) => {
         if (specieFeed.maxSize === null) return specieFeed.minSize < meanWeight;
         return (
-          specieFeed.minSize < meanWeight && specieFeed.maxSize > meanWeight
+          specieFeed.minSize <= meanWeight && specieFeed.maxSize > meanWeight
         );
       });
       feedSelectOption.proposedFeeds = proposedFeeds;

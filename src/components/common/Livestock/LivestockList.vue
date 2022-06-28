@@ -7,7 +7,7 @@
     ></p>
     <div v-else>
       <v-table class="default__table">
-        <thead class="f-15 text-center">
+        <thead v-if="!hideHeader" class="f-15 text-center">
           <tr>
             <th v-text="$t('global.specie')"></th>
             <th v-text="$t('livestockInformation.weight')"></th>
@@ -39,9 +39,9 @@
 import LivestockWeightDisplay from "@/components/common/Tank/TankBasicInfoDisplays/LivestockWeightDisplay.vue";
 import { SingleLivestockSpecie } from "@/types/Livestock";
 import { calcLivestockWeight } from "@/helpers/calcLivestockWeight";
-const props = defineProps<{
+defineProps<{
   livestock: SingleLivestockSpecie[];
   tableClass?: string;
+  hideHeader?: boolean;
 }>();
-console.log(props);
 </script>

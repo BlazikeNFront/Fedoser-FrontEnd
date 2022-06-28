@@ -15,4 +15,5 @@ export enum Icons {
   DOWNLOAD = "mdi-download",
   MAGNIFY_GLASS = "mdi-magnify",
   EDIT = "mdi-lead-pencil",
+  ARROW_RIGHT = "mdi-arrow-right-bold",
 }

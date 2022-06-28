@@ -29,15 +29,11 @@ export interface FeedDose {
   temperature: number;
   terminated: DoseTermination;
   weightGainAfterDose: number;
+  specie: SpeciesValues;
 }
 
-export interface WeightsData {
-  currentLivestockWeight: number;
-  usedFeedTotalWeight: number;
-}
 export interface TerminatedFeedDose {
   feedDose: FeedDose;
-  weightsData: WeightsData;
 }
 export interface CurrentTankFeed {
   feedForSpecie: FeedForSpecie;

@@ -5,6 +5,7 @@ import {
 import { FeedDose, CurrentTankFeed } from "@/types/Feed";
 import { EnviromentalData } from "@/types/EnviromentalData";
 import { SingleLivestockSpecie } from "@/types/Livestock";
+import { ChangeSpecieWeightPayload } from "@/utils/DTOs/ChangeSpecieWeight.dto";
 
 export interface MainTankInformation {
   name: string;
@@ -22,6 +23,7 @@ export interface TankFeedInformation {
 export interface LivestockInformation {
   initial: SingleLivestockSpecie[];
   current: SingleLivestockSpecie[];
+  changes: ChangeSpecieWeightPayload[];
 }
 
 export interface TankNote {

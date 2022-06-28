@@ -17,14 +17,12 @@
       <v-col cols="12" lg="6">
         <h4 class="text-h4 my-4 text-center" v-text="$t('global.others')"></h4>
         <main-specie-display
-          :livestock="tank.livestockInformation.livestock"
+          :livestock="tank.livestockInformation.current"
           class="shadow-bg ma-2 py-3 px-5 radius-4 d-flex align-center justify-center f-15 font-weight-bold"
         />
         <livestock-weight-display
           :livestock-weight="
-            tank.feedInformation?.currentLivestockWeight ||
-            tank.livestockInformation?.initialLivestockWeight ||
-            null
+            calcLivestockWeight(tank.livestockInformation.current)
           "
           :text-attrs="{ class: 'ml-2 f-15' }"
           class="shadow-bg ma-2 py-3 px-5 radius-4 d-flex align-center justify-center f-15 font-weight-bold"
@@ -52,6 +50,7 @@ import LivestockWeightDisplay from "@/components/common/Tank/TankBasicInfoDispla
 import MainSpecieDisplay from "@/components/common/Tank/TankBasicInfoDisplays/MainSpecieDisplay.vue";
 import AnnotationsDisplay from "@/components/common/Tank/TankBasicInfoDisplays/AnnotationsDisplay.vue";
 import ConfirmationDialog from "@/components/common/ConfirmationDialog.vue";
+import { calcLivestockWeight } from "@/helpers/calcLivestockWeight";
 import TankService from "@/services/endpoints/Tank";
 import { useTankStore } from "@/stores/TankStore";
 import { useRouter } from "vue-router";

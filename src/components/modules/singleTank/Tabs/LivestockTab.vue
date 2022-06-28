@@ -2,7 +2,7 @@
   <div class="my-4">
     <default-loader v-if="!tank" />
     <div
-      v-else-if="!tank.livestockInformation.livestock.length"
+      v-else-if="!tank.livestockInformation.initial.length"
       class="d-flex align-center justify-center"
     >
       <i18n-t
@@ -31,11 +31,21 @@
               v-text="$t('tank.currentLivestockState')"
             ></h4>
             <livestock-list
-              :livestock-information="
-                currentLivestockInformations || tank.livestockInformation
-              "
+              :livestock="tank.livestockInformation.current"
               table-class="shadow-bg text-white tank__livestock-table"
-            />
+            >
+              <template #action="{ specie }">
+                <v-btn
+                  icon
+                  @click="specieWeightEditor = specie"
+                  class="ma-2 shadow-bg"
+                >
+                  <v-icon color="yellow" size="25">
+                    {{ Icons.EDIT }}
+                  </v-icon>
+                </v-btn>
+              </template>
+            </livestock-list>
           </v-col>
           <v-col cols="12" xl="6">
             <h4
@@ -43,12 +53,23 @@
               v-text="$t('tank.initialLivestockState')"
             ></h4>
             <livestock-list
-              :livestock-information="tank.livestockInformation"
+              :livestock="tank.livestockInformation.initial"
               table-class="shadow-bg text-white tank__livestock-table"
             />
           </v-col>
           <v-col cols="12" class="d-flex align-center justify-center">
-            <livestock-weight-editor />
+            <livestock-weight-editor
+              v-if="specieWeightEditor"
+              v-model="specieWeightEditor"
+            />
+          </v-col>
+          <v-col cols="12" v-if="tank.livestockInformation.changes.length">
+            <h4 class="my-4 text-h4 text-center">
+              {{ $t("livestockInformation.changesHistory") }}
+            </h4>
+            <changes-history
+              :livestock-changes="tank.livestockInformation.changes"
+            />
           </v-col>
         </v-row>
       </v-container>
@@ -58,10 +79,14 @@
 <script setup lang="ts">
 import LivestockList from "@/components/common/Livestock/LivestockList.vue";
 import LivestockWeightEditor from "../Livestock/LivestockWeightEditor.vue";
+import ChangesHistory from "../Livestock/ChangesHistory.vue";
 import { storeToRefs } from "pinia";
 import { useTankStore } from "@/stores/TankStore";
-
-const { tank, currentLivestockInformations } = storeToRefs(useTankStore());
+import { Icons } from "@/constants/icons/MdiIcons";
+import { SingleLivestockSpecie } from "@/types/Livestock";
+import { ref } from "vue";
+const { tank } = storeToRefs(useTankStore());
+const specieWeightEditor = ref<SingleLivestockSpecie | null>(null);
 </script>
 <style lang="scss">
 .tank__livestock-table {

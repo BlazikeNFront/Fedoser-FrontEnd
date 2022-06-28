@@ -27,7 +27,8 @@ export default createVuetify({
           'semi-violet': colors.purple.lighten4,
           red: '#f25767',
           'dark-blue': '#024564',
-         'grey':colors.grey.lighten1
+          'grey': colors.grey.lighten1,
+          'dark-grey':colors.grey.darken4
     
     
         },
@@ -46,7 +47,8 @@ export default createVuetify({
           'semi-violet': colors.purple.lighten4,
           red: '#f25767',
           'dark-blue': '#024564',
-      'grey':colors.grey.lighten1
+          'grey': colors.grey.lighten1,
+          'dark-grey':colors.grey.darken4
        
         },
       },

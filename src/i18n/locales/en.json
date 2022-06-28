@@ -28,7 +28,7 @@
     "description":"Description",
     "next":"Next",
     "omit":"Omit",
-    "weight":"Waga",
+    "weight":"Weight",
     "other":"Other",
     "type":"Type",
     "back":"Wstecz",
@@ -44,7 +44,12 @@
      "title":"Title",
      "efficiency":"Efficiency",
      "lack":"Lack",
-     "baseDeleteConfirmation":"Are you sure you want to delete"
+     "baseDeleteConfirmation":"Are you sure you want to delete",
+     "reason":"Reason",
+     "meanWeight":"Mean weight",
+     "quantity":"Quantity",
+     "before":"Before",
+     "after":"After"
   },
    "species":{
     "rainbowTrout":"Rainbow Trout",
@@ -74,7 +79,8 @@
     "clickHereToSignUp":"{button} to create account",
     "unauthorized":"Incorrect email or password",
     "passwordsDoNotMatchMessage":"Passwords do not match",
-    "logout":"Logout"
+    "logout":"Logout",
+    "serverResponseInfo":"In the case of a long waiting time at the first login attempt or returning to the home page, try logging in again."
   },
   "appHome":{
     "news":"News",
@@ -121,7 +127,8 @@
      "addSpecieToLivestock":"Add to livestock",
      "noLivestock":"No livestock is set",
      "typeSpecie":"@:global.type @:global.specie",
-     "addLivestockOrOmitStep":"Add livestock or click omit button"
+     "addLivestockOrOmitStep":"Add livestock or click omit button",
+    "changesHistory":"Changes history"
     },
      "feedInformation":{
       "currentfeedProgram":"Aktulny program",

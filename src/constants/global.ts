@@ -17,3 +17,8 @@ export enum ResponseTypes {
   PDF = "application/pdf",
   ARRAYBUFFER = "arraybuffer",
 }
+
+export enum WeightSymbols {
+  GRAMS = "g",
+  KILOGRAMS = "kg",
+}

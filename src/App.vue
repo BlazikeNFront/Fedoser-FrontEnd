@@ -1,5 +1,7 @@
 <template>
-  <v-app style="overflow: hidden">
+  <v-app
+    style="overflow: auto; background-color: rgb(var(--v-theme-dark-blue))"
+  >
     <component :is="currentLayout" />
     <error-snack-bar />
   </v-app>
@@ -10,8 +12,7 @@ import AppDefaultLayout from "./layouts/AppDefaultLayout.vue";
 import HomePageLayout from "./layouts/HomePageLayout.vue";
 import ErrorSnackBar from "@/components/common/ErrorSnackBar.vue";
 import { HomeLayoutPages } from "@/constants/routesNames/RoutesNames";
-import { useUserStore } from "@/stores/UserStore";
-import { onBeforeMount, computed } from "vue";
+import { computed } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
@@ -22,10 +23,5 @@ const currentLayout = computed(() => {
       : AppDefaultLayout;
 
   return HomePageLayout;
-});
-
-const { checkForCredentialsInLocalStorage } = useUserStore();
-onBeforeMount(() => {
-  checkForCredentialsInLocalStorage();
 });
 </script>

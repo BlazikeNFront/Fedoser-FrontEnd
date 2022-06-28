@@ -13,7 +13,7 @@
           /> </v-col
         ><v-col cols="12" lg="2" class="mt-lg-16 d-flex flex-column">
           <v-dialog
-            v-if="mainSpecie && !loadingFeedsForSpecie"
+            v-if="tankMainSpecie && !loadingFeedsForSpecie"
             class="editor-dialog"
             v-model="showFeedSelectDialog"
           >
@@ -35,7 +35,7 @@
                 @update:model-value="onFeedSelectChange($event)"
                 :feeds-options="
                   feedOptions(
-                    currentLivestockInformations?.livestock[0] || mainSpecie
+                    tank.livestockInformation.current[0] || tankMainSpecie
                   )
                 "
               />
@@ -44,7 +44,7 @@
     ></v-container>
 
     <div
-      v-if="tank?.feedInformation"
+      v-if="tank?.feedInformation && tankMainSpecie"
       class="d-flex flex-column align-center justify-center"
     >
       <feed-size-info-card v-if="shouldChangeFeedSize" />
@@ -55,10 +55,8 @@
 
       <dose-manager
         :feed-information="tank.feedInformation"
-        :main-specie="
-          findMainSpecieInLivestock(tank.livestockInformation.livestock)
-        "
-        @dose-omitted="terminateDose"
+        :mainSpecie="tankMainSpecie"
+        :livestock-weight="tankLivestockWeight"
         @dose-terminated="terminateDose"
       />
     </div>
@@ -76,9 +74,7 @@ import DoseManager from "@/components/modules/singleTank/FeedProgram/DoseManager
 import FeedInformationDisplay from "@/components/common/Feed/FeedInformationDisplay.vue";
 import TerminatedDoseList from "@/components/modules/singleTank/FeedProgram/TerminatedDoseList.vue";
 import { FeedInformationDoseService } from "@/services/endpoints/TankFeedInformation";
-import { findMainSpecieInLivestock } from "@/helpers/findMainSpecieInLivestock";
 import { FeedDose } from "@/types/Feed";
-import { TerminatedFeedDoseDTO } from "@/utils/DTOs/TerminatedFeedDose.dto";
 import FeedSelect from "@/components/common/Feed/FeedSelect.vue";
 import { useFeedForSpecie } from "@/stores/FeedsForSpecie";
 import { FeedSelectOptions } from "@/types/FeedSelectOptions";
@@ -87,30 +83,31 @@ import { SingleLivestockSpecie } from "@/types/Livestock";
 import { CurrentTankFeed } from "@/types/Feed";
 import { onBeforeMount } from "vue";
 import FeedSizeInfoCard from "@/components/modules/singleTank/FeedProgram/FeedSizeInfoCard.vue";
+import { FeedDoseDTO } from "@/utils/DTOs/FeedDose.dto";
 
-const { tank, currentLivestockInformations } = storeToRefs(useTankStore());
+const { tank, tankLivestockWeight, tankMainSpecie } = storeToRefs(
+  useTankStore()
+);
 const { changeCurrentTankFeed, terminateTankFeedProgramDose } = useTankStore();
+
 const showFeedSelectDialog = ref(false);
 const {
   feedsForSpecie,
   loader: loadingFeedsForSpecie,
   specie: feedsStoreSpecie,
 } = storeToRefs(useFeedForSpecie());
-const mainSpecie = computed(() => {
-  if (!tank.value || !tank.value.livestockInformation.livestock.length)
-    return null;
-  return findMainSpecieInLivestock(tank.value.livestockInformation.livestock);
-});
+
 const { getFeedsForSpecie } = useFeedForSpecie();
 const shouldChangeFeedSize = computed(() => {
   if (
     !tank.value?.feedInformation.currentFeed?.feedForSpecie.maxSize ||
-    !currentLivestockInformations.value
+    !tank.value.livestockInformation.current.length
   )
     return false;
+
   if (
     tank.value.feedInformation.currentFeed.feedForSpecie.maxSize <
-    currentLivestockInformations.value.livestock[0].meanWeight
+    tank.value.livestockInformation.current[0].meanWeight
   )
     return true;
   return false;
@@ -138,15 +135,9 @@ const feedOptions = computed(
     }
 );
 async function terminateDose(dose: FeedDose) {
-  if (!tank.value || !tank.value.feedInformation.currentLivestockWeight) return;
-  const { currentLivestockWeight, usedFeedTotalWeight } =
-    tank.value.feedInformation;
-  const weightsData = {
-    currentLivestockWeight,
-    usedFeedTotalWeight,
-  };
+  if (!tank.value) return;
   const result = await FeedInformationDoseService.create(
-    new TerminatedFeedDoseDTO(dose, weightsData),
+    new FeedDoseDTO(dose),
     `${tank.value._id}/add-feed-dose`
   );
   if (result.success) terminateTankFeedProgramDose(dose);
@@ -163,7 +154,10 @@ async function onFeedSelectChange(selectedFeed: CurrentTankFeed) {
   showFeedSelectDialog.value = false;
 }
 onBeforeMount(async () => {
-  if (mainSpecie.value && feedsStoreSpecie.value !== mainSpecie.value?.specie)
-    await getFeedsForSpecie(mainSpecie.value.specie);
+  if (
+    tankMainSpecie.value &&
+    feedsStoreSpecie.value !== tankMainSpecie.value?.specie
+  )
+    await getFeedsForSpecie(tankMainSpecie.value.specie);
 });
 </script>

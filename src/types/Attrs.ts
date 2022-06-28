@@ -3,3 +3,10 @@
 export interface Attrs {
   class?: string;
 }
+export interface ColsAttrs {
+  cols: string;
+  sm?: string;
+  md?: string;
+  lg?: string;
+  xl?: string;
+}
