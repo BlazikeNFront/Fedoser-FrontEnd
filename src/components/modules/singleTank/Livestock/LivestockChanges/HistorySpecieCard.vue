@@ -9,16 +9,23 @@
       <p class="text-right w-50">{{ $t(`global.${key}`) }}:</p>
       <p class="text-left w-50 pl-4">
         {{ `${value} ${suffixes[index]}` }}
+        <v-icon
+          v-if="changes && changes.includes(key)"
+          :icon="Icons.ALERT"
+          color="yellow"
+        />
       </p>
     </div>
   </v-card>
 </template>
 <script setup lang="ts">
 import { SingleLivestockSpecie } from "@/types/Livestock";
+import { Icons } from "@/constants/icons/MdiIcons";
 
 defineProps<{
   cardTitle: string;
   specieChangeData: Omit<SingleLivestockSpecie, "specie">;
+  changes?: (keyof SingleLivestockSpecie)[];
 }>();
 const suffixes = ["kg", "g", ""];
 </script>

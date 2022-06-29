@@ -92,7 +92,7 @@
     "showANews":"@:global.show @.lower:home.aNews",
     "welcomeBack":"Witaj ponownie w  @:global.appName",
     "todayActions":"Do zrobienia @:global.:",
-    "todayActionsDone":"Brak oczekujacych na wykonanie aktywnosci"
+    "todayActionsDone":"Brak oczekujacych na wykonanie aktywności"
   },
   "navBar":{
     "home":"Strona glowna",

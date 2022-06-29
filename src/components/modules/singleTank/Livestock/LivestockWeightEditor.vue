@@ -1,5 +1,9 @@
 <template>
-  <v-dialog :model-value="!!modelValue" class="editor-dialog">
+  <v-dialog
+    :model-value="!!modelValue"
+    class="editor-dialog"
+    @click:outside="emits('update:modelValue', null)"
+  >
     <v-card
       color="violet"
       tag="dialog"

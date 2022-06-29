@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="showDialog" class="editor-dialog">
+  <v-dialog v-model="showDialog" class="editor-dialog note-dialog">
     <template #activator="{ props }">
       <v-btn
         v-bind="props"
@@ -11,12 +11,7 @@
 
     <v-form
       ref="noteDataForm"
-      style="
-        background-color: white;
-        overflow-y: auto;
-        max-height: 100vh;
-        min-width: 300px;
-      "
+      style="overflow-y: auto; max-height: 100vh; min-width: 300px"
     >
       <v-container
         ><v-row>
@@ -51,7 +46,6 @@
                 class="noteDataForm__important-checkbox f-2"
                 v-model="annotationCopy.isImportant"
                 :label="$t('notes.markAsimportant')"
-                color="violet"
                 hide-details
               />
             </div>
@@ -202,7 +196,12 @@ defineExpose({
   setEnviromentalData,
 });
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+.note-dialog {
+  .v-overlay__content {
+    background-color: rgb(var(--v-theme-violet));
+  }
+}
 .noteDataForm__important-checkbox:deep(.v-label) {
   font-size: 1.5rem;
 }

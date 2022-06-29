@@ -1,5 +1,5 @@
 <template>
-  <div :id="IdAttributes.ABOUT_SECTION">
+  <div :id="IdAttributes.ABOUT_SECTION" style="background-color: whitesmoke">
     <svg
       class="about__svg-wave"
       viewBox="0 0 1308 48"

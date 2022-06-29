@@ -39,8 +39,10 @@
                   icon
                   @click="specieWeightEditor = specie"
                   class="ma-2 shadow-bg"
+                  width="40"
+                  height="40"
                 >
-                  <v-icon color="yellow" size="25">
+                  <v-icon color="yellow" size="20">
                     {{ Icons.EDIT }}
                   </v-icon>
                 </v-btn>
@@ -67,7 +69,7 @@
             <h4 class="my-4 text-h4 text-center">
               {{ $t("livestockInformation.changesHistory") }}
             </h4>
-            <changes-history
+            <changes-history-list
               :livestock-changes="tank.livestockInformation.changes"
             />
           </v-col>
@@ -79,7 +81,7 @@
 <script setup lang="ts">
 import LivestockList from "@/components/common/Livestock/LivestockList.vue";
 import LivestockWeightEditor from "../Livestock/LivestockWeightEditor.vue";
-import ChangesHistory from "../Livestock/ChangesHistory.vue";
+import ChangesHistoryList from "../Livestock/LivestockChanges/ChangesHistoryList.vue";
 import { storeToRefs } from "pinia";
 import { useTankStore } from "@/stores/TankStore";
 import { Icons } from "@/constants/icons/MdiIcons";
