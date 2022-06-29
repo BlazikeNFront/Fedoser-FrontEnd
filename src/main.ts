@@ -7,10 +7,10 @@ import vuetify from "./plugins/vuetify";
 import { loadFonts } from "./plugins/webfontloader";
 import { useUserStore } from "@/stores/UserStore";
 import Loader from "@/components/common/Loader.vue";
-
-loadFonts();
+import { registerPWA } from "@/registerServiceWorker";
 
 async function appInit() {
+  loadFonts();
   const app = createApp(App);
   app.component("defaultLoader", Loader);
   await loadLocaleMessages(
@@ -24,5 +24,6 @@ async function appInit() {
 
   await router.isReady();
   app.mount("#app");
+  registerPWA();
 }
 appInit();
