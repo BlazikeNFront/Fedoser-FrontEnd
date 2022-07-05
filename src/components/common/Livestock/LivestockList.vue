@@ -19,9 +19,9 @@
         <tbody class="livestocklist__tbody text-center">
           <tr v-for="(specieInfo, index) in livestock" :key="index">
             <td v-text="$t(`species.${specieInfo.specie}`)"></td>
-            <td v-text="specieInfo.weight"></td>
-            <td v-text="specieInfo.meanWeight"></td>
-            <td v-text="specieInfo.quantity"></td>
+            <td v-text="specieInfo.weight.toFixed(2)"></td>
+            <td v-text="specieInfo.meanWeight.toFixed(2)"></td>
+            <td v-text="Math.round(specieInfo.quantity)"></td>
             <slot name="action" :specie="specieInfo" :index="index" />
           </tr>
         </tbody>

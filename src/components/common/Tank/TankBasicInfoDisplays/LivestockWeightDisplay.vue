@@ -5,7 +5,7 @@
         v-if="livestockWeight"
         class="ml-2"
         v-bind="textAttrs"
-        v-text="livestockWeight"
+        v-text="livestockWeight.toFixed(2)"
       ></p>
       <v-icon v-else v-bind="textAttrs" class="ml-2" :icon="Icons.EXIT" />
       <slot />

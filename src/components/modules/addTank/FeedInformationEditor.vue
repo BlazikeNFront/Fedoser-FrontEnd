@@ -18,7 +18,7 @@
                 v-if="feedsForSpecie"
                 v-model="copyOfModelValue.currentFeed"
                 :feeds-options="feedOptions(mainSpecie)"
-                force-eval
+                force-eval-on-mounted
               />
             </v-sheet>
           </v-col>

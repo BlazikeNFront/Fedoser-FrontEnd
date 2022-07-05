@@ -26,15 +26,13 @@ export interface FeedDose {
   number: number;
   amount: number;
   date: string | null;
-  temperature: number;
+  temperature: number | null;
   terminated: DoseTermination;
   weightGainAfterDose: number;
   specie: SpeciesValues;
+  currentCycleDoseNumber: number;
 }
 
-export interface TerminatedFeedDose {
-  feedDose: FeedDose;
-}
 export interface CurrentTankFeed {
   feedForSpecie: FeedForSpecie;
   isProposed: boolean;

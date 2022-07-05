@@ -38,26 +38,40 @@
             </p></v-list-item
           >
           <feed-select-list-item
-            v-for="(item, key) in feedsOptions.proposedFeeds"
+            v-for="(feed, key) in feedsOptions.proposedFeeds"
+            :style="
+              isFeedAlreadySelected(feed)
+                ? 'background-color:rgb(var(--v-theme-med-violet))'
+                : ''
+            "
             :key="key"
-            :feed-for-specie="item"
-            @click="onFeedSelect(item)"
+            :feed-for-specie="feed"
+            :is-currently-selected="isFeedAlreadySelected(feed)"
+            @click="onFeedSelect(feed)"
           />
 
           <v-list-item class="text-center text-white shadow-bg">
-            <p class="text-center f-15 w-100">Pozostale pasze</p>
+            <p class="text-center f-15 w-100">
+              {{ $t("feedInformation.othersFeed") }}
+            </p>
           </v-list-item>
-          <v-list-item class="text-center text-white shadow-bg"
-            ><p class="f-15 w-50">{{ $t("global.feed") }}</p>
-            <p class="f-15 w-50">
+          <v-list-item class="text-center text-white shadow-bg f-15"
+            ><p class="w-50">{{ $t("global.feed") }}</p>
+            <p class="w-50">
               {{ $t("global.efficiency") }}
             </p></v-list-item
           >
           <feed-select-list-item
-            v-for="(item, key) in allFeedWithoutProsoedFeeds"
+            v-for="(feed, key) in allFeedWithoutProsoedFeeds"
             :key="key"
-            :feed-for-specie="item"
-            @click="onFeedSelect(item)"
+            :style="
+              isFeedAlreadySelected(feed)
+                ? 'background-color:rgb(var(--v-theme-med-violet))'
+                : ''
+            "
+            :feed-for-specie="feed"
+            :is-currently-selected="isFeedAlreadySelected(feed)"
+            @click="onFeedSelect(feed)"
           />
         </v-list>
       </v-menu>
@@ -77,9 +91,7 @@
         </template>
 
         <p class="f-15 text-white" style="max-width: 40rem">
-          Wybrana pasza nie jest jedna z proponowanych, w takim przypadku nie
-          bedzie mozlowosc korzystania z automatycznego wyliczania dawek
-          pokarmowych i bedziesz musial wprawadzac dane recznie
+          {{ $t("feedInformation.notProposedTooltip") }}
         </p>
       </v-tooltip>
     </div>
@@ -99,12 +111,12 @@ const props = withDefaults(
     modelValue: CurrentTankFeed | null;
     feedsOptions: FeedSelectOptions;
     label?: string;
-    forceEval?: boolean;
+    forceEvalOnMounted?: boolean;
   }>(),
   {
     //label is for v-select component
     label: "feedInformation.selectFeed",
-    forceEval: false,
+    forceEvalOnMounted: false,
   }
 );
 
@@ -113,6 +125,10 @@ const emit = defineEmits<{
 }>();
 const { smAndUp } = useDisplay();
 const showMenu = ref(false);
+const isFeedAlreadySelected = computed(
+  () => (feed: FeedForSpecie) =>
+    feed._id === props.modelValue?.feedForSpecie._id
+);
 
 const allFeedWithoutProsoedFeeds = computed(() => {
   return props.feedsOptions.allFeeds.reduce<Required<FeedForSpecie>[]>(
@@ -147,8 +163,7 @@ function onFeedSelect(feedForSpecie: FeedForSpecie) {
 }
 
 onBeforeMount(() => {
-  if (!props.modelValue || props.forceEval) {
-    console.log("hello");
+  if (!props.modelValue || props.forceEvalOnMounted) {
     const defaultFeed =
       props.feedsOptions.proposedFeeds[0] || props.feedsOptions.allFeeds[0];
     emit(

@@ -142,6 +142,8 @@ import { useFeedForSpecie } from "@/stores/FeedsForSpecie";
 import { storeToRefs } from "pinia";
 import { VForm } from "vuetify/lib/components";
 import { FormRules } from "@/helpers/FormRules";
+import { roundTo2Decimals } from "@/helpers/global";
+
 const props = defineProps<{
   feedInformation: Required<TankFeedInformation>;
   mainSpecie: SingleLivestockSpecie;
@@ -161,28 +163,40 @@ const temperatureFormError = reactive({
   text: "",
 });
 
-const currentDose = computed(
-  () =>
-    new FeedDoseDTO({
-      ...(props.feedInformation.feedProgram[indexOfCurrentDose.value] || {
-        number: props.feedInformation.feedProgram.length + 1,
-        date: getCurrentDate(),
-      }),
-    })
-);
-const indexOfCurrentDose = computed(() =>
-  props.feedInformation.feedProgram.findIndex((dose) => dose.terminated === 0)
-);
+const currentDose = computed(() => ({
+  number: props.feedInformation.feedProgram.length + 1,
+  date: getCurrentDate(),
+  amount: 0,
+  temperature: null,
+  weightGainAfterDose: null,
+  specie: props.mainSpecie.specie,
+}));
 
+const currentCycleDoseNumber = computed(() => {
+  const { doseUpdateFrequency } = props.feedInformation;
+  if (lastDose.value && doseUpdateFrequency) {
+    return lastDose.value?.currentCycleDoseNumber + 1 > doseUpdateFrequency
+      ? 1
+      : lastDose.value?.currentCycleDoseNumber + 1;
+  }
+  return 1;
+});
 const temperatureInput = ref(14);
 const feedDoseInput = ref(currentDose.value.amount);
 const proposedFeedDose = ref<number | null>(null);
-const weightGainedAfterFeed = ref(currentDose.value.weightGainAfterDose);
+const weightGainedAfterFeed = ref<number | null>(
+  currentDose.value.weightGainAfterDose
+);
 const isUsingPropsedFeedDose = computed(
   () =>
     feedDoseInput.value !== null &&
     proposedFeedDose.value === feedDoseInput.value
 );
+const lastDose = computed(() => {
+  const { feedProgram } = props.feedInformation;
+  return feedProgram[feedProgram.length - 1];
+});
+
 watch(temperatureInput, () => clearDoseRelatedInputs());
 async function fetchSpecieFeeds() {
   if (!feedsForSpecie.value?.length && props.mainSpecie) {
@@ -191,7 +205,7 @@ async function fetchSpecieFeeds() {
 }
 
 function handleDoseProposeRequest() {
-  const { currentFeed } = props.feedInformation;
+  const { currentFeed, doseUpdateFrequency } = props.feedInformation;
   if (!currentFeed?.feedForSpecie.weightBreakpoints || !props.livestockWeight)
     return;
   if (!temperatureInput.value) {
@@ -202,7 +216,7 @@ function handleDoseProposeRequest() {
   const availableTemperatureRange = Object.keys(
     currentFeed.feedForSpecie.weightBreakpoints
   );
-  const doseMulitplier: number = availableTemperatureRange.includes(
+  const doseMulitplier = availableTemperatureRange.includes(
     temperatureInput.value.toString()
   )
     ? currentFeed.feedForSpecie.weightBreakpoints[
@@ -215,11 +229,27 @@ function handleDoseProposeRequest() {
           "weightBreakpoints"
         > & { weightBreakpoints: Record<string, number> }
       );
-  proposedFeedDose.value = feedDoseInput.value = +(
-    props.livestockWeight *
-    10 *
-    doseMulitplier
-  ).toFixed(2);
+
+  if (
+    doseUpdateFrequency &&
+    lastDose.value?.currentCycleDoseNumber < doseUpdateFrequency
+  ) {
+    proposedFeedDose.value = feedDoseInput.value = Math.round(
+      getLivestockWeightFromPast(lastDose.value.currentCycleDoseNumber) *
+        10 *
+        doseMulitplier
+    );
+
+    weightGainedAfterFeed.value = +(
+      (proposedFeedDose.value * currentFeed.feedForSpecie.fcr) /
+      1000
+    ).toFixed(2);
+    return;
+  }
+
+  proposedFeedDose.value = feedDoseInput.value = Math.round(
+    (feedDoseInput.value = +(props.livestockWeight * 10 * doseMulitplier))
+  );
 
   weightGainedAfterFeed.value = +(
     (proposedFeedDose.value * currentFeed.feedForSpecie.fcr) /
@@ -238,6 +268,21 @@ function getCorrectDoseMulitplier(
     ) || availableTemperatureRange[availableTemperatureRange.length - 1]
   ];
 }
+function getLivestockWeightFromPast(doses: number) {
+  const {
+    feedInformation: {
+      feedProgram,
+      feedProgram: { length },
+    },
+    livestockWeight,
+  } = props;
+  return feedProgram
+    .slice(length - doses, length)
+    .reduce(
+      (acc, dose) => roundTo2Decimals(acc - dose.weightGainAfterDose),
+      livestockWeight
+    );
+}
 function clearDoseRelatedInputs() {
   feedDoseInput.value = currentDose.value.amount;
   weightGainedAfterFeed.value = currentDose.value.weightGainAfterDose;
@@ -249,26 +294,41 @@ function clearForm() {
 }
 
 async function setDoseAsTerminated() {
-  if (!(await doseManagerForm.value.validate()).valid || !props.mainSpecie)
+  const {
+    mainSpecie,
+    feedInformation: { doseUpdateFrequency },
+  } = props;
+  if (
+    !(await doseManagerForm.value.validate()).valid ||
+    !mainSpecie ||
+    !doseUpdateFrequency
+  )
     return;
   const terminatedFeedDose = new FeedDoseDTO({
     number: currentDose.value.number,
     date: currentDoseDate.value,
     amount: feedDoseInput.value,
-    weightGainAfterDose: weightGainedAfterFeed.value,
+    weightGainAfterDose: weightGainedAfterFeed.value || 0,
     temperature: temperatureInput.value,
     terminated: DoseTermination.DONE,
+    currentCycleDoseNumber: currentCycleDoseNumber.value,
     specie: props.mainSpecie.specie,
   });
   emit("dose-terminated", terminatedFeedDose);
   clearForm();
 }
-function setDoseAsOmitted() {
-  if (!props.mainSpecie) return;
+
+async function setDoseAsOmitted() {
+  const {
+    mainSpecie,
+    feedInformation: { doseUpdateFrequency },
+  } = props;
+  if (!mainSpecie || !doseUpdateFrequency) return;
   const terminatedFeedDose = new FeedDoseDTO({
     number: currentDose.value.number,
     date: currentDoseDate.value,
     terminated: DoseTermination.OMITTED,
+    currentCycleDoseNumber: currentCycleDoseNumber.value,
     specie: props.mainSpecie.specie,
   });
   doseManagerForm.value.resetValidation();

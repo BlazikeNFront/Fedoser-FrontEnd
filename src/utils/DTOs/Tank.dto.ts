@@ -15,6 +15,7 @@ export class TankDTO {
   annotations: Required<TankNote>[];
   livestockInformation: LivestockInformation;
   feedInformation: TankFeedInformation;
+  history: Pick<Tank, "livestockInformation" | "feedInformation">[];
   constructor(tank: Tank) {
     const {
       _id,
@@ -22,6 +23,7 @@ export class TankDTO {
       livestockInformation,
       feedInformation,
       annotations,
+      history,
     } = tank;
     this._id = _id || "";
     this.mainTankInformation = mainTankInformation;
@@ -29,5 +31,6 @@ export class TankDTO {
       livestockInformation || new LivestockInformationDTO({});
     this.feedInformation = feedInformation || new FeedInformationDTO({});
     this.annotations = annotations || [];
+    this.history = history || [];
   }
 }

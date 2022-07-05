@@ -17,9 +17,9 @@
               :key="index"
             >
               <component
-                class="radius-4 pa-2 d-flex align-center justify-center shadow-bg"
                 :is="componentConfig.component"
                 v-bind="componentConfig.attrs"
+                class="radius-4 pa-2 d-flex align-center justify-center shadow-bg"
               ></component>
             </v-col>
           </v-row>

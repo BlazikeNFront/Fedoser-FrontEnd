@@ -1,8 +1,10 @@
 import CrudService from "@/services/base/CrudService";
 import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
-
 import { CurrentTankFeedDto } from "@/utils/DTOs/CurrentTankFeed.dto";
 import { FeedDoseDTO } from "@/utils/DTOs/FeedDose.dto";
+export const feedInformationResourceSuffixes = Object.freeze({
+  END_FEED_PROGRAM: "end-feed-program",
+});
 class TankFeedInformation extends CrudService<FeedInformationDTO> {
   constructor() {
     super("tank-feed-information");

@@ -59,6 +59,61 @@
         :livestock-weight="tankLivestockWeight"
         @dose-terminated="terminateDose"
       />
+      <v-dialog
+        v-if="tank.feedInformation?.feedProgram.length"
+        class="editor-dialog"
+        v-model="showEndFeedProgramDialog"
+      >
+        <template #activator="{ props }">
+          <v-btn
+            v-bind="props"
+            class="edit-button my-5 f-15 font-weight-bold"
+            color="black"
+            >{{ $t("feedInformation.endFeedProgram") }}</v-btn
+          ></template
+        >
+        <v-card
+          tag="dialog"
+          color="violet"
+          class="pt-2 f-2 pb-5 px-4 text-center"
+          width="450"
+        >
+          <h4 class="mt-2 mb-4 text-h4">
+            {{ $t("feedInformation.endFeedProgram") }}
+          </h4>
+          <!-- FORM BELOW IS PROVIDING POSSIBILITY FOR MOVING  LIVESTOCK TO OTHER TANK  AT THE END OF FEED PROGRAM-->
+          <!-- <v-form>
+                      <p>
+                        {{ $t("feedInformation.doYouWantToMoveLivestock") }}
+                      </p>
+                      <v-radio-group
+                        class="d-flex align-center justify-center f-15"
+                        inline
+                        disabled
+                      >
+                        <v-radio
+                          :label="$t('global.yes')"
+                          :value="RADIO_BUTTONS_VALUES.YES"
+                        />
+                        <v-radio
+                          :label="$t('global.no')"
+                          :value="RADIO_BUTTONS_VALUES.NO"
+                        />
+                      </v-radio-group>
+                    </v-form> -->
+
+          <div class="d-flex align-center justify-space-around">
+            <v-btn
+              class="delete-button"
+              @click="showEndFeedProgramDialog = false"
+              >{{ $t("global.cancel") }}</v-btn
+            >
+            <v-btn class="save-button" @click="onEndCurrentFeedProgramButton">{{
+              $t("global.confirm")
+            }}</v-btn>
+          </div>
+        </v-card>
+      </v-dialog>
     </div>
     <p
       v-else
@@ -88,9 +143,15 @@ import { FeedDoseDTO } from "@/utils/DTOs/FeedDose.dto";
 const { tank, tankLivestockWeight, tankMainSpecie } = storeToRefs(
   useTankStore()
 );
-const { changeCurrentTankFeed, terminateTankFeedProgramDose } = useTankStore();
+const {
+  changeCurrentTankFeed,
+  terminateTankFeedProgramDose,
+  endCurrentFeedProgram,
+} = useTankStore();
 
 const showFeedSelectDialog = ref(false);
+const showEndFeedProgramDialog = ref(false);
+const isEndOfFeedProgramRequestPending = ref(false);
 const {
   feedsForSpecie,
   loader: loadingFeedsForSpecie,
@@ -152,6 +213,11 @@ async function onFeedSelectChange(selectedFeed: CurrentTankFeed) {
     return;
   await changeCurrentTankFeed(selectedFeed);
   showFeedSelectDialog.value = false;
+}
+async function onEndCurrentFeedProgramButton() {
+  isEndOfFeedProgramRequestPending.value = true;
+  await endCurrentFeedProgram();
+  isEndOfFeedProgramRequestPending.value = false;
 }
 onBeforeMount(async () => {
   if (

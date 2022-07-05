@@ -9,7 +9,14 @@ import { calcLivestockWeight } from "@/helpers/calcLivestockWeight";
 import { findMainSpecieInLivestock } from "@/helpers/findMainSpecieInLivestock";
 import { TankCurrentLivestockService } from "@/services/endpoints/TankLivestock";
 import { ChangeSpecieWeightDto } from "@/utils/DTOs/ChangeSpecieWeight.dto";
-
+import {
+  TankFeedInformationService,
+  feedInformationResourceSuffixes,
+} from "@/services/endpoints/TankFeedInformation";
+import {
+  emptyTankLivestock,
+  emptyTankFeedInformation,
+} from "@/utils/factories/Tank";
 export const useTankStore = defineStore("TankStore", {
   state: () =>
     ({
@@ -70,6 +77,23 @@ export const useTankStore = defineStore("TankStore", {
         this.tank.livestockInformation.changes.push(payload);
       }
       return result.success;
+    },
+    async endCurrentFeedProgram() {
+      if (!this.tank) return;
+
+      const result = await TankFeedInformationService.update(
+        this.tank._id,
+        {},
+        feedInformationResourceSuffixes.END_FEED_PROGRAM
+      );
+      if (result.success) {
+        this.tank.history.push({
+          livestockInformation: this.tank.livestockInformation,
+          feedInformation: this.tank.feedInformation,
+        });
+        this.tank.livestockInformation = emptyTankLivestock();
+        this.tank.feedInformation = emptyTankFeedInformation();
+      }
     },
   },
   getters: {

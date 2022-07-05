@@ -40,4 +40,5 @@ export interface Tank {
   annotations: Required<TankNote>[];
   livestockInformation: LivestockInformation;
   feedInformation: TankFeedInformation;
+  history: Pick<Tank, "livestockInformation" | "feedInformation">[];
 }
