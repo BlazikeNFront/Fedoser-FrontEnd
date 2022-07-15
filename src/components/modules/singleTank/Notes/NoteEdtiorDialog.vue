@@ -127,29 +127,30 @@
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
-import { TankNote } from "@/types/Tank";
 import { ref, reactive } from "vue";
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
-import { enviromentalDataFactory } from "@/utils/factories/EnviromentalData";
 import { FormRules } from "@/helpers/FormRules";
 import { Weather } from "@/constants/enums/Weather";
 import TankNotesService from "@/services/endpoints/TankNotes";
-import { TankNoteDto } from "@/utils/DTOs/TankNote.dto";
+import { NoteDto } from "@/types/Note";
 import { useRoute } from "vue-router";
-import { EnviromentalData } from "@/types/EnviromentalData";
+import {
+  EnviromentalData,
+  createBaseEnviromentalData,
+} from "@/types/EnviromentalData";
 import { useTankStore } from "@/stores/TankStore";
 const { params } = useRoute();
 const { addNoteToTank } = useTankStore();
 const showDialog = ref<boolean>(false);
 const props = defineProps<{
-  annotation: TankNote;
+  annotation: NoteDto;
 }>();
 
 const showEnviromentalData = ref(false);
 const noteDataForm = ref<HTMLFormElement | null>(null);
-const enviromentalData = reactive(enviromentalDataFactory());
+const enviromentalData = reactive(createBaseEnviromentalData());
 
-const annotationCopy = computed(() => props.annotation);
+const annotationCopy = computed((): NoteDto => props.annotation);
 const weatherSelectValues = computed(() =>
   Object.values(Weather).filter((key) => Number.isInteger(Number(key)))
 );
@@ -175,18 +176,18 @@ async function addNote() {
   if (payload.id) {
     result = await TankNotesService.update(
       params.id as string,
-      new TankNoteDto(payload)
+      new NoteDto(payload)
     );
   } else {
     result = await TankNotesService.create(
-      new TankNoteDto(payload),
+      new NoteDto(payload),
       params.id as string
     );
   }
   if (!result.success) return;
   if (result.data?.id) {
     payload.id = result.data.id;
-    addNoteToTank(payload as Required<TankNote>);
+    addNoteToTank(payload as Required<NoteDto>);
   }
   toggleDialog();
 }

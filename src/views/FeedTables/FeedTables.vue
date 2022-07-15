@@ -43,9 +43,9 @@ const isLoading = ref(false);
 function createSpecieList(): FeedTableSpecie[] {
   return [
     Species.RAINBOW_TROUT,
-    "salmon",
-    "brookTrout",
-    "whitefish",
+    Species.SALMON,
+    Species.BROOK_TROUT,
+    Species.WHITEFISH,
     "brownTrout",
   ].map((specie) => ({
     specie,

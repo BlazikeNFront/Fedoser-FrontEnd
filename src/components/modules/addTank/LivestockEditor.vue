@@ -72,16 +72,22 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import LivestockList from "@/components/common/Livestock/LivestockList.vue";
-import { LivestockInformation } from "@/types/Tank";
+import {
+  LivestockInformationDto,
+  SingleLivestockSpecie,
+} from "@/types/Livestock";
 import { Species } from "@/constants/enums/Species";
 import { VForm } from "vuetify/lib/components";
 import { SpeciesValues } from "@/types/Livestock";
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
 import { Icons } from "@/constants/icons/MdiIcons";
-import SpecieEditor from "@/components/common/Livestock/SpecieEditor.vue";
+import SpecieEditor, {
+  SpecieEditorModel,
+  validateSpecieEditorModel,
+} from "@/components/common/Livestock/SpecieEditor.vue";
 
 const props = defineProps<{
-  livestockInformation: LivestockInformation;
+  livestockInformation: LivestockInformationDto;
 }>();
 
 const livestockInformationModel = computed(() => props.livestockInformation);
@@ -89,15 +95,17 @@ const livestockInformationModel = computed(() => props.livestockInformation);
 const emit = defineEmits<{
   (
     e: "update:livestockInformation",
-    livestockInformation: LivestockInformation
+    livestockInformation: LivestockInformationDto
   ): void;
 }>();
 const livestockEditorForm = ref<InstanceType<typeof VForm> | null>(null);
 const specieSelect = ref<SpeciesValues>(Object.values(Species)[0]);
-const specieEditor = ref({
-  weight: 0,
-  meanWeight: 0,
-  quantity: 0,
+const specieEditor = ref<
+  SpecieEditorModel | Omit<SingleLivestockSpecie, "specie">
+>({
+  weight: null,
+  meanWeight: null,
+  quantity: null,
 });
 
 const showNoLivestockError = ref(false);
@@ -115,15 +123,17 @@ function checkIfSpecieAlreadyWasAddedToList(speciesName: SpeciesValues) {
   );
 }
 
-function addWeightToSpecie(speciesName: SpeciesValues) {
+function addWeightAndQuantityToSpecie(
+  speciesName: SpeciesValues,
+  weightToAdd: number,
+  quantityToAdd: number
+) {
   const specieIndex = props.livestockInformation.initial.findIndex(
     (specieData) => specieData.specie === speciesName
   );
-  livestockInformationModel.value.initial[specieIndex].weight += parseInt(
-    specieEditor.value.specieWeight
-  );
+  livestockInformationModel.value.initial[specieIndex].weight += weightToAdd;
   adjustSpecieMeanWeight(specieIndex);
-  addQuantityToSpecie(specieIndex);
+  addQuantityToSpecie(specieIndex, quantityToAdd);
 }
 
 function adjustSpecieMeanWeight(specieIndex: number) {
@@ -135,25 +145,33 @@ function adjustSpecieMeanWeight(specieIndex: number) {
     ).toFixed(2)
   );
 }
-function addQuantityToSpecie(specieIndex: number) {
-  livestockInformationModel.value.initial[specieIndex].quantity +=
-    +specieEditor.value.quantity;
+function addQuantityToSpecie(specieIndex: number, quantity: number) {
+  livestockInformationModel.value.initial[specieIndex].quantity += quantity;
 }
-async function addStockToList() {
-  if (!(await validateLivestockInformationForm())) return;
-  if (checkIfSpecieAlreadyWasAddedToList(specieSelect.value)) {
-    addWeightToSpecie(specieSelect.value);
-    return;
-  }
 
-  const copyOfLiveStockProp = { ...props.livestockInformation };
-  copyOfLiveStockProp.initial.push({
-    specie: specieSelect.value,
-    ...specieEditor.value,
-  });
-  emit("update:livestockInformation", copyOfLiveStockProp);
-  showNoLivestockError.value = false;
-  clearInputs();
+async function addStockToList() {
+  if (
+    (await validateLivestockInformationForm()) &&
+    validateSpecieEditorModel(specieEditor.value)
+  ) {
+    if (checkIfSpecieAlreadyWasAddedToList(specieSelect.value)) {
+      addWeightAndQuantityToSpecie(
+        specieSelect.value,
+        specieEditor.value.weight,
+        specieEditor.value.quantity
+      );
+      return;
+    }
+
+    const copyOfLiveStockProp = { ...props.livestockInformation };
+    copyOfLiveStockProp.initial.push({
+      specie: specieSelect.value,
+      ...specieEditor.value,
+    });
+    emit("update:livestockInformation", copyOfLiveStockProp);
+    showNoLivestockError.value = false;
+    clearInputs();
+  }
 }
 
 function deleteSpecie(specieName: string) {

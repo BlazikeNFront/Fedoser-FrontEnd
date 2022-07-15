@@ -1,5 +1,5 @@
 <template>
-  <v-col v-bind="$attrs">
+  <v-col>
     <v-text-field
       :model-value="modelValue.weight"
       @update:model-value="onSpecieWeightInput($event as number)"
@@ -8,7 +8,7 @@
       type="number"
     />
   </v-col>
-  <v-col v-bind="$attrs">
+  <v-col>
     <v-text-field
       :model-value="modelValue.meanWeight"
       @update:model-value="onMeanWeightInput($event as number)"
@@ -17,35 +17,46 @@
       type="number"
     />
   </v-col>
-  <v-col cols="12">
+  <v-col>
     <v-text-field
       :model-value="modelValue.quantity"
       @update:model-value="onFishAmountInput($event as number)"
       :rules="[FormRules.numberHigherThan(0)]"
-      type="number"
       :label="$t('livestockInformation.numberOfIndividuals')"
+      type="number"
     />
   </v-col>
 </template>
+
+<script lang="ts">
+import { SingleLivestockSpecie } from "@/types/Livestock";
+export type SpecieEditorModel = {
+  [alias in keyof Omit<SingleLivestockSpecie, "specie">]: null | number;
+};
+export const validateSpecieEditorModel = (
+  specieEditor: SpecieEditorModel | Omit<SingleLivestockSpecie, "specie">
+): specieEditor is Omit<SingleLivestockSpecie, "specie"> => {
+  if (Object.values(specieEditor).some((value) => !value)) return false;
+  return true;
+};
+</script>
+
 <script setup lang="ts">
 import { FormRules } from "@/helpers/FormRules";
-import { SingleLivestockSpecie } from "@/types/Livestock";
 
 const props = defineProps<{
-  modelValue: Omit<SingleLivestockSpecie, "specie">;
+  modelValue: SpecieEditorModel;
 }>();
 
 const emits = defineEmits<{
-  (
-    e: "update:modelValue",
-    payload: Omit<SingleLivestockSpecie, "specie">
-  ): void;
+  (e: "update:modelValue", payload: SpecieEditorModel): void;
 }>();
 
 function onSpecieWeightInput(weight: number) {
   const {
     modelValue: { meanWeight, quantity },
   } = props;
+
   if (meanWeight)
     emits("update:modelValue", {
       weight,
@@ -74,7 +85,7 @@ function onMeanWeightInput(meanWeight: number) {
     });
   else
     emits("update:modelValue", {
-      weight: Math.floor((quantity * +meanWeight) / 1000),
+      weight: quantity ? Math.floor((quantity * +meanWeight) / 1000) : null,
       meanWeight,
       quantity,
     });
@@ -93,7 +104,7 @@ function onFishAmountInput(quantity: number) {
   else
     emits("update:modelValue", {
       weight,
-      meanWeight: Math.round((weight / quantity) * 1000),
+      meanWeight: weight ? Math.round((weight / quantity) * 1000) : null,
       quantity,
     });
 }

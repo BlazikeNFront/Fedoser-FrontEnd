@@ -3,7 +3,7 @@
     ><v-row>
       <v-col cols="12" class="d-flex algin-center justify-center">
         <v-select
-          v-model="updateFrequency"
+          :model-value="updateFrequency"
           :items="selectValues"
           style="max-width: 25rem"
           :label="$t('feedInformation.updateFrequency')"
@@ -15,7 +15,7 @@
         class="d-flex algin-center justify-center"
       >
         <v-text-field
-          v-model="customFrequency"
+          :model-value="customFrequency"
           type="number"
           style="max-width: 25rem"
           :label="$t('feedInformation.typeDoseAmount')"

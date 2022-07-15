@@ -47,11 +47,11 @@
 import { computed } from "vue";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { useDisplay } from "vuetify/lib/framework.mjs";
-import { ChangeSpecieWeightPayload } from "@/utils/DTOs/ChangeSpecieWeight.dto";
+import { ChangeSpecieWeightDto } from "@/types/ChangeSpecieWeight";
 import HistorySpecieCard from "@/components/modules/singleTank/Livestock/LivestockChanges/HistorySpecieCard.vue";
 import { SingleLivestockSpecie } from "@/types/Livestock";
 const props = defineProps<{
-  livestockChange: ChangeSpecieWeightPayload;
+  livestockChange: ChangeSpecieWeightDto;
 }>();
 
 const { smAndUp } = useDisplay();

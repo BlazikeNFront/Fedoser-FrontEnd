@@ -8,33 +8,35 @@
     <v-container
       ><v-row>
         <v-col cols="12" lg="6" v-if="enviromentalData.temperature"
-          ><temperature-display
-            :temperature="enviromentalData.temperature"
-            class="shadow-bg f-15 text-white py-2 radius-4"
+          ><base-display
+            :span-value="enviromentalData.temperature.toString()"
+            template-name="temperature"
+            keypath="notes.temperature"
         /></v-col>
-        <v-col cols="12" lg="6" v-if="enviromentalData.ammonia"
-          ><ammonia-display
-            :ammonia="enviromentalData.ammonia"
-            class="shadow-bg f-15 text-white py-2 radius-4"
-        /></v-col>
+        <v-col cols="12" lg="6" v-if="enviromentalData.ammonia">
+          <base-display
+            keypath="notes.ammonia"
+            :span-value="enviromentalData.ammonia.toString()"
+            template-name="ammonia"
+          />
+        </v-col>
         <v-col cols="12" lg="6" v-if="enviromentalData.ph"
-          ><ph-display
-            :ph="enviromentalData.ph"
-            class="shadow-bg f-15 text-white py-2 radius-4"
+          ><base-display
+            :span-value="enviromentalData.ph.toString()"
+            keypath="notes.ph"
+            template-name="ph"
         /></v-col>
         <v-col cols="12" lg="6" v-if="enviromentalData.weather"
-          ><weather-display
-            :weather="enviromentalData.weather"
-            class="shadow-bg f-15 text-white py-2 radius-4"
+          ><base-display
+            :span-value="enviromentalData.weather.toString()"
+            keypath="notes.weather"
+            template-name="weather"
         /></v-col> </v-row
     ></v-container>
   </section>
 </template>
 <script setup lang="ts">
-import TemperatureDisplay from "@/components/common/Tank/TankBasicInfoDisplays/TemperatureDisplay.vue";
-import AmmoniaDisplay from "@/components/common/Tank/TankBasicInfoDisplays/AmmoniaDisplay.vue";
-import PhDisplay from "@/components/common/Tank/TankBasicInfoDisplays/PhDisplay.vue";
-import WeatherDisplay from "@/components/common/Tank/TankBasicInfoDisplays/WeatherDisplay.vue";
+import BaseDisplay from "./base/BaseDisplay.vue";
 import { EnviromentalData } from "@/types/EnviromentalData";
 import { Attrs } from "@/types/Attrs";
 defineProps<{

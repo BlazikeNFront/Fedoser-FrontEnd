@@ -10,8 +10,10 @@
       />
 
       <h4 v-text="note.title" />
-      <date-display
-        :date="note.date"
+      <base-display
+        :span-value="note.date"
+        keypath="notes.date"
+        template-name="date"
         class="shadow-bg ml-4 f-15 text-white pa-2 radius-4"
       />
     </v-expansion-panel-title>
@@ -42,13 +44,13 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { TankNote } from "@/types/Tank";
+import { NoteDto } from "@/types/Note";
 import NoteDisplay from "@/components/modules/singleTank/Notes/NoteDisplay.vue";
 import DateDisplay from "@/components/common/Tank/TankBasicInfoDisplays/DateDisplay.vue";
 import TankNotes from "@/services/endpoints/TankNotes";
 import { useTankStore } from "@/stores/TankStore";
 const props = defineProps<{
-  note: Required<TankNote>;
+  note: Required<NoteDto>;
 }>();
 const { tank, filterTankNotes } = useTankStore();
 defineEmits<{

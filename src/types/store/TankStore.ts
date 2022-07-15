@@ -1,5 +1,5 @@
-import { Tank } from "@/types/Tank";
+import { TankDto } from "@/types/Tank";
 
 export interface TankStore {
-  tank: Required<Tank> | null;
+  tank: Required<TankDto> | null;
 }

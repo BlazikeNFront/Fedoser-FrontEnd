@@ -11,7 +11,10 @@ export const useFeedForSpecie = defineStore("FeedsForSpecieStore", {
   actions: {
     async getFeedsForSpecie(specie: SpeciesValues) {
       this.loader = true;
-      const response = await FeedsForSpecieService.fetch(`specie/${specie}`);
+      const response = await FeedsForSpecieService.fetch(
+        {},
+        `specie/${specie}`
+      );
       if (response.success) {
         this.$state.feedsForSpecie = response.data.sort((a, b) =>
           a.feed.quality > b.feed.quality ? 1 : -1

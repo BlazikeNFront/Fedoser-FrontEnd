@@ -30,18 +30,17 @@
   </v-expansion-panels>
 </template>
 <script setup lang="ts">
-import { Tank } from "@/types/Tank";
+import { TankDto } from "@/types/Tank";
 import LivestockWeightDisplay from "@/components/common/Tank/TankBasicInfoDisplays/LivestockWeightDisplay.vue";
 import MainSpecieDisplay from "@/components/common/Tank/TankBasicInfoDisplays/MainSpecieDisplay.vue";
-import FeedProgramDisplay from "@/components/common/Tank/TankBasicInfoDisplays/FeedProgramDisplay.vue";
+import IconDisplay from "./TankBasicInfoDisplays/base/IconDisplay.vue";
 import CurrentFeedDisplay from "@/components/common/Tank/TankBasicInfoDisplays/CurrentFeedDisplay.vue";
-import TankVolumeDisplay from "@/components/common/Tank/TankBasicInfoDisplays/TankVolumeDisplay.vue";
-import AnnotationsDisplay from "@/components/common/Tank/TankBasicInfoDisplays/AnnotationsDisplay.vue";
 import { TankCardExpansionConfig } from "@/types/TankCardExpansionConfig";
 import { calcLivestockWeight } from "@/helpers/calcLivestockWeight";
+import BaseDisplay from "./TankBasicInfoDisplays/base/BaseDisplay.vue";
 withDefaults(
   defineProps<{
-    tank: Tank;
+    tank: TankDto;
     tankCardTitleTag?: string;
     tankCardTitleClasses?: string;
   }>(),
@@ -50,11 +49,15 @@ withDefaults(
   }
 );
 
-function createTankCardDisplays(tank: Tank): TankCardExpansionConfig[] {
+function createTankCardDisplays(tank: TankDto): TankCardExpansionConfig[] {
   const basicInformation: TankCardExpansionConfig[] = [
     {
-      component: TankVolumeDisplay,
-      attrs: { volume: tank.mainTankInformation.volume },
+      component: BaseDisplay,
+      attrs: {
+        keypath: "tankCard.volume",
+        spanValue: "`${volume} &#13221;`",
+        templateName: "volume",
+      },
     },
     {
       component: LivestockWeightDisplay,
@@ -65,14 +68,20 @@ function createTankCardDisplays(tank: Tank): TankCardExpansionConfig[] {
       },
     },
     {
-      component: FeedProgramDisplay,
+      component: IconDisplay,
       attrs: {
-        isFeedProgramSet: !!tank.feedInformation?.currentFeed,
+        keypath: "tankCard.feedProgram",
+        boolean: !!tank.feedInformation?.currentFeed,
+        templateName: "feedProgram",
       },
     },
     {
-      component: AnnotationsDisplay,
-      attrs: { annotationNumber: tank.annotations.length },
+      component: BaseDisplay,
+      attrs: {
+        keypath: "tankCard.annotations",
+        spanValue: "tank.annotations.length ",
+        templateName: "annotations",
+      },
     },
   ];
 
@@ -81,7 +90,7 @@ function createTankCardDisplays(tank: Tank): TankCardExpansionConfig[] {
 
 function addAdditionInformation(
   basicInformationConfig: TankCardExpansionConfig[],
-  tank: Tank
+  tank: TankDto
 ): TankCardExpansionConfig[] {
   if (tank.feedInformation?.currentFeed) {
     const { size, feed } = tank.feedInformation.currentFeed.feedForSpecie;

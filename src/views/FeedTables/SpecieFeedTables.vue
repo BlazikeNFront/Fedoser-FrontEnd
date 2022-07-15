@@ -98,7 +98,6 @@ import FeedQualityLegend from "@/components/common/Feed/FeedQuality/FeedQualityL
 import FeedQualityDisplay from "@/components/common/Feed/FeedQuality/FeedQualityDisplay.vue";
 import { ref, computed, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
-import { useRouter } from "vue-router";
 import { FeedTablesPdfService } from "@/services/endpoints/FeedTables";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { camelizeString } from "@/helpers/stringOperations";
@@ -109,7 +108,7 @@ import { storeToRefs } from "pinia";
 import { FeedForSpecie } from "@/types/Feed";
 import { SpeciesValues } from "@/types/Livestock";
 import { Species } from "@/constants/enums/Species";
-import { RoutesNames } from "@/constants/routesNames/RoutesNames";
+
 const { params } = useRoute();
 
 const { downloadPdf, openPdfInNewWindow } = useOnPdfResponse();

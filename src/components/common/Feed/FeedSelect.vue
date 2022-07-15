@@ -98,17 +98,17 @@
   </div>
 </template>
 <script setup lang="ts">
-import { CurrentTankFeed, FeedForSpecie } from "@/types/Feed";
+import { CurrentTankFeedDto, FeedForSpecie } from "@/types/Feed";
 import { FeedSelectOptions } from "@/types/FeedSelectOptions";
 import FeedSelectListItem from "@/components/modules/addTank/FeedSelectListItem.vue";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { useDisplay } from "vuetify/lib/framework";
-import { CurrentTankFeedDto } from "@/utils/DTOs/CurrentTankFeed.dto";
+
 import { ref, computed, withDefaults, onBeforeMount } from "vue";
 
 const props = withDefaults(
   defineProps<{
-    modelValue: CurrentTankFeed | null;
+    modelValue: CurrentTankFeedDto | null;
     feedsOptions: FeedSelectOptions;
     label?: string;
     forceEvalOnMounted?: boolean;
@@ -121,7 +121,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (e: "update:modelValue", feed: CurrentTankFeed): void;
+  (e: "update:modelValue", feed: CurrentTankFeedDto): void;
 }>();
 const { smAndUp } = useDisplay();
 const showMenu = ref(false);
@@ -153,10 +153,10 @@ const isFeedProposed = computed(() => (feedId: string) => {
 function onFeedSelect(feedForSpecie: FeedForSpecie) {
   emit(
     "update:modelValue",
-    new CurrentTankFeedDto({
+    new CurrentTankFeedDto(
       feedForSpecie,
-      isProposed: isFeedProposed.value(feedForSpecie._id),
-    })
+      isFeedProposed.value(feedForSpecie._id)
+    )
   );
 
   showMenu.value = false;
@@ -168,10 +168,7 @@ onBeforeMount(() => {
       props.feedsOptions.proposedFeeds[0] || props.feedsOptions.allFeeds[0];
     emit(
       "update:modelValue",
-      new CurrentTankFeedDto({
-        feedForSpecie: defaultFeed,
-        isProposed: isFeedProposed.value(defaultFeed._id),
-      })
+      new CurrentTankFeedDto(defaultFeed, isFeedProposed.value(defaultFeed._id))
     );
   }
 });

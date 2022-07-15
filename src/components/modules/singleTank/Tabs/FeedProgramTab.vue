@@ -129,16 +129,15 @@ import DoseManager from "@/components/modules/singleTank/FeedProgram/DoseManager
 import FeedInformationDisplay from "@/components/common/Feed/FeedInformationDisplay.vue";
 import TerminatedDoseList from "@/components/modules/singleTank/FeedProgram/TerminatedDoseList.vue";
 import { FeedInformationDoseService } from "@/services/endpoints/TankFeedInformation";
-import { FeedDose } from "@/types/Feed";
+import { FeedDoseDto } from "@/types/Feed";
 import FeedSelect from "@/components/common/Feed/FeedSelect.vue";
 import { useFeedForSpecie } from "@/stores/FeedsForSpecie";
 import { FeedSelectOptions } from "@/types/FeedSelectOptions";
 import { computed, ref } from "vue";
 import { SingleLivestockSpecie } from "@/types/Livestock";
-import { CurrentTankFeed } from "@/types/Feed";
+import { CurrentTankFeedDto } from "@/types/Feed";
 import { onBeforeMount } from "vue";
 import FeedSizeInfoCard from "@/components/modules/singleTank/FeedProgram/FeedSizeInfoCard.vue";
-import { FeedDoseDTO } from "@/utils/DTOs/FeedDose.dto";
 
 const { tank, tankLivestockWeight, tankMainSpecie } = storeToRefs(
   useTankStore()
@@ -195,16 +194,16 @@ const feedOptions = computed(
       return feedSelectOption;
     }
 );
-async function terminateDose(dose: FeedDose) {
+async function terminateDose(dose: FeedDoseDto) {
   if (!tank.value) return;
   const result = await FeedInformationDoseService.create(
-    new FeedDoseDTO(dose),
+    dose,
     `${tank.value._id}/add-feed-dose`
   );
   if (result.success) terminateTankFeedProgramDose(dose);
 }
 
-async function onFeedSelectChange(selectedFeed: CurrentTankFeed) {
+async function onFeedSelectChange(selectedFeed: CurrentTankFeedDto) {
   if (
     !tank.value ||
     selectedFeed.feedForSpecie._id ===

@@ -27,10 +27,11 @@
           :text-attrs="{ class: 'ml-2 f-15' }"
           class="shadow-bg ma-2 py-3 px-5 radius-4 d-flex align-center justify-center f-15 font-weight-bold"
         />
-        <annotations-display
+        <base-display
           class="shadow-bg ma-2 py-3 px-5 radius-4 d-flex align-center justify-center f-15 font-weight-bold"
-          :text-attrs="{ class: 'ml-2 f-15' }"
-          :annotation-number="tank.annotations.length"
+          keypath="tankCard.annotations"
+          :span-value="tank.annotations.length.toString()"
+          template-name="annotations"
         />
       </v-col>
       <v-col cols="12" class="d-flex align-center justify-end"
@@ -48,7 +49,7 @@
 import MainTankInformationDisplay from "@/components/common/Tank/MainTankInformationDisplay.vue";
 import LivestockWeightDisplay from "@/components/common/Tank/TankBasicInfoDisplays/LivestockWeightDisplay.vue";
 import MainSpecieDisplay from "@/components/common/Tank/TankBasicInfoDisplays/MainSpecieDisplay.vue";
-import AnnotationsDisplay from "@/components/common/Tank/TankBasicInfoDisplays/AnnotationsDisplay.vue";
+import BaseDisplay from "@/components/common/Tank/TankBasicInfoDisplays/base/BaseDisplay.vue";
 import ConfirmationDialog from "@/components/common/ConfirmationDialog.vue";
 import { calcLivestockWeight } from "@/helpers/calcLivestockWeight";
 import TankService from "@/services/endpoints/Tank";

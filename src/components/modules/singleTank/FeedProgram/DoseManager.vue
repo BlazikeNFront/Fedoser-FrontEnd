@@ -132,11 +132,11 @@
 <script setup lang="ts">
 import { ref, computed, watch, reactive, onBeforeMount } from "vue";
 import { getCurrentDate } from "@/helpers/date";
-import { FeedDose, FeedForSpecie } from "@/types/Feed";
-import { FeedDoseDTO } from "@/utils/DTOs/FeedDose.dto";
+import { FeedDoseDto, FeedForSpecie } from "@/types/Feed";
+
 import { DoseTermination } from "@/constants/enums/DoseTermination";
 import { Icons } from "@/constants/icons/MdiIcons";
-import { TankFeedInformation } from "@/types/Tank";
+import { FeedInformationDto } from "@/types/Feed";
 import { SingleLivestockSpecie } from "@/types/Livestock";
 import { useFeedForSpecie } from "@/stores/FeedsForSpecie";
 import { storeToRefs } from "pinia";
@@ -145,13 +145,13 @@ import { FormRules } from "@/helpers/FormRules";
 import { roundTo2Decimals } from "@/helpers/global";
 
 const props = defineProps<{
-  feedInformation: Required<TankFeedInformation>;
+  feedInformation: Required<FeedInformationDto>;
   mainSpecie: SingleLivestockSpecie;
   livestockWeight: number;
 }>();
 
 const emit = defineEmits<{
-  (e: "dose-terminated", dose: FeedDose): void;
+  (e: "dose-terminated", dose: FeedDoseDto): void;
 }>();
 
 const { feedsForSpecie, loader } = storeToRefs(useFeedForSpecie());
@@ -304,7 +304,7 @@ async function setDoseAsTerminated() {
     !doseUpdateFrequency
   )
     return;
-  const terminatedFeedDose = new FeedDoseDTO({
+  const terminatedFeedDose = new FeedDoseDto({
     number: currentDose.value.number,
     date: currentDoseDate.value,
     amount: feedDoseInput.value,
@@ -324,7 +324,7 @@ async function setDoseAsOmitted() {
     feedInformation: { doseUpdateFrequency },
   } = props;
   if (!mainSpecie || !doseUpdateFrequency) return;
-  const terminatedFeedDose = new FeedDoseDTO({
+  const terminatedFeedDose = new FeedDoseDto({
     number: currentDose.value.number,
     date: currentDoseDate.value,
     terminated: DoseTermination.OMITTED,

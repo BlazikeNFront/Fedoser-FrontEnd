@@ -9,19 +9,19 @@
       <v-table class="default__table">
         <thead v-if="!hideHeader" class="f-15 text-center">
           <tr>
-            <th v-text="$t('global.specie')"></th>
-            <th v-text="$t('livestockInformation.weight')"></th>
-            <th v-text="$t('livestockInformation.meanWeight')"></th>
-            <th v-text="$t('livestockInformation.numberOfIndividuals')"></th>
+            <th>{{ $t("global.specie") }}</th>
+            <th>{{ $t("livestockInformation.weight") }}</th>
+            <th>{{ $t("livestockInformation.meanWeight") }}</th>
+            <th>{{ $t("livestockInformation.numberOfIndividuals") }}</th>
             <slot name="header" />
           </tr>
         </thead>
         <tbody class="livestocklist__tbody text-center">
           <tr v-for="(specieInfo, index) in livestock" :key="index">
-            <td v-text="$t(`species.${specieInfo.specie}`)"></td>
-            <td v-text="specieInfo.weight.toFixed(2)"></td>
-            <td v-text="specieInfo.meanWeight.toFixed(2)"></td>
-            <td v-text="Math.round(specieInfo.quantity)"></td>
+            <td>{{ $t(`species.${specieInfo.specie}`) }}</td>
+            <td>{{ specieInfo.weight.toFixed(2) }}</td>
+            <td>{{ specieInfo.meanWeight.toFixed(2) }}</td>
+            <td>{{ Math.round(specieInfo.quantity) }}</td>
             <slot name="action" :specie="specieInfo" :index="index" />
           </tr>
         </tbody>

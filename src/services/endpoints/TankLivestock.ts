@@ -1,7 +1,7 @@
 import CrudService from "@/services/base/CrudService";
-import { LivestockInformationDTO } from "@/utils/DTOs/LivestockInformation.dto";
-import { ChangeSpecieWeightDto } from "@/utils/DTOs/ChangeSpecieWeight.dto";
-class TankLivestockInformation extends CrudService<LivestockInformationDTO> {
+import { LivestockInformationDto } from "@/types/Livestock";
+import { ChangeSpecieWeightDto } from "@/types/ChangeSpecieWeight";
+class TankLivestockInformation extends CrudService<LivestockInformationDto> {
   constructor() {
     super("tank-livestock");
   }

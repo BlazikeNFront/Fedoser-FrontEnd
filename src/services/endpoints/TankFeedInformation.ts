@@ -1,15 +1,15 @@
 import CrudService from "@/services/base/CrudService";
-import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
-import { CurrentTankFeedDto } from "@/utils/DTOs/CurrentTankFeed.dto";
-import { FeedDoseDTO } from "@/utils/DTOs/FeedDose.dto";
-import { Tank } from "@/types/Tank";
+import { FeedInformationDto } from "@/types/Feed";
+import { CurrentTankFeedDto } from "@/types/Feed";
+import { FeedDoseDto } from "@/types/Feed";
+import { TankDto } from "@/types/Tank";
 
-class TankFeedInformation extends CrudService<FeedInformationDTO> {
+class TankFeedInformation extends CrudService<FeedInformationDto> {
   constructor() {
     super("tank-feed-information");
   }
 }
-class FeedInformationDose extends CrudService<FeedDoseDTO> {
+class FeedInformationDose extends CrudService<FeedDoseDto> {
   constructor() {
     super("tank-feed-information");
   }
@@ -20,7 +20,7 @@ class TankCurrentFeed extends CrudService<CurrentTankFeedDto> {
   }
 }
 class EndFeedProgram extends CrudService<
-  Pick<Tank, "feedInformation" | "livestockInformation">
+  Pick<TankDto, "feedInformation" | "livestockInformation">
 > {
   constructor() {
     super("tank-feed-information/end-feed-program");

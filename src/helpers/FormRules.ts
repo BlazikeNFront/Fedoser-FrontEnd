@@ -12,7 +12,11 @@ export const FormRules = Object.freeze({
   isEmail: (value: string) =>
     EMAIL_REGEXP.test(value) || t("rules.invalidEmail"),
   numberLowerThan: (number: number) => (value: number) =>
-    value < number || t("rules.numberLowerThan", { number }),
+    value < number ||
+    typeof value !== "number" ||
+    t("rules.numberLowerThan", { number }),
   numberHigherThan: (number: number) => (value: number) =>
-    value > number || t("rules.numberHigherThan", { number }),
+    value > number ||
+    typeof value !== "number" ||
+    t("rules.numberHigherThan", { number }),
 });

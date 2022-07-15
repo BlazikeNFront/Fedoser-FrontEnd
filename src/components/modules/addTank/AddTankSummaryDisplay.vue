@@ -41,13 +41,13 @@ import MainTankInformationDisplay from "@/components/common/Tank/MainTankInforma
 import LivestockList from "@/components/common/Livestock/LivestockList.vue";
 import FeedInformationDisplay from "@/components/common/Feed/FeedInformationDisplay.vue";
 import { MainTankInformation } from "@/types/Tank";
-import { LivestockInformation } from "@/types/Tank";
-import { TankFeedInformation } from "@/types/Tank";
+import { LivestockInformationDto } from "@/types/Livestock";
+import { FeedInformationDto } from "@/types/Feed";
 
 defineProps<{
   mainTankInformation: MainTankInformation;
-  livestockInformation: LivestockInformation;
-  feedInformation: TankFeedInformation;
+  livestockInformation: LivestockInformationDto;
+  feedInformation: FeedInformationDto;
 }>();
 </script>
 <style lang="scss">

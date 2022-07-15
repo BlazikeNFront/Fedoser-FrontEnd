@@ -2,14 +2,18 @@
   <v-container>
     <v-row>
       <v-col cols="12" lg="12" v-if="note.description">
-        <description-display
-          :description="note.description"
+        <base-display
+          :span-value="note.description"
+          keypath="mainTankInformationDisplay.description"
+          template-name="description"
           class="shadow-bg f-15 text-white py-2 radius-4"
       /></v-col>
       <v-col cols="12" lg="6">
-        <important-display
+        <icon-display
+          :boolean="note.isImportant"
+          keypath="notes.isImportant"
+          template-name="icon"
           class="shadow-bg f-15 text-white py-2 radius-4"
-          :is-important="note.isImportant"
       /></v-col>
       <v-col cols="12" v-if="note.enviromentalData">
         <enviromental-data-display
@@ -25,12 +29,12 @@
   </v-container>
 </template>
 <script setup lang="ts">
-import ImportantDisplay from "@/components/common/Tank/TankBasicInfoDisplays/ImportantDisplay.vue";
 import EnviromentalDataDisplay from "@/components/common/Tank/TankBasicInfoDisplays/EnviromentalDataDisplay.vue";
-import DescriptionDisplay from "@/components/common/Tank/TankBasicInfoDisplays/DescriptionDisplay.vue";
-import { TankNote } from "@/types/Tank";
+import BaseDisplay from "@/components/common/Tank/TankBasicInfoDisplays/base/BaseDisplay.vue";
+import { NoteDto } from "@/types/Note";
+import IconDisplay from "@/components/common/Tank/TankBasicInfoDisplays/base/IconDisplay.vue";
 
 defineProps<{
-  note: TankNote;
+  note: NoteDto;
 }>();
 </script>

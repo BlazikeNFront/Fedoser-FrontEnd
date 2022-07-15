@@ -60,12 +60,12 @@ import { ref, reactive } from "vue";
 import { SingleLivestockSpecie } from "@/types/Livestock";
 import LivestockList from "@/components/common/Livestock/LivestockList.vue";
 import { FormRules } from "@/helpers/FormRules";
-import SpecieEditor from "@/components/common/Livestock/SpecieEditor.vue";
 import { storeToRefs } from "pinia";
 import { useTankStore } from "@/stores/TankStore";
-import { ChangeSpecieWeightDto } from "@/utils/DTOs/ChangeSpecieWeight.dto";
+import { ChangeSpecieWeightDto } from "@/types/ChangeSpecieWeight";
 import { VForm } from "vuetify/lib/components";
 import { getCurrentDate } from "@/helpers/date";
+import SpecieEditor from "@/components/common/Livestock/SpecieEditor.vue";
 const props = defineProps<{
   modelValue: SingleLivestockSpecie;
 }>();
@@ -104,12 +104,12 @@ async function onChangeWeightRequest() {
   const { specieEdtiors, reason } = changeWeightForm;
   if (
     await updateCurrentLivestock(
-      new ChangeSpecieWeightDto({
-        before: { ...props.modelValue },
-        after: { ...props.modelValue, ...specieEdtiors },
+      new ChangeSpecieWeightDto(
+        { ...props.modelValue },
+        { ...props.modelValue, ...specieEdtiors },
         reason,
-        date: getCurrentDate(),
-      })
+        getCurrentDate()
+      )
     )
   )
     emits("update:modelValue", null);

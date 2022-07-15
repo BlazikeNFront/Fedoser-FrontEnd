@@ -1,26 +1,25 @@
 import { defineStore } from "pinia";
 import { TankStore } from "@/types/store/TankStore";
-import { TankNote } from "@/types/Tank";
-import { Tank } from "@/types/Tank";
-import { CurrentTankFeed, FeedDose } from "@/types/Feed";
+import { NoteDto } from "@/types/Note";
+import { TankDto } from "@/types/Tank";
+import { CurrentTankFeedDto, FeedDoseDto } from "@/types/Feed";
 import { TankCurrentFeeService } from "@/services/endpoints/TankFeedInformation";
 import { roundTo2Decimals } from "@/helpers/global";
 import { calcLivestockWeight } from "@/helpers/calcLivestockWeight";
 import { findMainSpecieInLivestock } from "@/helpers/findMainSpecieInLivestock";
 import { TankCurrentLivestockService } from "@/services/endpoints/TankLivestock";
-import { ChangeSpecieWeightDto } from "@/utils/DTOs/ChangeSpecieWeight.dto";
+import { ChangeSpecieWeightDto } from "@/types/ChangeSpecieWeight";
 import { EndFeedProgramService } from "@/services/endpoints/TankFeedInformation";
-import {
-  emptyTankLivestock,
-  emptyTankFeedInformation,
-} from "@/utils/factories/Tank";
+import { LivestockInformationDto } from "@/types/Livestock";
+import { FeedInformationDto } from "@/types/Feed";
+
 export const useTankStore = defineStore("TankStore", {
   state: () =>
     ({
       tank: null,
     } as TankStore),
   actions: {
-    setTank(tank: Required<Tank>) {
+    setTank(tank: Required<TankDto>) {
       this.tank = tank;
     },
     filterTankNotes(noteId: string) {
@@ -29,10 +28,10 @@ export const useTankStore = defineStore("TankStore", {
           (note) => note.id !== noteId
         );
     },
-    addNoteToTank(note: Required<TankNote>) {
+    addNoteToTank(note: Required<NoteDto>) {
       if (this.tank) this.tank.annotations.push(note);
     },
-    async changeCurrentTankFeed(newCurrentTankFeed: CurrentTankFeed) {
+    async changeCurrentTankFeed(newCurrentTankFeed: CurrentTankFeedDto) {
       if (!this.tank) return;
 
       const { success } = await TankCurrentFeeService.update(
@@ -42,7 +41,7 @@ export const useTankStore = defineStore("TankStore", {
       );
       if (success) this.tank.feedInformation.currentFeed = newCurrentTankFeed;
     },
-    terminateTankFeedProgramDose(dose: FeedDose) {
+    terminateTankFeedProgramDose(dose: FeedDoseDto) {
       if (!this.tank) return;
       this.tank.feedInformation.feedProgram.push(dose);
       const indexOfSpecie = this.tank.livestockInformation.current.findIndex(
@@ -87,8 +86,8 @@ export const useTankStore = defineStore("TankStore", {
           livestockInformation: this.tank.livestockInformation,
           feedInformation: this.tank.feedInformation,
         });
-        this.tank.livestockInformation = emptyTankLivestock();
-        this.tank.feedInformation = emptyTankFeedInformation();
+        this.tank.livestockInformation = new LivestockInformationDto({});
+        this.tank.feedInformation = new FeedInformationDto({});
       }
     },
   },

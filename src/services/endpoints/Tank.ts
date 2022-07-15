@@ -1,7 +1,7 @@
 import CrudService from "@/services/base/CrudService";
-import { TankDTO } from "@/utils/DTOs/Tank.dto";
+import { TankDto } from "@/types/Tank";
 
-class TankService extends CrudService<TankDTO> {
+class TankService extends CrudService<TankDto> {
   constructor() {
     super("tanks");
   }

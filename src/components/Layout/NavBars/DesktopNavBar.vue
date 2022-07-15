@@ -9,12 +9,11 @@
     <div class="h-100 w-100 d-flex align-center">
       <nav
         class="mx-auto d-flex flex-column justify-space-around"
-        style="height: clamp(750px, 100%, 850px)"
+        style="height: clamp(550px, 100%, 850px)"
       >
-        <h4
-          class="ml-4 pt-6 h-4 text-white-text text-center"
-          v-text="$t('global.appName')"
-        ></h4>
+        <h4 class="ml-4 pt-6 h-4 text-white-text text-center">
+          {{ $t("global.appName") }}
+        </h4>
         <ul
           class="py-4 pb-12 d-flex flex-column align-end justify-center over-hidden"
         >
@@ -39,8 +38,9 @@
                     'menu__text',
                     isRouteActive(option) ? 'menu__text--active' : '',
                   ]"
-                  v-text="$t(option.text)"
-                ></p>
+                >
+                  {{ $t(option.text) }}
+                </p>
               </div>
               <transition name="menuItemBackground">
                 <div
@@ -68,55 +68,8 @@
   </v-navigation-drawer>
 </template>
 <script setup lang="ts">
-import { computed } from "vue";
-import { NavOptions } from "@/types/NavOptions";
-import { useRoute, useRouter } from "vue-router";
-import { RoutesNames } from "@/constants/routesNames/RoutesNames";
-import { useUserStore } from "@/stores/UserStore";
-import { Icons } from "@/constants/icons/MdiIcons";
-import { NavOption } from "@/types/NavOptions";
-
-const route = useRoute();
-const router = useRouter();
-const userStore = useUserStore();
-
-const NAV_OPTIONS: NavOptions = [
-  { icon: Icons.HOME, name: RoutesNames.APP_HOME, text: "navBar.home" },
-  {
-    icon: Icons.FISH,
-    name: RoutesNames.USER_TANKS,
-    text: "navBar.tanks",
-    childrens: [RoutesNames.TANK_DETAILS],
-  },
-  {
-    icon: Icons.POLYGON_PLUS,
-    name: RoutesNames.ADD_TANK,
-    text: "navBar.addTank",
-  },
-  {
-    icon: Icons.CLIPBOARD,
-    name: RoutesNames.FEED_TABLES,
-    text: "navBar.feedTables",
-    childrens: [RoutesNames.SPECIE_FEED_TABLES],
-  },
-  {
-    icon: Icons.ACCOUNT_SETTINGS,
-    name: RoutesNames.USER_SETTINGS,
-    text: "navBar.settings",
-  },
-];
-const isRouteActive = computed(() => (option: NavOption) => {
-  let routeChildrens = [option.name];
-  //create array with main and nested routes
-  if (option.childrens) {
-    routeChildrens = routeChildrens.concat(option.childrens);
-  }
-  return routeChildrens.includes(route.name as string);
-});
-function logoutUser() {
-  userStore.logoutAction();
-  router.push({ name: RoutesNames.HOME });
-}
+import useNavConfig from "@/hooks/useNavConfig";
+const { NAV_OPTIONS, isRouteActive, logoutUser } = useNavConfig();
 </script>
 <style lang="scss" scoped>
 @mixin menu__rounded-side-pseudo-elements-shared {

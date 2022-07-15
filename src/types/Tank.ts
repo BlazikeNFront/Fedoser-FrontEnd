@@ -1,44 +1,37 @@
-import {
-  FeedProgramUpdateFrequency,
-  TypesOfFeedProgram,
-} from "@/constants/enums/Feed";
-import { FeedDose, CurrentTankFeed } from "@/types/Feed";
-import { EnviromentalData } from "@/types/EnviromentalData";
-import { SingleLivestockSpecie } from "@/types/Livestock";
-import { ChangeSpecieWeightPayload } from "@/utils/DTOs/ChangeSpecieWeight.dto";
+import { FeedInformationDto } from "@/types/Feed";
 
+import { NoteDto } from "@/types/Note";
+import { LivestockInformationDto } from "@/types/Livestock";
 export interface MainTankInformation {
   name: string;
   volume: number;
   description?: string;
 }
-export interface TankFeedInformation {
-  currentFeed: CurrentTankFeed | null;
-  usedFeedTotalWeight: number;
-  feedProgram: FeedDose[];
-  typeOfProgram: TypesOfFeedProgram;
-  doseUpdateFrequency: FeedProgramUpdateFrequency | null;
-}
 
-export interface LivestockInformation {
-  initial: SingleLivestockSpecie[];
-  current: SingleLivestockSpecie[];
-  changes: ChangeSpecieWeightPayload[];
-}
-
-export interface TankNote {
-  id?: string;
-  date: string;
-  title: string;
-  description: string | null;
-  enviromentalData: EnviromentalData | null;
-  isImportant: boolean;
-}
-export interface Tank {
-  _id?: string;
+export class TankDto {
+  _id: string;
   mainTankInformation: MainTankInformation;
-  annotations: Required<TankNote>[];
-  livestockInformation: LivestockInformation;
-  feedInformation: TankFeedInformation;
-  history: Pick<Tank, "livestockInformation" | "feedInformation">[];
+  annotations: Required<NoteDto>[];
+  livestockInformation: LivestockInformationDto;
+  feedInformation: FeedInformationDto;
+  history: Pick<TankDto, "livestockInformation" | "feedInformation">[];
+  constructor(
+    tank: Partial<TankDto> & { mainTankInformation: MainTankInformation }
+  ) {
+    const {
+      _id,
+      mainTankInformation,
+      livestockInformation,
+      feedInformation,
+      annotations,
+      history,
+    } = tank;
+    this._id = _id || "";
+    this.mainTankInformation = mainTankInformation;
+    this.livestockInformation =
+      livestockInformation || new LivestockInformationDto({});
+    this.feedInformation = feedInformation || new FeedInformationDto({});
+    this.annotations = annotations || [];
+    this.history = history || [];
+  }
 }

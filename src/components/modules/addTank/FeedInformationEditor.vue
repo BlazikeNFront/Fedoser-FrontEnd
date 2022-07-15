@@ -49,8 +49,7 @@ import FeedSelect from "@/components/common/Feed/FeedSelect.vue";
 import DoseUpdater from "@/components/modules/addTank/DoseUpdater.vue";
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
 import { ref, computed, withDefaults, onBeforeMount } from "vue";
-import { TankFeedInformation } from "@/types/Tank";
-import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
+import { FeedInformationDto } from "@/types/Feed";
 import { TypesOfFeedProgram } from "@/constants/enums/Feed";
 import { storeToRefs } from "pinia";
 import { useFeedForSpecie } from "@/stores/FeedsForSpecie";
@@ -60,15 +59,15 @@ import FeedQualityLegend from "@/components/common/Feed/FeedQuality/FeedQualityL
 
 const props = withDefaults(
   defineProps<{
-    modelValue: TankFeedInformation;
+    modelValue: FeedInformationDto;
     mainSpecie: SingleLivestockSpecie;
   }>(),
   {
-    modelValue: () => new FeedInformationDTO({}),
+    modelValue: () => new FeedInformationDto({}),
   }
 );
 const emit = defineEmits<{
-  (e: "update:modelValue", feedInformation: TankFeedInformation): void;
+  (e: "update:modelValue", feedInformation: FeedInformationDto): void;
 }>();
 
 const { feedsForSpecie, loader, specie } = storeToRefs(useFeedForSpecie());
@@ -113,7 +112,7 @@ async function validateFeedInformation(): Promise<boolean> {
 
   emit(
     "update:modelValue",
-    new FeedInformationDTO({
+    new FeedInformationDto({
       ...props.modelValue,
       ...{ typeOfProgram: TypesOfFeedProgram.FEED_PROGRAM },
     })

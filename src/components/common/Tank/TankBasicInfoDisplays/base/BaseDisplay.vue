@@ -1,7 +1,7 @@
 <template>
   <i18n-t
     tag="p"
-    class="d-flex align-center justify-center f-15"
+    class="shadow-bg f-15 text-white py-2 radius-4"
     scope="global"
   >
     <template #[templateName]>

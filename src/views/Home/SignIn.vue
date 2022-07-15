@@ -110,7 +110,7 @@ async function loginRequest() {
 
   if (!validationData.valid) return;
   loginForm.loader = true;
-  const actionResult = await loginAction({ ...loginForm });
+  const actionResult = await loginAction(loginForm.email, loginForm.password);
   loginForm.loader = false;
   if (!actionResult.success && actionResult?.statusCode) {
     loginForm.showUnauthorizedError = true;

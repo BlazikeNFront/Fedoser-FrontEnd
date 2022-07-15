@@ -23,18 +23,18 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { TankNote } from "@/types/Tank";
+import { NoteDto } from "@/types/Note";
 import NoteExpansionListItem from "@/components/modules/singleTank/Notes/NoteExpansionListItem.vue";
 import NoteEditorDialog from "@/components/modules/singleTank/Notes/NoteEdtiorDialog.vue";
-import { tankNoteFactory } from "@/utils/factories/TankAnnotation";
-import { enviromentalDataFactory } from "@/utils/factories/EnviromentalData";
+import { createBaseEnviromentalData } from "@/types/EnviromentalData";
 const props = defineProps<{
-  notes: Required<TankNote>[];
+  notes: Required<NoteDto>[];
 }>();
-const editNote = ref<TankNote>(tankNoteFactory());
+const editNote = ref<NoteDto>(new NoteDto({}));
 const noteEditorDialog = ref<InstanceType<typeof NoteEditorDialog> | null>(
   null
 );
+
 async function setNoteToEdit(noteId: string) {
   const noteToEdit = props.notes.find((note) => note.id === noteId);
   if (noteToEdit && noteEditorDialog.value) {
@@ -47,7 +47,7 @@ async function setNoteToEdit(noteId: string) {
       return;
     }
     noteEditorDialog.value.showEnviromentalData = false;
-    noteEditorDialog.value.setEnviromentalData(enviromentalDataFactory());
+    noteEditorDialog.value.setEnviromentalData(createBaseEnviromentalData());
   }
 }
 </script>

@@ -11,11 +11,11 @@
   </v-expansion-panels>
 </template>
 <script setup lang="ts">
-import { ChangeSpecieWeightPayload } from "@/utils/DTOs/ChangeSpecieWeight.dto";
+import { ChangeSpecieWeightDto } from "@/types/ChangeSpecieWeight";
 import ChangeHistoryListItem from "@/components/modules/singleTank/Livestock/LivestockChanges/ChangeHistoryListItem.vue";
 
 defineProps<{
-  livestockChanges: ChangeSpecieWeightPayload[];
+  livestockChanges: ChangeSpecieWeightDto[];
 }>();
 </script>
 <style lang="scss">

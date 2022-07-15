@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { UserStore } from "@/types/store/UserStore";
-import { AuthPayload } from "@/types/AuthPayload";
+import { AuthPayloadDto } from "@/types/AuthPayload";
 import { LoginService } from "@/services/endpoints/Authorization";
-import { AuthPayloadDTO } from "@/utils/DTOs/AuthPayload.dto";
+
 import { TOKEN_EXPIRATION_TIME_IN_MS } from "@/constants/global";
 
 export const useUserStore = defineStore("UserStore", {
@@ -13,10 +13,12 @@ export const useUserStore = defineStore("UserStore", {
       loginTimestamp: null,
     } as UserStore),
   actions: {
-    async loginAction(authPayload: AuthPayload) {
-      const result = await LoginService.create(new AuthPayloadDTO(authPayload));
+    async loginAction(email: string, password: string) {
+      const result = await LoginService.create(
+        new AuthPayloadDto(email, password)
+      );
       if (result.success) {
-        this.email = authPayload.email;
+        this.email = email;
         this.isTokenProvided = true;
         this.loginTimestamp = Date.now();
         localStorage.setItem("userStore", JSON.stringify(this.$state));

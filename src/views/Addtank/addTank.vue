@@ -132,11 +132,10 @@ import LivestockEditor from "@/components/modules/addTank/LivestockEditor.vue";
 import AddTankSummaryDisplay from "@/components/modules/addTank/AddTankSummaryDisplay.vue";
 import MainTankInformationEditor from "@/components/modules/addTank/MainTankInformationEditor.vue";
 import FeedInformationEditor from "@/components//modules/addTank/FeedInformationEditor.vue";
-import { LivestockInformation } from "@/types/Tank";
-import { LivestockInformationDTO } from "@/utils/DTOs/LivestockInformation.dto";
-import { FeedInformationDTO } from "@/utils/DTOs/FeedInformation.dto";
+import { LivestockInformationDto } from "@/types/Livestock";
+import { FeedInformationDto } from "@/types/Feed";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
-import { TankDTO } from "@/utils/DTOs/Tank.dto";
+import { TankDto } from "@/types/Tank";
 import { ref, reactive, computed } from "vue";
 import { useRouter } from "vue-router";
 import TankService from "@/services/endpoints/Tank";
@@ -154,20 +153,20 @@ const mainTankInformation = reactive({
   volume: 25,
   description: "Tank with fry rainbows trout",
 });
-const feedInformation = ref(new FeedInformationDTO({}));
-const livestockInformation = ref<LivestockInformation>(
-  new LivestockInformationDTO({})
+const feedInformation = ref(new FeedInformationDto({}));
+const livestockInformation = ref<LivestockInformationDto>(
+  new LivestockInformationDto({})
 );
 const mainLivestockSpecie = computed(() =>
   findMainSpecieInLivestock(livestockInformation.value.initial)
 );
 function omitLivestockStep() {
-  livestockInformation.value = new LivestockInformationDTO({});
+  livestockInformation.value = new LivestockInformationDto({});
   step.value++;
 }
 
 function omitFeedInformationStep() {
-  feedInformation.value = new FeedInformationDTO({});
+  feedInformation.value = new FeedInformationDto({});
   step.value++;
 }
 async function handleNextStepRequest(
@@ -178,11 +177,12 @@ async function handleNextStepRequest(
 }
 
 async function addTank() {
-  const tankPayload = new TankDTO({
+  const tankPayload = new TankDto({
     mainTankInformation: { ...mainTankInformation },
     livestockInformation: livestockInformation.value,
     feedInformation: feedInformation.value,
     annotations: [],
+    history: [],
   });
   isLoading.value = true;
   const result = await TankService.create(tankPayload);

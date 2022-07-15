@@ -1,14 +1,14 @@
 import CrudService from "@/services/base/CrudService";
-import { AuthPayloadDTO } from "@/utils/DTOs/AuthPayload.dto";
-import { SignUpDTO } from "@/utils/DTOs/SignUp.dto";
+import { AuthPayloadDto } from "@/types/AuthPayload";
+import { SignUpDto } from "@/types/AuthPayload";
 
-class Login extends CrudService<AuthPayloadDTO> {
+class Login extends CrudService<AuthPayloadDto> {
   constructor() {
     super("user/signIn");
   }
 }
 
-class SignUp extends CrudService<SignUpDTO> {
+class SignUp extends CrudService<SignUpDto> {
   constructor() {
     super("user/signUp");
   }
