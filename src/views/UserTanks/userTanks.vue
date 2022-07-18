@@ -45,16 +45,17 @@
 
 <script setup lang="ts">
 import { ref, onBeforeMount } from "vue";
-import { Tank } from "@/types/Tank";
+import { TankDto } from "@/types/Tank";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
-import TankService from "@/services/endpoints/Tank";
+import { TankService } from "@/newServices/endpoints";
 import TankCardExpansion from "@/components/common/Tank/TankCardExpansion.vue";
 import { API_DATA_KEY } from "@/constants/global";
-const userTanks = ref<Tank[]>([]);
+const userTanks = ref<TankDto[]>([]);
 const isLoading = ref(false);
 onBeforeMount(async () => {
   isLoading.value = true;
   const request = await TankService.fetch();
+  console.log("hello");
   if (API_DATA_KEY in request) userTanks.value = request.data;
   isLoading.value = false;
 });

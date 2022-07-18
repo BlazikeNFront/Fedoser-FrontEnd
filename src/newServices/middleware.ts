@@ -1,25 +1,25 @@
-import { ApiError } from "@/types/ApiResponses";
+import { ApiError, ApiResponse } from "@/types/ApiResponses";
 import AxiosRequest from "@/plugins/AxiosInstance";
-import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { TimeInMiliseconds } from "@/constants/enums/Time";
-import { CachedResponse } from "@/types/CachedResponse";
-import localForage from "localforage";
-import { getCurrentDateInMs } from "@/helpers/date";
+import { AxiosRequestConfig } from "axios";
 import { TankDto } from "@/types/Tank";
-import { GetResponse } from "@/types/ApiResponses";
-import { isFunction } from "@babel/types";
+import localForage from "localforage";
+import { CachedResponse } from "@/types/CachedResponse";
+import { getCurrentDateInMs } from "@/helpers/date";
+import { TimeInMiliseconds } from "@/constants/enums/Time";
 
-interface CrudService {
-  get: <T>(
-    config: (AxiosRequestConfig & { useCache: boolean }) | undefined
-  ) => Promise<ApiError | GetResponse<T>>;
-  fetch: <T>(
-    config: (AxiosRequestConfig & { useCache: boolean }) | undefined
-  ) => Promise<ApiError | GetResponse<T[]>>;
-  //   post: <T>() => Promise<GetResponse<T>> | ApiError;
-  //   patch: <T>() => Promise<UploadResponse<T>> | ApiError;
-  //   remove: <T>() => Promise<UploadResponse<T>> | ApiError;
-}
+const REQUESTS_TYPES = {
+  GET: "GET",
+  POST: "POST",
+  PATCH: "PATCH",
+  DELETE: "DELETE",
+} as const;
+const REQUESTS = {
+  [REQUESTS_TYPES.GET]: AxiosRequest.get,
+  [REQUESTS_TYPES.POST]: AxiosRequest.post,
+  [REQUESTS_TYPES.PATCH]: AxiosRequest.patch,
+  [REQUESTS_TYPES.DELETE]: AxiosRequest.delete,
+} as const;
+
 const apiErrorTypeGuard = (error: unknown): error is ApiError => {
   if (
     typeof error === "object" &&
@@ -30,96 +30,78 @@ const apiErrorTypeGuard = (error: unknown): error is ApiError => {
     return true;
   return false;
 };
-async function getResponse<T>(
-  url: string,
-  config?: (AxiosRequestConfig & { useCache: boolean }) | undefined
-): Promise<GetResponse<T> | ApiError> {
-  try {
-    const data = await AxiosRequest.get<T>(url, config);
-    if (data) return { data: data.data, success: true };
-    return { success: false, statusCode: null };
-  } catch (error: unknown) {
-    if (apiErrorTypeGuard(error)) return error;
-    return { success: false, statusCode: null };
+
+const handleError = (error: any) => {
+  console.log(error);
+};
+async function getDataFromIndexedDB<T>(key: string) {
+  const storedKeys = await localForage.keys();
+  if (!storedKeys.includes(key)) return null;
+
+  const storedValue = (await localForage.getItem(key)) as CachedResponse<T>;
+  if (
+    !storedValue.timestamp ||
+    getCurrentDateInMs() - +storedValue?.timestamp > +TimeInMiliseconds.WEEK
+  ) {
+    await localForage.removeItem(key);
+    return null;
   }
-}
-async function fetchRequest<T>(
-  url: string,
-  config?: (AxiosRequestConfig & { useCache: boolean }) | undefined
-): Promise<GetResponse<T[]> | ApiError> {
-  try {
-    const data = await AxiosRequest.get<T[]>(url, config);
-    if (data) return { data: data.data, success: true };
-    return { success: false, statusCode: null };
-  } catch (error: unknown) {
-    if (apiErrorTypeGuard(error)) return error;
-    return { success: false, statusCode: null };
-  }
-}
-// async function getResponse<T>(
-//   url: string,
-//   config?: (AxiosRequestConfig & { useCache: boolean }) | undefined
-// ): Promise<GetResponse<T> | ApiError> {
-//   try {
-//     const data = await AxiosInstance.get<T>(url, config);
-//     if (data) return { data: data.data, success: true };
-//     return { success: false, statusCode: null };
-//   } catch (error: unknown) {
-//     if (apiErrorTypeGuard(error)) return error;
-//     return { success: false, statusCode: null };
-//   }
-// }
-function createServiceForEndpoint<T>(
-  url: string,
-  config = { useCache: false }
-): CrudService {
-  const { useCache } = config;
-  //   const fetch = <T>() => ();
-  //   const post = () => ({});
-  //   const patch = () => ({});
-  //   const remove = () => ({});
-  return {
-    get: <T>(
-      config: (AxiosRequestConfig & { useCache: boolean }) | undefined
-    ) => getResponse<T>(url, { ...config, useCache: !!useCache }),
-    fetch: <T>(
-      config: (AxiosRequestConfig & { useCache: boolean }) | undefined
-    ) => fetchRequest<T>(url, { ...config, useCache: !!useCache }),
-  };
+
+  return storedValue.data;
 }
 
-// export const TankEndopoints = {
-//     getTank:(config)=>useBaseRequest<TankDto>('get','endpoint',config)
-// }
-const baseRequestTypes = {
-  GET: "GET",
-  FETCH: "FETCH",
-  POST: "POST",
-  PATCH: "PATCH",
-  DELETE: "DELETE",
-} as const;
-async function useBaseRequest<T>(
+async function setItemInIndexedDB<C>(key: string, data: C) {
+  await localForage.setItem(key, {
+    data,
+    timestamp: getCurrentDateInMs(),
+  });
+}
+
+async function requestHandler<T>(
   url: string,
-  requestType?: keyof typeof baseRequestTypes,
-  config?: AxiosRequestConfig & { useCache: boolean }
-) {
-  switch (requestType) {
-    case baseRequestTypes.GET: {
-      return await getResponse<T>(url, config);
+  type: keyof typeof REQUESTS,
+  useCache = false,
+  axiosConfig?: AxiosRequestConfig,
+  uploadData?: Partial<T>
+): Promise<ApiResponse<T> | ApiError> {
+  try {
+    const isUploadRequest = type === "POST" || type === "PATCH";
+    if (isUploadRequest && !uploadData) {
+      throw Error("Data parameter is not provided");
     }
-    case baseRequestTypes.FETCH: {
-      return await fetchRequest<T>(url, config);
+    if (useCache) {
+      const data = await getDataFromIndexedDB<T>(url);
+      if (data) return { data, success: true };
     }
-    case baseRequestTypes.POST: {
-      return await getResponse<T>(url, config);
+
+    const { data } = isUploadRequest
+      ? await REQUESTS[type]<T>(url, uploadData, axiosConfig)
+      : await REQUESTS[type]<T>(url, axiosConfig);
+    if (data) {
+      if (useCache) setItemInIndexedDB(url, data);
+      return { data, success: true };
     }
-    case baseRequestTypes.PATCH: {
-      return await getResponse<T>(url, config);
-    }
-    case baseRequestTypes.DELETE: {
-      return await getResponse<T>(url, config);
-    }
-    default:
-      return await getResponse<T>(url, config);
+    return { success: false, statusCode: null };
+  } catch (error: unknown) {
+    handleError(error);
+    if (apiErrorTypeGuard(error)) return error;
+
+    return { success: false, statusCode: null };
   }
 }
+
+export function createEndpointAPI<T>(url: string, useCache = false) {
+  return {
+    get: (config?: AxiosRequestConfig) =>
+      requestHandler<T>(url, REQUESTS_TYPES.GET, useCache, config),
+    fetch: (config?: AxiosRequestConfig) =>
+      requestHandler<T[]>(url, REQUESTS_TYPES.GET, useCache, config),
+    post: (data: T, config?: AxiosRequestConfig) =>
+      requestHandler<T>(url, REQUESTS_TYPES.GET, useCache, config, data),
+    patch: (data: Partial<T>, config?: AxiosRequestConfig) =>
+      requestHandler<T>(url, REQUESTS_TYPES.GET, useCache, config, data),
+    delete: (config?: AxiosRequestConfig) =>
+      requestHandler<T>(url, REQUESTS_TYPES.GET, useCache, config),
+  };
+}
+export const Tank = createEndpointAPI<TankDto>("endpoint");

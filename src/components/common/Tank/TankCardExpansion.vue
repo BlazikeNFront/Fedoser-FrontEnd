@@ -55,7 +55,7 @@ function createTankCardDisplays(tank: TankDto): TankCardExpansionConfig[] {
       component: BaseDisplay,
       attrs: {
         keypath: "tankCard.volume",
-        spanValue: "`${volume} &#13221;`",
+        spanValue: `${tank.mainTankInformation.volume} 	\u33A5`,
         templateName: "volume",
       },
     },
@@ -79,7 +79,7 @@ function createTankCardDisplays(tank: TankDto): TankCardExpansionConfig[] {
       component: BaseDisplay,
       attrs: {
         keypath: "tankCard.annotations",
-        spanValue: "tank.annotations.length ",
+        spanValue: tank.annotations.length.toString(),
         templateName: "annotations",
       },
     },
