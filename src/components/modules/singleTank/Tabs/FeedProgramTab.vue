@@ -128,7 +128,7 @@ import { storeToRefs } from "pinia";
 import DoseManager from "@/components/modules/singleTank/FeedProgram/DoseManager.vue";
 import FeedInformationDisplay from "@/components/common/Feed/FeedInformationDisplay.vue";
 import TerminatedDoseList from "@/components/modules/singleTank/FeedProgram/TerminatedDoseList.vue";
-import { FeedInformationDoseService } from "@/services/endpoints/TankFeedInformation";
+import { TankFeedDoseService } from "@/services/endpoints";
 import { FeedDoseDto } from "@/types/Feed";
 import FeedSelect from "@/components/common/Feed/FeedSelect.vue";
 import { useFeedForSpecie } from "@/stores/FeedsForSpecie";
@@ -196,10 +196,7 @@ const feedOptions = computed(
 );
 async function terminateDose(dose: FeedDoseDto) {
   if (!tank.value) return;
-  const result = await FeedInformationDoseService.create(
-    dose,
-    `${tank.value._id}/add-feed-dose`
-  );
+  const result = await TankFeedDoseService.post(dose, { url: tank.value._id });
   if (result.success) terminateTankFeedProgramDose(dose);
 }
 

@@ -1,13 +1,13 @@
 <template>
   <v-card tag="article" flat color="transparent">
-    <v-container class="feed-information__flexbox"
+    <v-container class="feed-information__flexbox text-center"
       ><v-row
         ><v-col cols="12" class="d-flex align-center justify-center">
           <icon-display
             keypath="tankCard.feedProgram"
             :boolean="!!feedInformation.currentFeed"
             template-name="feedProgram"
-            class="f-2"
+            class="f-2 w-100"
           />
         </v-col>
         <v-col v-if="feedInformation.currentFeed" cols="12" class="my-2"
@@ -21,7 +21,6 @@
             :span-value="feedInformation.doseUpdateFrequency.toString()"
             template-name="updateFrequency"
             keypath="feedInformation.doseUpdateFrequencyDisplay"
-            class="f-2 text-center"
         /></v-col> </v-row
     ></v-container>
   </v-card>
@@ -36,10 +35,3 @@ defineProps<{
   feedInformation: FeedInformationDto;
 }>();
 </script>
-<style lang="scss">
-.feed-information__flexbox {
-  .v-col {
-    @extend .shadow-bg, .radius-4;
-  }
-}
-</style>

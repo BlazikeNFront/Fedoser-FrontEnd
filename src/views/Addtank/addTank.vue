@@ -138,7 +138,7 @@ import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { TankDto } from "@/types/Tank";
 import { ref, reactive, computed } from "vue";
 import { useRouter } from "vue-router";
-import TankService from "@/services/endpoints/Tank";
+import { TankService } from "@/services/endpoints";
 import { findMainSpecieInLivestock } from "@/helpers/findMainSpecieInLivestock";
 const router = useRouter();
 
@@ -185,7 +185,7 @@ async function addTank() {
     history: [],
   });
   isLoading.value = true;
-  const result = await TankService.create(tankPayload);
+  const result = await TankService.post(tankPayload);
   isLoading.value = false;
   if (result.success) {
     router.push({ name: RoutesNames.USER_TANKS });

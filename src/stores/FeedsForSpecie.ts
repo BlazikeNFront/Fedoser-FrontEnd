@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { FeedsForSpecieStore } from "@/types/store/FeedsForSpecieStore";
-import FeedsForSpecieService from "@/services/endpoints/FeedsForSpecie";
+import { FeedsForSpecieService } from "@/services/endpoints";
 import { SpeciesValues } from "@/types/Livestock";
 export const useFeedForSpecie = defineStore("FeedsForSpecieStore", {
   state: (): FeedsForSpecieStore => ({
@@ -11,10 +11,9 @@ export const useFeedForSpecie = defineStore("FeedsForSpecieStore", {
   actions: {
     async getFeedsForSpecie(specie: SpeciesValues) {
       this.loader = true;
-      const response = await FeedsForSpecieService.fetch(
-        {},
-        `specie/${specie}`
-      );
+      const response = await FeedsForSpecieService.fetch({
+        url: specie,
+      });
       if (response.success) {
         this.$state.feedsForSpecie = response.data.sort((a, b) =>
           a.feed.quality > b.feed.quality ? 1 : -1

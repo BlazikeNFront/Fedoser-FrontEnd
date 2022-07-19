@@ -98,7 +98,7 @@ import FeedQualityLegend from "@/components/common/Feed/FeedQuality/FeedQualityL
 import FeedQualityDisplay from "@/components/common/Feed/FeedQuality/FeedQualityDisplay.vue";
 import { ref, computed, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
-import { FeedTablesPdfService } from "@/services/endpoints/FeedTables";
+import { FeedsTablesPdfService } from "@/services/endpoints";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { camelizeString } from "@/helpers/stringOperations";
 import { PdfActions } from "@/constants/enums/PdfActions";
@@ -149,10 +149,10 @@ const uniqueTables = computed(() =>
 );
 async function fetchTable(fileName: string, typeOfPdfAction: PdfActions) {
   isDownloadingTablePdf.value = true;
-  const response = await FeedTablesPdfService.get(
-    specieEnumValue.value,
-    fileName
-  );
+  const response = await FeedsTablesPdfService.get({
+    url: `${specieEnumValue.value}/${fileName}`,
+  });
+  console.log(response);
   if (response.success) {
     typeOfPdfAction == PdfActions.DOWNLOAD
       ? downloadPdf(response.data, fileName)

@@ -65,13 +65,17 @@ async function requestHandler<T>(
   uploadData?: Partial<T>
 ): Promise<ApiResponse<T> | ApiError> {
   try {
+    if (useCache) {
+      const data = await getDataFromIndexedDB<T>(url);
+      if (data) return { data, success: true };
+    }
     const isUploadRequest = type === "POST" || type === "PATCH";
     if (isUploadRequest && !uploadData) {
       throw Error("Data parameter is not provided");
     }
-    if (useCache) {
-      const data = await getDataFromIndexedDB<T>(url);
-      if (data) return { data, success: true };
+    if (axiosConfig?.url) {
+      url += `/${axiosConfig.url}`;
+      if (url.includes("pdf")) axiosConfig.responseType = "blob";
     }
 
     const { data } = isUploadRequest
@@ -97,11 +101,11 @@ export function createEndpointAPI<T>(url: string, useCache = false) {
     fetch: (config?: AxiosRequestConfig) =>
       requestHandler<T[]>(url, REQUESTS_TYPES.GET, useCache, config),
     post: (data: T, config?: AxiosRequestConfig) =>
-      requestHandler<T>(url, REQUESTS_TYPES.GET, useCache, config, data),
+      requestHandler<T>(url, REQUESTS_TYPES.POST, useCache, config, data),
     patch: (data: Partial<T>, config?: AxiosRequestConfig) =>
-      requestHandler<T>(url, REQUESTS_TYPES.GET, useCache, config, data),
+      requestHandler<T>(url, REQUESTS_TYPES.PATCH, useCache, config, data),
     delete: (config?: AxiosRequestConfig) =>
-      requestHandler<T>(url, REQUESTS_TYPES.GET, useCache, config),
+      requestHandler<T>(url, REQUESTS_TYPES.DELETE, useCache, config),
   };
 }
 export const Tank = createEndpointAPI<TankDto>("endpoint");

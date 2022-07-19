@@ -32,7 +32,7 @@ import { useRoute } from "vue-router";
 import MainInfoTab from "@/components/modules/singleTank/Tabs/MainInfoTab.vue";
 import LivestockTab from "@/components/modules/singleTank/Tabs/LivestockTab.vue";
 import NotesTab from "@/components/modules/singleTank/Tabs/NotesTab.vue";
-import TankService from "@/services/endpoints/Tank";
+import { TankService } from "@/services/endpoints";
 import { useTankStore } from "@/stores/TankStore";
 import { storeToRefs } from "pinia";
 import FeedProgramTab from "@/components/modules/singleTank/Tabs/FeedProgramTab.vue";
@@ -52,7 +52,7 @@ const tankId = route.params.id as string;
 const currentTab = ref<number>(0);
 
 onBeforeMount(async () => {
-  const request = await TankService.get(tankId);
+  const request = await TankService.get({ url: tankId });
   if (request.success) {
     const { setTank } = tankStore;
     setTank(request.data);

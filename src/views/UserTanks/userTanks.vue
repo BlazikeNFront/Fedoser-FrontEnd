@@ -47,7 +47,7 @@
 import { ref, onBeforeMount } from "vue";
 import { TankDto } from "@/types/Tank";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
-import { TankService } from "@/newServices/endpoints";
+import { TankService } from "@/services/endpoints";
 import TankCardExpansion from "@/components/common/Tank/TankCardExpansion.vue";
 import { API_DATA_KEY } from "@/constants/global";
 const userTanks = ref<TankDto[]>([]);

@@ -3,13 +3,13 @@ import { TankStore } from "@/types/store/TankStore";
 import { NoteDto } from "@/types/Note";
 import { TankDto } from "@/types/Tank";
 import { CurrentTankFeedDto, FeedDoseDto } from "@/types/Feed";
-import { TankCurrentFeeService } from "@/services/endpoints/TankFeedInformation";
+import { TankCurrentFeedService } from "@/services/endpoints";
 import { roundTo2Decimals } from "@/helpers/global";
 import { calcLivestockWeight } from "@/helpers/calcLivestockWeight";
 import { findMainSpecieInLivestock } from "@/helpers/findMainSpecieInLivestock";
-import { TankCurrentLivestockService } from "@/services/endpoints/TankLivestock";
+import { TankCurrentLivestockService } from "@/services/endpoints";
 import { ChangeSpecieWeightDto } from "@/types/ChangeSpecieWeight";
-import { EndFeedProgramService } from "@/services/endpoints/TankFeedInformation";
+import { EndFeedProgramService } from "@/services/endpoints";
 import { LivestockInformationDto } from "@/types/Livestock";
 import { FeedInformationDto } from "@/types/Feed";
 
@@ -34,10 +34,9 @@ export const useTankStore = defineStore("TankStore", {
     async changeCurrentTankFeed(newCurrentTankFeed: CurrentTankFeedDto) {
       if (!this.tank) return;
 
-      const { success } = await TankCurrentFeeService.update(
-        this.tank._id,
+      const { success } = await TankCurrentFeedService.patch(
         newCurrentTankFeed,
-        "current-tank-feed"
+        { url: this.tank._id }
       );
       if (success) this.tank.feedInformation.currentFeed = newCurrentTankFeed;
     },
@@ -57,10 +56,9 @@ export const useTankStore = defineStore("TankStore", {
     },
     async updateCurrentLivestock(payload: ChangeSpecieWeightDto) {
       if (!this.tank?._id) return false;
-      const result = await TankCurrentLivestockService.update(
-        this.tank._id,
-        payload
-      );
+      const result = await TankCurrentLivestockService.patch(payload, {
+        url: `current-livestock/${this.tank._id}`,
+      });
       if (result.success) {
         const {
           after,
@@ -77,10 +75,13 @@ export const useTankStore = defineStore("TankStore", {
     async endCurrentFeedProgram() {
       if (!this.tank) return;
 
-      const result = await EndFeedProgramService.update(this.tank._id, {
-        livestockInformation: { ...this.tank.livestockInformation },
-        feedInformation: { ...this.tank.feedInformation },
-      });
+      const result = await EndFeedProgramService.patch(
+        {
+          livestockInformation: { ...this.tank.livestockInformation },
+          feedInformation: { ...this.tank.feedInformation },
+        },
+        { url: this.tank._id }
+      );
       if (result.success) {
         this.tank.history.push({
           livestockInformation: this.tank.livestockInformation,

@@ -131,7 +131,7 @@ import { ref, reactive } from "vue";
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
 import { FormRules } from "@/helpers/FormRules";
 import { Weather } from "@/constants/enums/Weather";
-import TankNotesService from "@/services/endpoints/TankNotes";
+import { TankNoteService } from "@/services/endpoints";
 import { NoteDto } from "@/types/Note";
 import { useRoute } from "vue-router";
 import {
@@ -174,15 +174,13 @@ async function addNote() {
   let result;
 
   if (payload.id) {
-    result = await TankNotesService.update(
-      params.id as string,
-      new NoteDto(payload)
-    );
+    result = await TankNoteService.patch(new NoteDto(payload), {
+      url: params.id as string,
+    });
   } else {
-    result = await TankNotesService.create(
-      new NoteDto(payload),
-      params.id as string
-    );
+    result = await TankNoteService.post(new NoteDto(payload), {
+      url: params.id as string,
+    });
   }
   if (!result.success) return;
   if (result.data?.id) {

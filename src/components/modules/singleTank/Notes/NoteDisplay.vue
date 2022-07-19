@@ -8,12 +8,12 @@
           template-name="description"
           class="shadow-bg f-15 text-white py-2 radius-4"
       /></v-col>
-      <v-col cols="12" lg="6">
+      <v-col cols="12">
         <icon-display
           :boolean="note.isImportant"
           keypath="notes.isImportant"
           template-name="icon"
-          class="shadow-bg f-15 text-white py-2 radius-4"
+          class="w-100"
       /></v-col>
       <v-col cols="12" v-if="note.enviromentalData">
         <enviromental-data-display

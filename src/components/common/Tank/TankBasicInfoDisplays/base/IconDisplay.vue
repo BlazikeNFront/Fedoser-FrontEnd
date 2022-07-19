@@ -2,7 +2,7 @@
   <i18n-t
     tag="p"
     scope="global"
-    class="d-flex align-center justify-center f-15"
+    class="d-flex align-center justify-center f-15 shadow-bg text-white py-2 radius-4"
   >
     <template #[templateName]>
       <v-icon

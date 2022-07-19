@@ -52,7 +52,7 @@ import MainSpecieDisplay from "@/components/common/Tank/TankBasicInfoDisplays/Ma
 import BaseDisplay from "@/components/common/Tank/TankBasicInfoDisplays/base/BaseDisplay.vue";
 import ConfirmationDialog from "@/components/common/ConfirmationDialog.vue";
 import { calcLivestockWeight } from "@/helpers/calcLivestockWeight";
-import TankService from "@/services/endpoints/Tank";
+import { TankService } from "@/services/endpoints";
 import { useTankStore } from "@/stores/TankStore";
 import { useRouter } from "vue-router";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
@@ -61,7 +61,7 @@ const { push } = useRouter();
 const { tank } = storeToRefs(useTankStore());
 async function deleteTankAction(): Promise<boolean> {
   if (!tank.value) return false;
-  const result = await TankService.delete(tank.value._id);
+  const result = await TankService.delete({ url: tank.value._id });
   if (result.success) {
     await push({ name: RoutesNames.USER_TANKS });
     return true;

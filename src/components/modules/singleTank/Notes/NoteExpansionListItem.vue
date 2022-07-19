@@ -1,6 +1,6 @@
 <template>
   <v-expansion-panel bg-color="violet" style="border-radius: 10px !important">
-    <v-expansion-panel-title class="text-h4 text-center w-100">
+    <v-expansion-panel-title class="text-h4 w-100 note-panel-title">
       <v-progress-linear
         class="note__loader"
         :active="loader"
@@ -14,10 +14,13 @@
         :span-value="note.date"
         keypath="notes.date"
         template-name="date"
-        class="shadow-bg ml-4 f-15 text-white pa-2 radius-4"
+        class="px-4 f-2"
       />
     </v-expansion-panel-title>
-    <v-expansion-panel-text tag="article" class="d-flex flex-column">
+    <v-expansion-panel-text
+      tag="article"
+      class="d-flex flex-column text-center"
+    >
       <note-display :note="note">
         <template #default>
           <v-col
@@ -46,8 +49,8 @@
 import { ref } from "vue";
 import { NoteDto } from "@/types/Note";
 import NoteDisplay from "@/components/modules/singleTank/Notes/NoteDisplay.vue";
-import DateDisplay from "@/components/common/Tank/TankBasicInfoDisplays/DateDisplay.vue";
-import TankNotes from "@/services/endpoints/TankNotes";
+import { TankNoteService } from "@/services/endpoints";
+import BaseDisplay from "@/components/common/Tank/TankBasicInfoDisplays/base/BaseDisplay.vue";
 import { useTankStore } from "@/stores/TankStore";
 const props = defineProps<{
   note: Required<NoteDto>;
@@ -63,7 +66,7 @@ async function deleteNote() {
     note: { id },
   } = props;
   loader.value = true;
-  const result = await TankNotes.delete(tank._id, id);
+  const result = await TankNoteService.delete({ url: `${tank._id}/${id}` });
   loader.value = false;
   if (result.success) filterTankNotes(id);
 }
@@ -74,5 +77,11 @@ async function deleteNote() {
   top: 0;
   left: 0;
   border-radius: 13px 13px 0 0;
+}
+.note-panel-title {
+  .v-expansion-panel-title__icon {
+    margin-inline-start: initial !important;
+    -webkit-margin-start: initial;
+  }
 }
 </style>
