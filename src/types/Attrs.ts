@@ -1,12 +1,3 @@
-//this type should exist in vue-core types ?? no need to add all , just add elements when u need them
+//this type should exist in vue-core types ??//maybe better approach is to define interface with some default values and extends interface when u need??
 
-export interface Attrs {
-  class?: string;
-}
-export interface ColsAttrs {
-  cols: string;
-  sm?: string;
-  md?: string;
-  lg?: string;
-  xl?: string;
-}
+export type Attrs = Record<string, any>;

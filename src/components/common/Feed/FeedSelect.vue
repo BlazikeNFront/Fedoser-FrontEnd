@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex flex-column align-center justify-center">
-    <p class="f-2 text-center" v-text="$t('global.feed')"></p>
+  <div class="d-flex flex-column align-center justify-center text-center">
+    <p class="f-2" v-text="$t('global.feed')"></p>
     <div class="pl-6 d-flex pos-relative" style="width: 35rem">
       <v-menu top offset-y transition="slide-y-transition" v-model="showMenu">
         <template #activator="{ props }">
@@ -28,10 +28,10 @@
             feedsOptions.allFeeds.length || feedsOptions.proposedFeeds.length
           "
         >
-          <v-list-item class="text-center text-white shadow-bg">
-            <p class="text-center f-15 w-100">Polecane pasze</p>
+          <v-list-item class="text-white shadow-bg">
+            <p class="f-15 w-100">{{ $t("feed.recommendedFeed") }}</p>
           </v-list-item>
-          <v-list-item class="text-center text-white shadow-bg"
+          <v-list-item class="text-white shadow-bg"
             ><p class="f-15 w-50">{{ $t("global.feed") }}</p>
             <p class="f-15 w-50">
               {{ $t("global.efficiency") }}

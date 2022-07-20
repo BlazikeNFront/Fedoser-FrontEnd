@@ -52,6 +52,7 @@ const emits = defineEmits<{
   (e: "update:modelValue", payload: SpecieEditorModel): void;
 }>();
 
+//event emitteres below maybe could be somehow rewrited ?.? //REFACTOR
 function onSpecieWeightInput(weight: number) {
   const {
     modelValue: { meanWeight, quantity },

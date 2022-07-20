@@ -5,12 +5,16 @@ import {
   TypesOfFeedProgram,
   FeedProgramUpdateFrequency,
 } from "@/constants/enums/Feed";
+
+export type FeedQualityKeys = keyof typeof FeedQuality;
+export type FeedQualityValues = typeof FeedQuality[FeedQualityKeys];
+
 export interface Feed {
   _id: string;
   name: string;
   sizes: string[];
   speciesWithFeedTables: SpeciesValues[];
-  quality: FeedQuality;
+  quality: FeedQualityValues;
   filename: string;
 }
 

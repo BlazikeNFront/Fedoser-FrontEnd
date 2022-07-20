@@ -184,12 +184,12 @@ async function addTank() {
     annotations: [],
     history: [],
   });
+
   isLoading.value = true;
   const result = await TankService.post(tankPayload);
   isLoading.value = false;
-  if (result.success) {
-    router.push({ name: RoutesNames.USER_TANKS });
-  }
+
+  if (result.success) router.push({ name: RoutesNames.USER_TANKS });
 }
 </script>
 <style lang="scss" scoped>

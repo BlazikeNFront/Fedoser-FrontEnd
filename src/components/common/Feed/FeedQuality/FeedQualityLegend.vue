@@ -20,15 +20,15 @@
         color="white"
       >
         <feed-quality-display
-          v-for="quality in qualityEnumKeys"
+          v-for="quality in FeedQuality"
           :key="quality"
-          :quality="+quality"
+          :quality="quality"
           class="pos-relative"
         >
-          <template v-if="FEED_QUALITY_WITH_TEXT.includes(+quality)" #default>
+          <template v-if="FEED_QUALITY_WITH_TEXT.includes(quality)" #default>
             <p class="f-15 feed-quality-legend__quality-text">
               {{
-                +quality === FeedQuality.FIRST
+                quality === FeedQuality.FIRST
                   ? $t("feedInformation.hightQuality")
                   : $t("feedInformation.lowQuality")
               }}
@@ -41,17 +41,11 @@
 </template>
 <script setup lang="ts">
 import FeedQualityDisplay from "@/components/common/Feed/FeedQuality/FeedQualityDisplay.vue";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { FeedQuality } from "@/constants/enums/Feed";
 
 const FEED_QUALITY_WITH_TEXT = [FeedQuality.FIRST, FeedQuality.SEVENTH];
 const feedQualityLegendDialog = ref(false);
-
-const qualityEnumKeys = computed(() =>
-  Object.keys(FeedQuality).filter((value) => {
-    return Number.isInteger(+value);
-  })
-);
 </script>
 <style lang="scss">
 .feed-quality-legend__article {

@@ -152,7 +152,6 @@ async function fetchTable(fileName: string, typeOfPdfAction: PdfActions) {
   const response = await FeedsTablesPdfService.get({
     url: `${specieEnumValue.value}/${fileName}`,
   });
-  console.log(response);
   if (response.success) {
     typeOfPdfAction == PdfActions.DOWNLOAD
       ? downloadPdf(response.data, fileName)

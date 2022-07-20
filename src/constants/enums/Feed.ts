@@ -11,15 +11,17 @@ export enum FeedProgramUpdateFrequency {
   CUSTOM = 0,
 }
 
-export enum FeedQuality {
-  FIRST,
-  SECOND,
-  THIRD,
-  FOURTH,
-  FIFTH,
-  SIXTH,
-  SEVENTH,
-}
+export const FeedQuality = Object.freeze({
+  //lower === better
+  FIRST: 0,
+  SECOND: 1,
+  THIRD: 2,
+  FOURTH: 3,
+  FIFTH: 4,
+  SIXTH: 5,
+  SEVENTH: 6,
+});
+
 export const FEED_QUALITY_COLORS = Object.freeze({
   [FeedQuality.FIRST]: colors.green.darken4,
   [FeedQuality.SECOND]: colors.green.darken1,
@@ -29,9 +31,3 @@ export const FEED_QUALITY_COLORS = Object.freeze({
   [FeedQuality.SIXTH]: colors.grey.darken3,
   [FeedQuality.SEVENTH]: colors.grey.darken4,
 });
-export enum FeedTypes {
-  FRY,
-  GROWER,
-  BROODSTOCK,
-  FINISHER,
-}

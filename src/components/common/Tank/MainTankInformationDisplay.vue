@@ -30,11 +30,9 @@
 
 <script setup lang="ts">
 import { MainTankInformation } from "@/types/Tank";
+import { Attrs } from "@/types/Attrs";
 defineProps<{
   mainTankInformation: MainTankInformation;
-  singleInformationAttrs?: {
-    class: string;
-  };
+  singleInformationAttrs?: Attrs;
 }>();
 </script>
-<style lang="scss"></style>

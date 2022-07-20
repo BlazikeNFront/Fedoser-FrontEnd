@@ -29,7 +29,7 @@
 import { FeedInformationDto } from "@/types/Feed";
 import CurrentFeedDisplay from "@/components/common/Tank/TankBasicInfoDisplays/CurrentFeedDisplay.vue";
 import IconDisplay from "@/components/common/Tank/TankBasicInfoDisplays/base/IconDisplay.vue";
-import BaseDisplay from "../Tank/TankBasicInfoDisplays/base/BaseDisplay.vue";
+import BaseDisplay from "@/components/common/Tank/TankBasicInfoDisplays/base/BaseDisplay.vue";
 
 defineProps<{
   feedInformation: FeedInformationDto;

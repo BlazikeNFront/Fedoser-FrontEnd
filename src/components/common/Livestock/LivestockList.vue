@@ -9,10 +9,9 @@
       <v-table class="default__table">
         <thead v-if="!hideHeader" class="f-15 text-center">
           <tr>
-            <th>{{ $t("global.specie") }}</th>
-            <th>{{ $t("livestockInformation.weight") }}</th>
-            <th>{{ $t("livestockInformation.meanWeight") }}</th>
-            <th>{{ $t("livestockInformation.numberOfIndividuals") }}</th>
+            <th v-for="(translation, index) in TABLE_HEADERS" :key="index">
+              {{ $t(translation) }}
+            </th>
             <slot name="header" />
           </tr>
         </thead>
@@ -44,4 +43,10 @@ defineProps<{
   tableClass?: string;
   hideHeader?: boolean;
 }>();
+const TABLE_HEADERS = [
+  "global.specie",
+  "livestockInformation.weight",
+  "livestockInformation.meanWeight",
+  "livestockInformation.numberOfIndividuals",
+];
 </script>
