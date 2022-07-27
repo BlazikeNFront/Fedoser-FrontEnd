@@ -1,7 +1,5 @@
 <template>
-  <v-app
-    style="overflow: auto; background-color: rgb(var(--v-theme-dark-blue))"
-  >
+  <v-app style="background-color: rgb(var(--v-theme-dark-blue))">
     <component :is="currentLayout" />
     <error-snack-bar />
   </v-app>

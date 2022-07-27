@@ -15,7 +15,7 @@
               ><v-col cols="12">
                 <v-select
                   v-model="specieSelect"
-                  :items="Object.values(Species)"
+                  :items="specieSelectItems"
                   :label="$t('global.specie')"
               /></v-col>
               <specie-editor v-model="specieEditor" />
@@ -91,7 +91,12 @@ const props = defineProps<{
 }>();
 
 const livestockInformationModel = computed(() => props.livestockInformation);
-
+//currently only specie is allowed
+const specieSelectItems = computed(() =>
+  livestockInformationModel.value.initial.length
+    ? [livestockInformationModel.value.initial[0].specie]
+    : Object.values(Species)
+);
 const emit = defineEmits<{
   (
     e: "update:livestockInformation",
@@ -111,10 +116,9 @@ const specieEditor = ref<
 const showNoLivestockError = ref(false);
 
 function clearInputs() {
-  specieSelect.value = Object.values(Species)[0];
-  specieEditor.value.weight = 0;
-  specieEditor.value.meanWeight = 0;
-  specieEditor.value.quantity = 0;
+  specieEditor.value.weight = null;
+  specieEditor.value.meanWeight = null;
+  specieEditor.value.quantity = null;
 }
 
 function checkIfSpecieAlreadyWasAddedToList(speciesName: SpeciesValues) {

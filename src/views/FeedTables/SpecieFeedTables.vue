@@ -98,7 +98,7 @@ import FeedQualityLegend from "@/components/common/Feed/FeedQuality/FeedQualityL
 import FeedQualityDisplay from "@/components/common/Feed/FeedQuality/FeedQualityDisplay.vue";
 import { ref, computed, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
-import { FeedsTablesPdfService } from "@/services/endpoints";
+import { FeedsTablesPdfService } from "@/api/endpoints";
 import { Icons } from "@/constants/icons/MdiIcons";
 import { camelizeString } from "@/helpers/stringOperations";
 import { PdfActions } from "@/constants/enums/PdfActions";

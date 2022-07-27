@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { FeedsStore } from "@/types/store/FeedsStore";
-import { FeedsService } from "@/services/endpoints";
+import { FeedsService } from "@/api/endpoints";
 export const useFeedsStore = defineStore("FeedsStore", {
   state: (): FeedsStore => ({ feeds: null, loader: false }),
   actions: {

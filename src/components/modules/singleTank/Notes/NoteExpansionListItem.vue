@@ -49,7 +49,7 @@
 import { ref } from "vue";
 import { NoteDto } from "@/types/Note";
 import NoteDisplay from "@/components/modules/singleTank/Notes/NoteDisplay.vue";
-import { TankNoteService } from "@/services/endpoints";
+import { TankNoteService } from "@/api/endpoints";
 import BaseDisplay from "@/components/common/Tank/TankBasicInfoDisplays/base/BaseDisplay.vue";
 import { useTankStore } from "@/stores/TankStore";
 const props = defineProps<{

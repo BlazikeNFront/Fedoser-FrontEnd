@@ -131,25 +131,23 @@ const isFeedAlreadySelected = computed(
 );
 
 const allFeedWithoutProsoedFeeds = computed(() => {
-  return props.feedsOptions.allFeeds.reduce<Required<FeedForSpecie>[]>(
-    (acc, currentFeed) => {
-      if (
-        !props.feedsOptions.proposedFeeds.find(
-          (feed) => feed._id === currentFeed._id
-        )
+  return props.feedsOptions.allFeeds.reduce<FeedForSpecie[]>(
+    (acc, currentFeed) =>
+      !props.feedsOptions.proposedFeeds.find(
+        (feed) => feed._id === currentFeed._id
       )
-        return acc.concat([currentFeed]);
-      else return acc;
-    },
+        ? acc.concat([currentFeed])
+        : acc,
     []
   );
 });
 
-const isFeedProposed = computed(() => (feedId: string) => {
-  if (props.feedsOptions.proposedFeeds.some((feed) => feed._id === feedId))
-    return true;
-  return false;
-});
+const isFeedProposed = computed(
+  () => (feedId: string) =>
+    props.feedsOptions.proposedFeeds.some((feed) => feed._id === feedId)
+      ? true
+      : false
+);
 function onFeedSelect(feedForSpecie: FeedForSpecie) {
   emit(
     "update:modelValue",

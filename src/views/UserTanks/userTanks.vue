@@ -2,22 +2,22 @@
   <section>
     <h2 class="text-center h-2" v-text="$t('global.tanks')"></h2>
     <v-progress-linear
-      v-if="isLoading"
-      :active="isLoading"
-      :indeterminate="isLoading"
+      v-if="requestState.loading"
+      :active="requestState.loading"
+      :indeterminate="requestState.loading"
       color="blue"
       height="5"
     />
-    <div v-else>
-      <v-expansion-panels v-if="userTanks.length">
+    <div v-else-if="requestState.data?.length">
+      <v-expansion-panels>
         <v-container
           ><v-row
             ><v-col
               cols="12"
               lg="6"
-              v-for="tank in userTanks"
+              v-for="tank in requestState.data"
               :key="tank._id"
-              :offset-lg="userTanks.length > 1 ? 0 : 3"
+              :offset-lg="requestState.data.length > 1 ? 0 : 3"
             >
               <tank-card-expansion
                 :tank="tank"
@@ -37,26 +37,24 @@
               </tank-card-expansion> </v-col></v-row
         ></v-container>
       </v-expansion-panels>
-
-      <p v-else class="text-center f-2" v-text="$t('userTanks.noTanks')"></p>
+    </div>
+    <div v-else class="d-flex flex-column align-center justify-center">
+      <p class="text-center f-2">{{ $t("userTanks.noTanks") }}</p>
+      <v-btn :to="{ name: RoutesNames.ADD_TANK }" class="app-button mt-4 f-15">
+        {{ $t("global.clickHereToAddTank") }}
+      </v-btn>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeMount } from "vue";
-import { TankDto } from "@/types/Tank";
 import { RoutesNames } from "@/constants/routesNames/RoutesNames";
-import { TankService } from "@/services/endpoints";
+import { TankService } from "@/api/endpoints";
 import TankCardExpansion from "@/components/common/Tank/TankCardExpansion.vue";
-import { API_DATA_KEY } from "@/constants/global";
-const userTanks = ref<TankDto[]>([]);
-const isLoading = ref(false);
-onBeforeMount(async () => {
-  isLoading.value = true;
-  const request = await TankService.fetch();
-  console.log("hello");
-  if (API_DATA_KEY in request) userTanks.value = request.data;
-  isLoading.value = false;
-});
+import useBaseRequest from "@/hooks/useBaseRequest";
+
+import { TankDto } from "@/types/Tank";
+import { onBeforeMount } from "vue";
+const { fetchData, requestState } = useBaseRequest<TankDto[]>();
+onBeforeMount(async () => await fetchData(TankService.fetch));
 </script>

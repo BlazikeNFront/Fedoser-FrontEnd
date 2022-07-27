@@ -67,7 +67,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, ComponentPublicInstance } from "vue";
-import { SignUpService } from "@/services/endpoints/Authorization";
+import { SignUpService } from "@/api/endpoints/Authorization";
 import { SignUpDTO } from "@/utils/DTOs/SignUp.dto";
 import { FormRules } from "@/helpers/FormRules";
 import HomeFormCard from "@/components/modules/home/HomeFormCard.vue";

@@ -128,7 +128,7 @@ import { storeToRefs } from "pinia";
 import DoseManager from "@/components/modules/singleTank/FeedProgram/DoseManager.vue";
 import FeedInformationDisplay from "@/components/common/Feed/FeedInformationDisplay.vue";
 import TerminatedDoseList from "@/components/modules/singleTank/FeedProgram/TerminatedDoseList.vue";
-import { TankFeedDoseService } from "@/services/endpoints";
+import { TankFeedDoseService } from "@/api/endpoints";
 import { FeedDoseDto } from "@/types/Feed";
 import FeedSelect from "@/components/common/Feed/FeedSelect.vue";
 import { useFeedForSpecie } from "@/stores/FeedsForSpecie";

@@ -3,13 +3,13 @@ import { TankStore } from "@/types/store/TankStore";
 import { NoteDto } from "@/types/Note";
 import { TankDto } from "@/types/Tank";
 import { CurrentTankFeedDto, FeedDoseDto } from "@/types/Feed";
-import { TankCurrentFeedService } from "@/services/endpoints";
+import { TankCurrentFeedService } from "@/api/endpoints";
 import { roundTo2Decimals } from "@/helpers/global";
 import { calcLivestockWeight } from "@/helpers/calcLivestockWeight";
 import { findMainSpecieInLivestock } from "@/helpers/findMainSpecieInLivestock";
-import { TankCurrentLivestockService } from "@/services/endpoints";
+import { TankCurrentLivestockService } from "@/api/endpoints";
 import { ChangeSpecieWeightDto } from "@/types/ChangeSpecieWeight";
-import { EndFeedProgramService } from "@/services/endpoints";
+import { EndFeedProgramService } from "@/api/endpoints";
 import { LivestockInformationDto } from "@/types/Livestock";
 import { FeedInformationDto } from "@/types/Feed";
 
@@ -30,6 +30,14 @@ export const useTankStore = defineStore("TankStore", {
     },
     addNoteToTank(note: Required<NoteDto>) {
       if (this.tank) this.tank.annotations.push(note);
+    },
+    editTankNote(editedNote: Required<NoteDto>) {
+      if (!this.tank) return;
+      this.tank.annotations[
+        this.tank.annotations.findIndex(
+          (annotation) => annotation.id === editedNote.id
+        )
+      ] = editedNote;
     },
     async changeCurrentTankFeed(newCurrentTankFeed: CurrentTankFeedDto) {
       if (!this.tank) return;

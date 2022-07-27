@@ -118,7 +118,7 @@
               class="app-button mr-4 f-15 align-self-end text-white"
               block
               v-text="$t('global.save')"
-              @click="addNote"
+              @click="onSaveButtonClick"
           /></v-col>
         </v-row>
       </v-container>
@@ -131,7 +131,7 @@ import { ref, reactive } from "vue";
 import TransitionExpand from "@/components/common/TransitionExpand.vue";
 import { FormRules } from "@/helpers/FormRules";
 import { Weather } from "@/constants/enums/Weather";
-import { TankNoteService } from "@/services/endpoints";
+import { TankNoteService } from "@/api/endpoints";
 import { NoteDto } from "@/types/Note";
 import { useRoute } from "vue-router";
 import {
@@ -140,7 +140,7 @@ import {
 } from "@/types/EnviromentalData";
 import { useTankStore } from "@/stores/TankStore";
 const { params } = useRoute();
-const { addNoteToTank } = useTankStore();
+const { addNoteToTank, editTankNote } = useTankStore();
 const showDialog = ref<boolean>(false);
 const props = defineProps<{
   annotation: NoteDto;
@@ -165,29 +165,34 @@ function setEnviromentalData(enviromentData: EnviromentalData) {
         enviromentData[key as keyof typeof enviromentalData])
   );
 }
-async function addNote() {
-  if (noteDataForm.value && !(await noteDataForm.value.validate()).valid)
-    return;
-  const payload = { ...annotationCopy.value };
-  if (showEnviromentalData.value) payload.enviromentalData = enviromentalData;
 
-  let result;
-
-  if (payload.id) {
-    result = await TankNoteService.patch(new NoteDto(payload), {
-      url: params.id as string,
-    });
-  } else {
-    result = await TankNoteService.post(new NoteDto(payload), {
-      url: params.id as string,
-    });
-  }
+async function addNote(payload: Partial<NoteDto>) {
+  const result = await TankNoteService.post(new NoteDto(payload), {
+    url: params.id as string,
+  });
   if (!result.success) return;
-  if (result.data?.id) {
+  if (!payload.id && result.data?.id) {
     payload.id = result.data.id;
     addNoteToTank(payload as Required<NoteDto>);
   }
   toggleDialog();
+}
+async function editNote(payload: Required<NoteDto>) {
+  const result = await TankNoteService.patch(new NoteDto(payload), {
+    url: params.id as string,
+  });
+  if (!result.success) return;
+  editTankNote(payload);
+  toggleDialog();
+}
+
+async function onSaveButtonClick() {
+  if (noteDataForm.value && !(await noteDataForm.value.validate()).valid)
+    return;
+  const payload = { ...annotationCopy.value };
+  if (showEnviromentalData.value) payload.enviromentalData = enviromentalData;
+  if (payload.id) await editNote(payload as Required<NoteDto>);
+  else await addNote(payload);
 }
 defineExpose({
   toggleDialog,

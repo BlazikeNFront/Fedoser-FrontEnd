@@ -1,4 +1,4 @@
-import { createEndpointAPI } from "@/services/requestHandler";
+import { createEndpointAPI } from "@/api/requestHandler";
 import { TankDto } from "@/types/Tank";
 import {
   FeedForSpecie,

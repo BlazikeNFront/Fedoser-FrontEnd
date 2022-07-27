@@ -138,7 +138,7 @@ import { RoutesNames } from "@/constants/routesNames/RoutesNames";
 import { TankDto } from "@/types/Tank";
 import { ref, reactive, computed } from "vue";
 import { useRouter } from "vue-router";
-import { TankService } from "@/services/endpoints";
+import { TankService } from "@/api/endpoints";
 import { findMainSpecieInLivestock } from "@/helpers/findMainSpecieInLivestock";
 const router = useRouter();
 

@@ -1,5 +1,4 @@
 export enum PortalRoles {
-  GUEST,
-  USER,
-  ADMIN,
+  GUEST = "GUEST",
+  USER = "USER",
 }

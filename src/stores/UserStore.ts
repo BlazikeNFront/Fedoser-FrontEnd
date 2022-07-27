@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { UserStore } from "@/types/store/UserStore";
 import { AuthPayloadDto } from "@/types/AuthPayload";
-import { LoginService } from "@/services/endpoints";
+import { LoginService } from "@/api/endpoints";
 
 import { TOKEN_EXPIRATION_TIME_IN_MS } from "@/constants/global";
 

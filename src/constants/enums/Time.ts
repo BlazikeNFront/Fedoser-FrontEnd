@@ -1,3 +1,3 @@
 export enum TimeInMiliseconds {
-  WEEK = "604800000",
+  WEEK = 604800000,
 }

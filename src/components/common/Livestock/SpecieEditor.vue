@@ -35,10 +35,8 @@ export type SpecieEditorModel = {
 };
 export const validateSpecieEditorModel = (
   specieEditor: SpecieEditorModel | Omit<SingleLivestockSpecie, "specie">
-): specieEditor is Omit<SingleLivestockSpecie, "specie"> => {
-  if (Object.values(specieEditor).some((value) => !value)) return false;
-  return true;
-};
+): specieEditor is Omit<SingleLivestockSpecie, "specie"> =>
+  Object.values(specieEditor).some((value) => !value) ? false : true;
 </script>
 
 <script setup lang="ts">

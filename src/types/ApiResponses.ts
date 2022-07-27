@@ -5,12 +5,9 @@ export interface UploadResponse<T> {
 export interface ApiError {
   success: false;
   statusCode: number | null;
+  error: string;
 }
 export interface ApiResponse<T> {
-  data: T;
-  success: true;
-}
-export interface GetResponse<T> {
   data: T;
   success: true;
 }

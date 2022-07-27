@@ -32,7 +32,7 @@ import { useRoute } from "vue-router";
 import MainInfoTab from "@/components/modules/singleTank/Tabs/MainInfoTab.vue";
 import LivestockTab from "@/components/modules/singleTank/Tabs/LivestockTab.vue";
 import NotesTab from "@/components/modules/singleTank/Tabs/NotesTab.vue";
-import { TankService } from "@/services/endpoints";
+import { TankService } from "@/api/endpoints";
 import { useTankStore } from "@/stores/TankStore";
 import { storeToRefs } from "pinia";
 import FeedProgramTab from "@/components/modules/singleTank/Tabs/FeedProgramTab.vue";

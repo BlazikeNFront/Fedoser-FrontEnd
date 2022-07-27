@@ -85,12 +85,11 @@ async function requestHandler<T>(
       if (useCache) setItemInIndexedDB(url, data);
       return { data, success: true };
     }
-    return { success: false, statusCode: null };
+    return { success: true, data };
   } catch (error: unknown) {
     handleError(error);
     if (apiErrorTypeGuard(error)) return error;
-
-    return { success: false, statusCode: null };
+    return { success: false, statusCode: null, error: "Something went wrong" };
   }
 }
 

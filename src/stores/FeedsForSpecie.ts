@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { FeedsForSpecieStore } from "@/types/store/FeedsForSpecieStore";
-import { FeedsForSpecieService } from "@/services/endpoints";
+import { FeedsForSpecieService } from "@/api/endpoints";
 import { SpeciesValues } from "@/types/Livestock";
 export const useFeedForSpecie = defineStore("FeedsForSpecieStore", {
   state: (): FeedsForSpecieStore => ({

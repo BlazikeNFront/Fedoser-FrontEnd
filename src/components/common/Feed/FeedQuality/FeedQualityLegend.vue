@@ -9,7 +9,7 @@
         v-text="$t('feedInformation.feedQuality')"
       />
     </template>
-    <article
+    <div
       class="feed-quality-legend__article px-3 py-5 d-flex flex-column align-center justify-space-around"
     >
       <p class="f-2 mb-3 text-white font-weight-bold">
@@ -36,7 +36,7 @@
           </template>
         </feed-quality-display>
       </v-sheet>
-    </article>
+    </div>
   </v-dialog>
 </template>
 <script setup lang="ts">
